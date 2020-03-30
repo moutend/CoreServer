@@ -25,7 +25,9 @@ file(GLOB SOURCES "./src/*")
 add_library(CoreServer SHARED ${SOURCES})
 target_link_libraries(
   CoreServer
-  shlwapi.lib
+  OleAut32.lib
+  OleAcc.lib
+  Shlwapi.lib
   ICoreServer
   cpplogger
   cpprestsdk::cpprest
