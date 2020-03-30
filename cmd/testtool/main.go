@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"time"
 
 	"github.com/moutend/CoreServer/pkg/com"
 
@@ -39,5 +40,6 @@ func run(args []string) error {
 	err := foo.Start()
 	fmt.Println("Called ICoreServer::Start", err)
 
+	time.Sleep(10 * time.Second)
 	return nil
 }
