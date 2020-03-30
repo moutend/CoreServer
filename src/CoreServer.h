@@ -1,8 +1,14 @@
 #pragma once
 
 #include <ICoreServer/ICoreServer.h>
+#include <cpplogger/cpplogger.h>
 #include <mutex>
 #include <windows.h>
+
+#include "context.h"
+#include "logloop.h"
+#include "uialoop.h"
+#include "wineventloop.h"
 
 class CCoreServer : public ICoreServer {
 public:
@@ -23,7 +29,7 @@ public:
   // ICoreServer methods
   STDMETHODIMP Start();
   STDMETHODIMP Stop();
-  STDMETHODIMP SetUIEventHandler(UIEventHandler handler);
+  STDMETHODIMP SetUIEventHandler(UIEventHandler handleFunc);
 
   CCoreServer();
   ~CCoreServer();
@@ -32,7 +38,16 @@ private:
   LONG mReferenceCount;
   ITypeInfo *mTypeInfo;
 
-  std::mutex mCoreServerMutex;
+  bool mIsActive = false;
+  std::mutex mMutex;
+
+  LogLoopContext *mLogLoopCtx = nullptr;
+  UIALoopContext *mUIALoopCtx = nullptr;
+  WinEventLoopContext *mWinEventLoopCtx = nullptr;
+
+  HANDLE mLogLoopThread = nullptr;
+  HANDLE mUIALoopThread = nullptr;
+  HANDLE mWinEventLoopThread = nullptr;
 };
 
 class CCoreServerFactory : public IClassFactory {

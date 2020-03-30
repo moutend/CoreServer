@@ -1,10 +1,14 @@
+#include <cpplogger/cpplogger.h>
+#include <mutex>
 #include <shlwapi.h>
-#include <strsafe.h>
 #include <windows.h>
 
 #include "CoreServer.h"
+#include "util.h"
 
-const TCHAR ProgIDStr[] = TEXT("ScreenReaderX CoreServer");
+extern Logger::Logger *Log;
+
+const TCHAR ProgIDStr[] = TEXT("ScreenReaderX.CoreServer");
 LONG LockCount{};
 HINSTANCE CoreServerDLLInstance{};
 TCHAR CoreServerCLSIDStr[256]{};
@@ -98,12 +102,171 @@ STDMETHODIMP CCoreServer::Invoke(DISPID dispIdMember, REFIID riid, LCID lcid,
                            pExcepInfo, puArgErr);
 }
 
-STDMETHODIMP CCoreServer::Start() { return E_NOTIMPL; }
+STDMETHODIMP CCoreServer::Start() {
+  std::lock_guard<std::mutex> lock(mMutex);
 
-STDMETHODIMP CCoreServer::Stop() { return E_NOTIMPL; }
+  if (mIsActive) {
+    Log->Warn(L"ICoreServer::Start() is already called", GetCurrentThreadId(),
+              __LONGFILE__);
 
-STDMETHODIMP CCoreServer::SetUIEventHandler(UIEventHandler handler) {
-  return E_NOTIMPL;
+    return E_FAIL;
+  }
+
+  mIsActive = true;
+
+  Log = new Logger::Logger(L"CoreServer", L"v0.1.0-develop", 4096);
+
+  Log->Info(L"Called ICoreServer::Start()", GetCurrentThreadId(), __LONGFILE__);
+
+  mLogLoopCtx = new LogLoopContext();
+
+  mLogLoopCtx->QuitEvent =
+      CreateEventEx(nullptr, nullptr, 0, EVENT_MODIFY_STATE | SYNCHRONIZE);
+
+  if (mLogLoopCtx->QuitEvent == nullptr) {
+    Log->Fail(L"Failed to create event", GetCurrentThreadId(), __LONGFILE__);
+
+    return E_FAIL;
+  }
+
+  Log->Info(L"Create log loop thread", GetCurrentThreadId(), __LONGFILE__);
+
+  mLogLoopThread = CreateThread(nullptr, 0, logLoop,
+                                static_cast<void *>(mLogLoopCtx), 0, nullptr);
+
+  if (mLogLoopThread == nullptr) {
+    Log->Fail(L"Failed to create thread", GetCurrentThreadId(), __LONGFILE__);
+
+    return E_FAIL;
+  }
+
+  mUIALoopCtx = new UIALoopContext();
+
+  mUIALoopCtx->QuitEvent =
+      CreateEventEx(nullptr, nullptr, 0, EVENT_MODIFY_STATE | SYNCHRONIZE);
+
+  if (mUIALoopCtx->QuitEvent == nullptr) {
+    Log->Fail(L"Failed to create event", GetCurrentThreadId(), __LONGFILE__);
+
+    return E_FAIL;
+  }
+
+  Log->Info(L"Create uia loop thread", GetCurrentThreadId(), __LONGFILE__);
+
+  mUIALoopThread = CreateThread(nullptr, 0, uiaLoop,
+                                static_cast<void *>(mUIALoopCtx), 0, nullptr);
+
+  if (mUIALoopThread == nullptr) {
+    Log->Fail(L"Failed to create thread", GetCurrentThreadId(), __LONGFILE__);
+    return E_FAIL;
+  }
+
+  mWinEventLoopCtx = new WinEventLoopContext();
+
+  mWinEventLoopCtx->QuitEvent =
+      CreateEventEx(nullptr, nullptr, 0, EVENT_MODIFY_STATE | SYNCHRONIZE);
+
+  if (mWinEventLoopCtx->QuitEvent == nullptr) {
+    Log->Fail(L"Failed to create event", GetCurrentThreadId(), __LONGFILE__);
+    return E_FAIL;
+  }
+
+  Log->Info(L"Create windows event loop thread", GetCurrentThreadId(),
+            __LONGFILE__);
+
+  mWinEventLoopThread =
+      CreateThread(nullptr, 0, winEventLoop,
+                   static_cast<void *>(mWinEventLoopCtx), 0, nullptr);
+
+  if (mWinEventLoopThread == nullptr) {
+    Log->Fail(L"Failed to create thread", GetCurrentThreadId(), __LONGFILE__);
+    return E_FAIL;
+  }
+
+  return S_OK;
+}
+
+STDMETHODIMP CCoreServer::Stop() {
+  std::lock_guard<std::mutex> lock(mMutex);
+
+  if (!mIsActive) {
+    return E_FAIL;
+  }
+
+  Log->Info(L"Called ICoreServer::Stop()", GetCurrentThreadId(), __LONGFILE__);
+
+  if (mUIALoopThread == nullptr) {
+    goto END_UIALOOP_CLEANUP;
+  }
+  if (!SetEvent(mUIALoopCtx->QuitEvent)) {
+    Log->Fail(L"Failed to send event", GetCurrentThreadId(), __LONGFILE__);
+    return E_FAIL;
+  }
+
+  WaitForSingleObject(mUIALoopThread, INFINITE);
+  SafeCloseHandle(&mUIALoopThread);
+  SafeCloseHandle(&(mUIALoopCtx->QuitEvent));
+
+  delete mUIALoopCtx;
+  mUIALoopCtx = nullptr;
+
+  Log->Info(L"Delete uia loop thread", GetCurrentThreadId(), __LONGFILE__);
+
+END_UIALOOP_CLEANUP:
+
+  if (mWinEventLoopThread == nullptr) {
+    goto END_WINEVENTLOOP_CLEANUP;
+  }
+
+  mWinEventLoopCtx->IsActive = false;
+  /*
+  if (!SetEvent(mWinEventLoopCtx->QuitEvent)) {
+    Log->Fail(L"Failed to send event", GetCurrentThreadId(), __LONGFILE__);
+    return E_FAIL;
+  }
+  */
+
+  WaitForSingleObject(mWinEventLoopThread, INFINITE);
+  SafeCloseHandle(&mWinEventLoopThread);
+  SafeCloseHandle(&(mWinEventLoopCtx->QuitEvent));
+
+  delete mWinEventLoopCtx;
+  mWinEventLoopCtx = nullptr;
+
+  Log->Info(L"Delete windows event loop thread", GetCurrentThreadId(),
+            __LONGFILE__);
+
+END_WINEVENTLOOP_CLEANUP:
+
+  if (mLogLoopThread == nullptr) {
+    goto END_LOGLOOP_CLEANUP;
+  }
+  if (!SetEvent(mLogLoopCtx->QuitEvent)) {
+    Log->Fail(L"Failed to send event", GetCurrentThreadId(), __LONGFILE__);
+    return E_FAIL;
+  }
+
+  WaitForSingleObject(mLogLoopThread, INFINITE);
+  SafeCloseHandle(&mLogLoopThread);
+  SafeCloseHandle(&(mLogLoopCtx->QuitEvent));
+
+  delete mLogLoopCtx;
+  mLogLoopCtx = nullptr;
+
+END_LOGLOOP_CLEANUP:
+
+  mIsActive = false;
+
+  return S_OK;
+}
+
+STDMETHODIMP CCoreServer::SetUIEventHandler(UIEventHandler handleFunc) {
+  std::lock_guard<std::mutex> lock(mMutex);
+
+  mUIALoopCtx->HandleFunc = handleFunc;
+  mWinEventLoopCtx->HandleFunc = handleFunc;
+
+  return S_OK;
 }
 
 // CCoreServerFactory
@@ -189,7 +352,7 @@ STDAPI DllRegisterServer(void) {
   wsprintf(szKey, TEXT("CLSID\\%s"), CoreServerCLSIDStr);
 
   if (!CreateRegistryKey(HKEY_CLASSES_ROOT, szKey, nullptr,
-                         TEXT("ScreenReaderX CoreServer"))) {
+                         TEXT("ScreenReaderX.CoreServer"))) {
     return E_FAIL;
   }
 
@@ -218,7 +381,7 @@ STDAPI DllRegisterServer(void) {
   wsprintf(szKey, TEXT("%s"), ProgIDStr);
 
   if (!CreateRegistryKey(HKEY_CLASSES_ROOT, szKey, nullptr,
-                         TEXT("ScreenReaderX CoreServer"))) {
+                         TEXT("ScreenReaderX.CoreServer"))) {
     return E_FAIL;
   }
 
