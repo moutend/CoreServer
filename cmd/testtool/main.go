@@ -34,8 +34,14 @@ func run(args []string) error {
 
 	fmt.Println("@@@instance created")
 
-	defer foo.Stop()
-	defer foo.Release()
+	defer func() {
+		foo.Stop()
+		fmt.Println("Called Foo::Stop()")
+	}()
+	defer func() {
+		foo.Release()
+		fmt.Println("Called Foo::Release()")
+	}()
 
 	err := foo.Start()
 	fmt.Println("Called ICoreServer::Start", err)
