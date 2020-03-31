@@ -48,8 +48,7 @@ FocusChangeEventHandler::HandleFocusChangedEvent(
             __LONGFILE__);
 
   if (mUIALoopContext != nullptr && mUIALoopContext->HandleFunc != nullptr) {
-    mUIALoopContext->HandleFunc(0, AA_IUIAutomation,
-                                reinterpret_cast<void *>(pSender));
+    mUIALoopContext->HandleFunc(0, pSender);
   }
 
   return S_OK;
@@ -95,8 +94,7 @@ PropertyChangeEventHandler::HandlePropertyChangedEvent(
             GetCurrentThreadId(), __LONGFILE__);
 
   if (mUIALoopContext != nullptr && mUIALoopContext->HandleFunc != nullptr) {
-    mUIALoopContext->HandleFunc(0, AA_IUIAutomation,
-                                reinterpret_cast<void *>(pSender));
+    mUIALoopContext->HandleFunc(0, pSender);
   }
 
   return S_OK;
@@ -140,8 +138,7 @@ AutomationEventHandler::HandleAutomationEvent(IUIAutomationElement *pSender,
             __LONGFILE__);
 
   if (mUIALoopContext != nullptr && mUIALoopContext->HandleFunc != nullptr) {
-    mUIALoopContext->HandleFunc(0, AA_IUIAutomation,
-                                reinterpret_cast<void *>(pSender));
+    mUIALoopContext->HandleFunc(0, pSender);
   }
 
   return S_OK;
