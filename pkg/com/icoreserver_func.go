@@ -14,6 +14,6 @@ func csStop(v *ICoreServer) error {
 	return ole.NewError(ole.E_NOTIMPL)
 }
 
-func csSetUIEventHandler(v *ICoreServer) error {
+func csSetUIEventHandler(v *ICoreServer, handleFunc UIEventHandler) error {
 	return ole.NewError(ole.E_NOTIMPL)
 }

@@ -34,18 +34,20 @@ func run(args []string) error {
 
 	fmt.Println("@@@instance created")
 
-	defer func() {
-		foo.Stop()
-		fmt.Println("Called Foo::Stop()")
-	}()
-	defer func() {
-		foo.Release()
-		fmt.Println("Called Foo::Release()")
-	}()
+	defer foo.Release()
 
 	err := foo.Start()
 	fmt.Println("Called ICoreServer::Start", err)
 
-	time.Sleep(10 * time.Second)
+	foo.SetUIEventHandler(func(eventId int64, eAPI int64, pInterface uintptr) int64 {
+		fmt.Println("@@@received", eventId, eAPI)
+		return 0
+	})
+
+	time.Sleep(30 * time.Second)
+
+	err = foo.Stop()
+	fmt.Println("Called Foo::Stop()")
+
 	return nil
 }

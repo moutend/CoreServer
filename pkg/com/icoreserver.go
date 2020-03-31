@@ -6,6 +6,8 @@ import (
 	"github.com/go-ole/go-ole"
 )
 
+type UIEventHandler func(eventId, eAPI int64, pInterface uintptr) int64
+
 type ICoreServer struct {
 	ole.IDispatch
 }
@@ -29,6 +31,6 @@ func (v *ICoreServer) Stop() error {
 	return csStop(v)
 }
 
-func (v *ICoreServer) SetUIEventHandler() error {
-	return csSetUIEventHandler(v)
+func (v *ICoreServer) SetUIEventHandler(handleFunc UIEventHandler) error {
+	return csSetUIEventHandler(v, handleFunc)
 }

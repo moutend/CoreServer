@@ -39,12 +39,12 @@ func csStop(v *ICoreServer) error {
 	return nil
 }
 
-func csSetUIEventHandler(v *ICoreServer) error {
+func csSetUIEventHandler(v *ICoreServer, handleFunc UIEventHandler) error {
 	hr, _, _ := syscall.Syscall(
 		v.VTable().SetUIEventHandler,
-		0,
+		1,
 		uintptr(unsafe.Pointer(v)),
-		0,
+		syscall.NewCallback(handleFunc),
 		0)
 
 	if hr != 0 {
