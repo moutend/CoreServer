@@ -16,7 +16,20 @@ func uiaeSetFocus(v *IUIAutomationElement) error {
 }
 
 func uiaeGetRuntimeId(v *IUIAutomationElement) error {
-	return ole.NewError(ole.E_NOTIMPL)
+	var safearray *ole.SAFEARRAY
+
+	hr, _, _ := syscall.Syscall(
+		v.VTable().GetRuntimeId,
+		2,
+		uintptr(unsafe.Pointer(v)),
+		uintptr(unsafe.Pointer(&safearray)),
+		0)
+
+	if hr != 0 {
+		return ole.NewError(hr)
+	}
+
+	return nil
 }
 
 func uiaeFindFirst(v *IUIAutomationElement) error {
