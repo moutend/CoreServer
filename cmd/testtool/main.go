@@ -43,7 +43,8 @@ func run(args []string) error {
 	foo.SetUIEventHandler(func(eventId int64, eAPI int64, pInterface uintptr) int64 {
 		fmt.Printf("@@@received %x\n", pInterface)
 		uiae := &com.IUIAutomationElement{}
-		uiae.RawVTable = (*interface{})(unsafe.Pointer(pInterface))
+		vtblPtr := *(*uintptr)(unsafe.Pointer(pInterface))
+		uiae.RawVTable = (*interface{})(unsafe.Pointer(vtblPtr))
 
 		err := uiae.Release()
 
