@@ -29,7 +29,8 @@ public:
   // ICoreServer methods
   STDMETHODIMP Start();
   STDMETHODIMP Stop();
-  STDMETHODIMP SetUIEventHandler(UIEventHandler handleFunc);
+  STDMETHODIMP SetIAEventHandler(IAEventHandler handleFunc);
+  STDMETHODIMP SetIUIEventHandler(IUIEventHandler handleFunc);
 
   CCoreServer();
   ~CCoreServer();

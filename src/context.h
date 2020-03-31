@@ -11,11 +11,11 @@ struct LogLoopContext {
 
 struct UIALoopContext {
   HANDLE QuitEvent = nullptr;
-  UIEventHandler HandleFunc = nullptr;
+  IUIEventHandler HandleFunc = nullptr;
 };
 
 struct WinEventLoopContext {
   HANDLE QuitEvent = nullptr;
-  UIEventHandler HandleFunc = nullptr;
+  IAEventHandler HandleFunc = nullptr;
   bool IsActive = true;
 };
