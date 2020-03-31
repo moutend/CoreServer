@@ -42,7 +42,7 @@ func csStop(v *ICoreServer) error {
 func csSetUIEventHandler(v *ICoreServer, handleFunc UIEventHandler) error {
 	hr, _, _ := syscall.Syscall(
 		v.VTable().SetUIEventHandler,
-		1,
+		2,
 		uintptr(unsafe.Pointer(v)),
 		syscall.NewCallback(handleFunc),
 		0)
