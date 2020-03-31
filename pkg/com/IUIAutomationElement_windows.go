@@ -176,7 +176,7 @@ func uiaeCurrentBoundingRectangle(v *IUIAutomationElement) (*types.RECT, error) 
 
 	hr, _, _ := syscall.Syscall(
 		v.VTable().CurrentBoundingRectangle,
-		1,
+		2,
 		uintptr(unsafe.Pointer(v)),
 		uintptr(unsafe.Pointer(&rect)),
 		0)
@@ -317,7 +317,7 @@ func uiaeCachedBoundingRectangle(v *IUIAutomationElement) (*types.RECT, error) {
 
 	hr, _, _ := syscall.Syscall(
 		v.VTable().CachedBoundingRectangle,
-		1,
+		2,
 		uintptr(unsafe.Pointer(v)),
 		uintptr(unsafe.Pointer(&rect)),
 		0)
