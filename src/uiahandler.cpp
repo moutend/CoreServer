@@ -46,7 +46,13 @@ FocusChangeEventHandler::HandleFocusChangedEvent(
     IUIAutomationElement *pSender) {
   Log->Info(L"IUIAutomation Focus change event received", GetCurrentThreadId(),
             __LONGFILE__);
-
+  {
+    wchar_t *buffer[256]{};
+    StringCbPrintfW(buffer, 512, L"UIA focus event (0x%p)", pSender);
+    Log->Info(buffer, GetCurrentThreadId(), __LONGFILE__);
+    delete[] buffer;
+    buffer = nullptr;
+  }
   if (mUIALoopContext != nullptr && mUIALoopContext->HandleFunc != nullptr) {
     mUIALoopContext->HandleFunc(0, pSender);
   }
@@ -92,7 +98,13 @@ PropertyChangeEventHandler::HandlePropertyChangedEvent(
     IUIAutomationElement *pSender, PROPERTYID propertyId, VARIANT newValue) {
   Log->Info(L"IUIAutomation Property change event received",
             GetCurrentThreadId(), __LONGFILE__);
-
+{
+    wchar_t *buffer[256]{};
+    StringCbPrintfW(buffer, 512, L"UIA focus event (0x%p)", pSender);
+    Log->Info(buffer, GetCurrentThreadId(), __LONGFILE__);
+    delete[] buffer;
+    buffer = nullptr;
+  }
   if (mUIALoopContext != nullptr && mUIALoopContext->HandleFunc != nullptr) {
     mUIALoopContext->HandleFunc(0, pSender);
   }
@@ -136,7 +148,13 @@ AutomationEventHandler::HandleAutomationEvent(IUIAutomationElement *pSender,
                                               EVENTID eventId) {
   Log->Info(L"IUIAutomation Automation event received", GetCurrentThreadId(),
             __LONGFILE__);
-
+{
+    wchar_t *buffer[256]{};
+    StringCbPrintfW(buffer, 512, L"UIA focus event (0x%p)", pSender);
+    Log->Info(buffer, GetCurrentThreadId(), __LONGFILE__);
+    delete[] buffer;
+    buffer = nullptr;
+  }
   if (mUIALoopContext != nullptr && mUIALoopContext->HandleFunc != nullptr) {
     mUIALoopContext->HandleFunc(0, pSender);
   }
