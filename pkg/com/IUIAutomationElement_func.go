@@ -4,6 +4,7 @@ package com
 
 import (
 	"github.com/go-ole/go-ole"
+	"github.com/moutend/CoreServer/pkg/types"
 )
 
 func uiaeSetFocus(v *IUIAutomationElement) error {
@@ -166,8 +167,8 @@ func uiaeCurrentItemStatus(v *IUIAutomationElement) error {
 	return ole.NewError(ole.E_NOTIMPL)
 }
 
-func uiaeCurrentBoundingRectangle(v *IUIAutomationElement) error {
-	return ole.NewError(ole.E_NOTIMPL)
+func uiaeCurrentBoundingRectangle(v *IUIAutomationElement) (*types.RECT, error) {
+	return nil, ole.NewError(ole.E_NOTIMPL)
 }
 
 func uiaeCurrentLabeledBy(v *IUIAutomationElement) error {
@@ -294,8 +295,8 @@ func uiaeCachedItemStatus(v *IUIAutomationElement) error {
 	return ole.NewError(ole.E_NOTIMPL)
 }
 
-func uiaeCachedBoundingRectangle(v *IUIAutomationElement) error {
-	return ole.NewError(ole.E_NOTIMPL)
+func uiaeCachedBoundingRectangle(v *IUIAutomationElement) (*types.RECT, error) {
+	return nil, ole.NewError(ole.E_NOTIMPL)
 }
 
 func uiaeCachedLabeledBy(v *IUIAutomationElement) error {

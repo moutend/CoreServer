@@ -3,6 +3,8 @@ package com
 import (
 	"unsafe"
 
+	"github.com/moutend/CoreServer/pkg/types"
+
 	"github.com/go-ole/go-ole"
 )
 
@@ -260,7 +262,7 @@ func (v *IUIAutomationElement) CurrentItemStatus() error {
 	return uiaeCurrentItemStatus(v)
 }
 
-func (v *IUIAutomationElement) CurrentBoundingRectangle() error {
+func (v *IUIAutomationElement) CurrentBoundingRectangle() (*types.RECT, error) {
 	return uiaeCurrentBoundingRectangle(v)
 }
 
@@ -388,7 +390,7 @@ func (v *IUIAutomationElement) CachedItemStatus() error {
 	return uiaeCachedItemStatus(v)
 }
 
-func (v *IUIAutomationElement) CachedBoundingRectangle() error {
+func (v *IUIAutomationElement) CachedBoundingRectangle() (*types.RECT, error) {
 	return uiaeCachedBoundingRectangle(v)
 }
 

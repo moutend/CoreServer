@@ -3,6 +3,11 @@
 package com
 
 import (
+	"syscall"
+	"unsafe"
+
+	"github.com/moutend/CoreServer/pkg/types"
+
 	"github.com/go-ole/go-ole"
 )
 
@@ -166,8 +171,21 @@ func uiaeCurrentItemStatus(v *IUIAutomationElement) error {
 	return ole.NewError(ole.E_NOTIMPL)
 }
 
-func uiaeCurrentBoundingRectangle(v *IUIAutomationElement) error {
-	return ole.NewError(ole.E_NOTIMPL)
+func uiaeCurrentBoundingRectangle(v *IUIAutomationElement) (*types.RECT, error) {
+	var rect types.RECT
+
+	hr, _, _ := syscall.Syscall(
+		v.VTable().CurrentBoundingRectangle,
+		1,
+		uintptr(unsafe.Pointer(v)),
+		uintptr(unsafe.Pointer(&rect)),
+		0)
+
+	if hr != 0 {
+		return nil, ole.NewError(hr)
+	}
+
+	return &rect, nil
 }
 
 func uiaeCurrentLabeledBy(v *IUIAutomationElement) error {
@@ -294,8 +312,21 @@ func uiaeCachedItemStatus(v *IUIAutomationElement) error {
 	return ole.NewError(ole.E_NOTIMPL)
 }
 
-func uiaeCachedBoundingRectangle(v *IUIAutomationElement) error {
-	return ole.NewError(ole.E_NOTIMPL)
+func uiaeCachedBoundingRectangle(v *IUIAutomationElement) (*types.RECT, error) {
+	var rect types.RECT
+
+	hr, _, _ := syscall.Syscall(
+		v.VTable().CachedBoundingRectangle,
+		1,
+		uintptr(unsafe.Pointer(v)),
+		uintptr(unsafe.Pointer(&rect)),
+		0)
+
+	if hr != 0 {
+		return nil, ole.NewError(hr)
+	}
+
+	return &rect, nil
 }
 
 func uiaeCachedLabeledBy(v *IUIAutomationElement) error {
