@@ -43,7 +43,7 @@ func run(args []string) error {
 	foo.SetUIEventHandler(func(eventId int64, eAPI int64, pInterface uintptr) int64 {
 		fmt.Println("@@@received", eventId, eAPI)
 		uiae := &com.IUIAutomationElement{}
-		uiae.RawVTable = (*interface{})(unsafe.Pointer(pInterface))
+		uiae.RawVTable = *(**interface{})(unsafe.Pointer(pInterface))
 
 		rect, err := uiae.CurrentBoundingRectangle()
 
