@@ -46,9 +46,11 @@ func run(args []string) error {
 		vtblPtr := *(*uintptr)(unsafe.Pointer(pInterface))
 		uiae.RawVTable = (*interface{})(unsafe.Pointer(vtblPtr))
 
-		err := uiae.Release()
+		rect, err := uiae.CurrentBoundingRectangle()
+		fmt.Println("@@@bounding", rect, err)
 
-		fmt.Println("@@@Release", err)
+		res := uiae.Release()
+		fmt.Println("@@@Release", res)
 
 		return 0
 	})
