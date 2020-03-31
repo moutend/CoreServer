@@ -45,9 +45,9 @@ func run(args []string) error {
 		uiae := &com.IUIAutomationElement{}
 		uiae.RawVTable = *(**interface{})(unsafe.Pointer(pInterface))
 
-		rect, err := uiae.CurrentBoundingRectangle()
+		err := uiae.Release()
 
-		fmt.Println("@@@rect", rect, err)
+		fmt.Println("@@@Release", err)
 
 		return 0
 	})
