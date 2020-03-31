@@ -40,14 +40,14 @@ func run(args []string) error {
 	err := foo.Start()
 	fmt.Println("Called ICoreServer::Start", err)
 
-	foo.SetUIEventHandler(func(eventId int64, eAPI int64, pInterface uintptr) int64 {
+	foo.SetIUIEventHandler(func(eventId int64, pInterface uintptr) int64 {
 		fmt.Printf("@@@received %x\n", pInterface)
 		uiae := &com.IUIAutomationElement{}
 		vtblPtr := *(*uintptr)(unsafe.Pointer(pInterface))
 		uiae.RawVTable = (*interface{})(unsafe.Pointer(vtblPtr))
 
-		err := uiae.GetRuntimeId()
-		fmt.Println("@@@bounding", err)
+		rect, err := uiae.CurrentBoundingRectangle()
+		fmt.Println("@@@bounding", rect, err)
 
 		res := uiae.Release()
 		fmt.Println("@@@Release", res)

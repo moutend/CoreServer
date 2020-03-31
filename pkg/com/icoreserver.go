@@ -6,7 +6,7 @@ import (
 	"github.com/go-ole/go-ole"
 )
 
-type UIEventHandler func(eventId, eAPI int64, pInterface uintptr) int64
+type UIEventHandler func(eventId int64, pInterface uintptr) int64
 
 type ICoreServer struct {
 	ole.IDispatch
@@ -14,9 +14,10 @@ type ICoreServer struct {
 
 type ICoreServerVtbl struct {
 	ole.IDispatchVtbl
-	Start             uintptr
-	Stop              uintptr
-	SetUIEventHandler uintptr
+	Start              uintptr
+	Stop               uintptr
+	SetIAEventHandler  uintptr
+	SetIUIEventHandler uintptr
 }
 
 func (v *ICoreServer) VTable() *ICoreServerVtbl {
@@ -31,6 +32,10 @@ func (v *ICoreServer) Stop() error {
 	return csStop(v)
 }
 
-func (v *ICoreServer) SetUIEventHandler(handleFunc UIEventHandler) error {
-	return csSetUIEventHandler(v, handleFunc)
+func (v *ICoreServer) SetIUIEventHandler(handleFunc UIEventHandler) error {
+	return csSetIUIEventHandler(v, handleFunc)
+}
+
+func (v *ICoreServer) SetIAEventHandler(handleFunc UIEventHandler) error {
+	return csSetIAEventHandler(v, handleFunc)
 }
