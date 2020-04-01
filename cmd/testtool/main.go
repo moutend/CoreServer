@@ -49,7 +49,6 @@ func run(args []string) error {
 
 		// res := uiae.Release()
 		// fmt.Println("@@@Release", res)
-		time.Sleep(3 * time.Second)
 		return 0
 	})
 
