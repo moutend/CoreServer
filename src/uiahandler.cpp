@@ -44,6 +44,9 @@ HRESULT FocusChangeEventHandler::QueryInterface(REFIID riid,
 HRESULT
 FocusChangeEventHandler::HandleFocusChangedEvent(
     IUIAutomationElement *pSender) {
+  if (pSender == nullptr) {
+    return S_OK;
+  }
   Log->Info(L"IUIAutomation Focus change event received", GetCurrentThreadId(),
             __LONGFILE__);
   {
@@ -96,6 +99,9 @@ HRESULT PropertyChangeEventHandler::QueryInterface(REFIID riid,
 HRESULT
 PropertyChangeEventHandler::HandlePropertyChangedEvent(
     IUIAutomationElement *pSender, PROPERTYID propertyId, VARIANT newValue) {
+  if (pSender == nullptr) {
+    return S_OK;
+  }
   Log->Info(L"IUIAutomation Property change event received",
             GetCurrentThreadId(), __LONGFILE__);
   {
@@ -146,6 +152,9 @@ HRESULT AutomationEventHandler::QueryInterface(REFIID riid,
 HRESULT
 AutomationEventHandler::HandleAutomationEvent(IUIAutomationElement *pSender,
                                               EVENTID eventId) {
+  if (pSender == nullptr) {
+    return S_OK;
+  }
   Log->Info(L"IUIAutomation Automation event received", GetCurrentThreadId(),
             __LONGFILE__);
   {
