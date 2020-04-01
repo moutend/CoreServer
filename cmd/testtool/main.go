@@ -47,8 +47,8 @@ func run(args []string) error {
 		rect, err := uiae.CurrentBoundingRectangle()
 		fmt.Println("@@@bounding", rect, err)
 
-		res := uiae.Release()
-		fmt.Println("@@@Release", res)
+		// res := uiae.Release()
+		// fmt.Println("@@@Release", res)
 		time.Sleep(3 * time.Second)
 		return 0
 	})
