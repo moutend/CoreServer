@@ -10,7 +10,16 @@ import (
 )
 
 func bstrString(p BSTR) (string, error) {
+	if p == 0 {
+		return "", nil
+	}
+
 	length := ole.SysStringLen((*int16)(unsafe.Pointer(p)))
+
+	if length == 0 {
+		return "", nil
+	}
+
 	u16s := make([]uint16, length)
 
 	for i := 0; i < int(length); i++ {

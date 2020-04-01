@@ -104,8 +104,21 @@ func uiaeCurrentLocalizedControlType(v *IUIAutomationElement) error {
 	return ole.NewError(ole.E_NOTIMPL)
 }
 
-func uiaeCurrentName(v *IUIAutomationElement) error {
-	return ole.NewError(ole.E_NOTIMPL)
+func uiaeCurrentName(v *IUIAutomationElement) (string, error) {
+	var bstr types.BSTR
+
+	hr, _, _ := syscall.Syscall(
+		v.VTable().CurrentName,
+		2,
+		uintptr(unsafe.Pointer(v)),
+		uintptr(unsafe.Pointer(&bstr)),
+		0)
+
+	if hr != 0 {
+		return "", ole.NewError(hr)
+	}
+
+	return bstr.String()
 }
 
 func uiaeCurrentAcceleratorKey(v *IUIAutomationElement) error {
@@ -245,8 +258,21 @@ func uiaeCachedLocalizedControlType(v *IUIAutomationElement) error {
 	return ole.NewError(ole.E_NOTIMPL)
 }
 
-func uiaeCachedName(v *IUIAutomationElement) error {
-	return ole.NewError(ole.E_NOTIMPL)
+func uiaeCachedName(v *IUIAutomationElement) (string, error) {
+	var bstr types.BSTR
+
+	hr, _, _ := syscall.Syscall(
+		v.VTable().CurrentName,
+		2,
+		uintptr(unsafe.Pointer(v)),
+		uintptr(unsafe.Pointer(&bstr)),
+		0)
+
+	if hr != 0 {
+		return "", ole.NewError(hr)
+	}
+
+	return bstr.String()
 }
 
 func uiaeCachedAcceleratorKey(v *IUIAutomationElement) error {
