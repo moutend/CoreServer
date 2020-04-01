@@ -42,10 +42,7 @@ func run(args []string) error {
 
 	foo.SetIUIEventHandler(func(eventId int64, pInterface uintptr) int64 {
 		fmt.Printf("@@@received %x\n", pInterface)
-		time.Sleep(11 * time.Second)
-		uiae := &com.IUIAutomationElement{}
-		vtblPtr := *(*uintptr)(unsafe.Pointer(pInterface))
-		uiae.RawVTable = (*interface{})(unsafe.Pointer(vtblPtr))
+		uiae := (*com.IUIAutomationElement)(unsafe.Pointer(pInterface))
 
 		rect, err := uiae.CurrentBoundingRectangle()
 		fmt.Println("@@@bounding", rect, err)
