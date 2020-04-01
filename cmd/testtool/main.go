@@ -44,19 +44,19 @@ func run(args []string) error {
 		e := (*com.IUIAutomationElement)(unsafe.Pointer(pInterface))
 
 		if rect, err := e.CurrentBoundingRectangle(); err != nil {
-			fmt.Printf("@@@Bounding rectangle %+v\n", rect)
-		} else {
 			fmt.Println("@@@Bounding rectangle", err)
+		} else {
+			fmt.Printf("@@@Bounding rectangle %+v\n", rect)
 		}
 
 		name, err := e.CurrentName()
 
 		if err != nil {
-			fmt.Println("@@@Current name", name)
-		} else {
 			fmt.Println("@@@Current name", err)
+		} else {
+			fmt.Println("@@@Current name", name)
 		}
-		if name != 0 {
+		if err == nil {
 			fmt.Println("@@@SysFreeString", ole.SysFreeString((*int16)(unsafe.Pointer(name))))
 		}
 
