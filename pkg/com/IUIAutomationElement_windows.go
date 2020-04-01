@@ -104,7 +104,7 @@ func uiaeCurrentLocalizedControlType(v *IUIAutomationElement) error {
 	return ole.NewError(ole.E_NOTIMPL)
 }
 
-func uiaeCurrentName(v *IUIAutomationElement) (string, error) {
+func uiaeCurrentName(v *IUIAutomationElement) (types.BSTR, error) {
 	var bstr types.BSTR
 
 	hr, _, _ := syscall.Syscall(
@@ -115,10 +115,10 @@ func uiaeCurrentName(v *IUIAutomationElement) (string, error) {
 		0)
 
 	if hr != 0 {
-		return "", ole.NewError(hr)
+		return bstr, ole.NewError(hr)
 	}
 
-	return bstr.String()
+	return bstr, nil
 }
 
 func uiaeCurrentAcceleratorKey(v *IUIAutomationElement) error {
@@ -258,7 +258,7 @@ func uiaeCachedLocalizedControlType(v *IUIAutomationElement) error {
 	return ole.NewError(ole.E_NOTIMPL)
 }
 
-func uiaeCachedName(v *IUIAutomationElement) (string, error) {
+func uiaeCachedName(v *IUIAutomationElement) (types.BSTR, error) {
 	var bstr types.BSTR
 
 	hr, _, _ := syscall.Syscall(
@@ -269,10 +269,10 @@ func uiaeCachedName(v *IUIAutomationElement) (string, error) {
 		0)
 
 	if hr != 0 {
-		return "", ole.NewError(hr)
+		return bstr, ole.NewError(hr)
 	}
 
-	return bstr.String()
+	return bstr, nil
 }
 
 func uiaeCachedAcceleratorKey(v *IUIAutomationElement) error {

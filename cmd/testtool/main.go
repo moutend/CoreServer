@@ -41,14 +41,23 @@ func run(args []string) error {
 	fmt.Println("Called ICoreServer::Start", err)
 
 	foo.SetIUIEventHandler(func(eventId int64, pInterface uintptr) int64 {
-		fmt.Printf("@@@received %x\n", pInterface)
-		uiae := (*com.IUIAutomationElement)(unsafe.Pointer(pInterface))
+		e := (*com.IUIAutomationElement)(unsafe.Pointer(pInterface))
 
-		rect, err := uiae.CurrentBoundingRectangle()
-		fmt.Println("@@@bounding", rect, err)
+		if rect, err := e.CurrentBoundingRectangle(); err != nil {
+			fmt.Printf("@@@Bounding rectangle %+v\n", rect)
+		} else {
+			fmt.Println("@@@Bounding rectangle", err)
+		}
 
-		name, err := uiae.CurrentName()
-		fmt.Println("@@@name", name, err)
+		name, err := e.CurrentName()
+
+		if err != nil {
+			fmt.Println("@@@Current name", name)
+		} else {
+			fmt.Println("@@@Current name", err)
+		}
+
+		fmt.Println("@@@SysFreeString", ole.SysFreeString((*int16)(unsafe.Pointer(name))))
 
 		return 0
 	})

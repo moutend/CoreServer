@@ -2,6 +2,7 @@ package types
 
 type BSTR uintptr
 
-func (p BSTR) String() (string, error) {
+// String returns BSTR as string.
+func (p BSTR) String() string {
 	return bstrString(p)
 }

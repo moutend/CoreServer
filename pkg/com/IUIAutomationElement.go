@@ -182,7 +182,7 @@ func (v *IUIAutomationElement) CurrentLocalizedControlType() error {
 	return uiaeCurrentLocalizedControlType(v)
 }
 
-func (v *IUIAutomationElement) CurrentName() (string, error) {
+func (v *IUIAutomationElement) CurrentName() (types.BSTR, error) {
 	return uiaeCurrentName(v)
 }
 
@@ -310,7 +310,7 @@ func (v *IUIAutomationElement) CachedLocalizedControlType() error {
 	return uiaeCachedLocalizedControlType(v)
 }
 
-func (v *IUIAutomationElement) CachedName() (string, error) {
+func (v *IUIAutomationElement) CachedName() (types.BSTR, error) {
 	return uiaeCachedName(v)
 }
 

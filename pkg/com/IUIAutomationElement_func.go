@@ -87,8 +87,8 @@ func uiaeCurrentLocalizedControlType(v *IUIAutomationElement) error {
 	return ole.NewError(ole.E_NOTIMPL)
 }
 
-func uiaeCurrentName(v *IUIAutomationElement) (string, error) {
-	return "", ole.NewError(ole.E_NOTIMPL)
+func uiaeCurrentName(v *IUIAutomationElement) (types.BSTR, error) {
+	return types.BSTR(0), nil
 }
 
 func uiaeCurrentAcceleratorKey(v *IUIAutomationElement) error {
@@ -215,8 +215,8 @@ func uiaeCachedLocalizedControlType(v *IUIAutomationElement) error {
 	return ole.NewError(ole.E_NOTIMPL)
 }
 
-func uiaeCachedName(v *IUIAutomationElement) (string, error) {
-	return "", ole.NewError(ole.E_NOTIMPL)
+func uiaeCachedName(v *IUIAutomationElement) (types.BSTR, error) {
+	return types.BSTR(0), nil
 }
 
 func uiaeCachedAcceleratorKey(v *IUIAutomationElement) error {

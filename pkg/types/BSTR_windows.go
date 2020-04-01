@@ -9,15 +9,15 @@ import (
 	"github.com/go-ole/go-ole"
 )
 
-func bstrString(p BSTR) (string, error) {
+func bstrString(p BSTR) string {
 	if p == 0 {
-		return "", nil
+		return ""
 	}
 
 	length := ole.SysStringLen((*int16)(unsafe.Pointer(p)))
 
-	if length == 0 {
-		return "", nil
+	if length <= 0 {
+		return ""
 	}
 
 	u16s := make([]uint16, length)
@@ -26,8 +26,5 @@ func bstrString(p BSTR) (string, error) {
 		u16s[i] = *(*uint16)(unsafe.Pointer(uintptr(p) + uintptr(i*2)))
 	}
 
-	s := syscall.UTF16ToString(u16s)
-	err := ole.SysFreeString((*int16)(unsafe.Pointer(p)))
-
-	return s, err
+	return syscall.UTF16ToString(u16s)
 }
