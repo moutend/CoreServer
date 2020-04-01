@@ -56,8 +56,9 @@ func run(args []string) error {
 		} else {
 			fmt.Println("@@@Current name", err)
 		}
-
-		fmt.Println("@@@SysFreeString", ole.SysFreeString((*int16)(unsafe.Pointer(name))))
+		if name != 0 {
+			fmt.Println("@@@SysFreeString", ole.SysFreeString((*int16)(unsafe.Pointer(name))))
+		}
 
 		return 0
 	})
