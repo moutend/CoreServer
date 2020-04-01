@@ -47,7 +47,7 @@ FocusChangeEventHandler::HandleFocusChangedEvent(
   Log->Info(L"IUIAutomation Focus change event received", GetCurrentThreadId(),
             __LONGFILE__);
   {
-    wchar_t *buffer[256]{};
+    wchar_t *buffer = new wchar_t[256]{};
     StringCbPrintfW(buffer, 512, L"UIA focus event (0x%p)", pSender);
     Log->Info(buffer, GetCurrentThreadId(), __LONGFILE__);
     delete[] buffer;
@@ -98,8 +98,8 @@ PropertyChangeEventHandler::HandlePropertyChangedEvent(
     IUIAutomationElement *pSender, PROPERTYID propertyId, VARIANT newValue) {
   Log->Info(L"IUIAutomation Property change event received",
             GetCurrentThreadId(), __LONGFILE__);
-{
-    wchar_t *buffer[256]{};
+  {
+    wchar_t *buffer = new wchar_t[256]{};
     StringCbPrintfW(buffer, 512, L"UIA focus event (0x%p)", pSender);
     Log->Info(buffer, GetCurrentThreadId(), __LONGFILE__);
     delete[] buffer;
@@ -148,8 +148,8 @@ AutomationEventHandler::HandleAutomationEvent(IUIAutomationElement *pSender,
                                               EVENTID eventId) {
   Log->Info(L"IUIAutomation Automation event received", GetCurrentThreadId(),
             __LONGFILE__);
-{
-    wchar_t *buffer[256]{};
+  {
+    wchar_t *buffer = new wchar_t[256]{};
     StringCbPrintfW(buffer, 512, L"UIA focus event (0x%p)", pSender);
     Log->Info(buffer, GetCurrentThreadId(), __LONGFILE__);
     delete[] buffer;
