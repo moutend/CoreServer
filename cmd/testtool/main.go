@@ -43,19 +43,24 @@ func run(args []string) error {
 	foo.SetIUIEventHandler(func(eventId int64, pInterface uintptr) int64 {
 		e := (*com.IUIAutomationElement)(unsafe.Pointer(pInterface))
 
-		if rect, err := e.CurrentBoundingRectangle(); err != nil {
-			fmt.Println("@@@Bounding rectangle", err)
-		} else {
-			fmt.Printf("@@@Bounding rectangle %+v\n", rect)
-		}
-
-		name, err := e.CurrentName()
+		rect, err := e.CurrentBoundingRectangle()
 
 		if err != nil {
 			fmt.Println("@@@err", err)
-		} else {
-			fmt.Println("@@@Current name", name)
+			return 0
 		}
+		if rect.IsZero() {
+			fmt.Println("@@@skipped")
+			return 0
+		}
+
+		name, _ := e.CurrentName()
+		className, _ := e.CurrentClassName()
+		framework, _ := e.CurrentFrameworkId()
+		itemType, _ := e.CurrentItemType()
+		ariaRole, _ := e.CurrentAriaRole()
+		ariaProperties, _ := e.CurrentAriaProperties()
+		fmt.Println("@@@Name:%s\tClassName:%s\tFramework:%s\tItemType:%s\tAriaRole:%s\tAriaProperties:%s\n", name, className, framework, itemType, ariaRole, ariaProperties)
 
 		return 0
 	})
