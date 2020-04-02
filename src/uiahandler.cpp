@@ -47,17 +47,12 @@ FocusChangeEventHandler::HandleFocusChangedEvent(
   if (pSender == nullptr) {
     return S_OK;
   }
+
   Log->Info(L"IUIAutomation Focus change event received", GetCurrentThreadId(),
             __LONGFILE__);
-  {
-    wchar_t *buffer = new wchar_t[256]{};
-    StringCbPrintfW(buffer, 512, L"UIA focus event (0x%p)", pSender);
-    Log->Info(buffer, GetCurrentThreadId(), __LONGFILE__);
-    delete[] buffer;
-    buffer = nullptr;
-  }
+
   if (mUIALoopContext != nullptr && mUIALoopContext->HandleFunc != nullptr) {
-    mUIALoopContext->HandleFunc(0, pSender);
+    mUIALoopContext->HandleFunc(UIA_AutomationFocusChangedEventId, pSender);
   }
 
   return S_OK;
@@ -102,17 +97,12 @@ PropertyChangeEventHandler::HandlePropertyChangedEvent(
   if (pSender == nullptr) {
     return S_OK;
   }
+
   Log->Info(L"IUIAutomation Property change event received",
             GetCurrentThreadId(), __LONGFILE__);
-  {
-    wchar_t *buffer = new wchar_t[256]{};
-    StringCbPrintfW(buffer, 512, L"UIA focus event (0x%p)", pSender);
-    Log->Info(buffer, GetCurrentThreadId(), __LONGFILE__);
-    delete[] buffer;
-    buffer = nullptr;
-  }
+
   if (mUIALoopContext != nullptr && mUIALoopContext->HandleFunc != nullptr) {
-    mUIALoopContext->HandleFunc(0, pSender);
+    mUIALoopContext->HandleFunc(UIA_AutomationPropertyChangedEventId, pSender);
   }
 
   return S_OK;
@@ -155,17 +145,12 @@ AutomationEventHandler::HandleAutomationEvent(IUIAutomationElement *pSender,
   if (pSender == nullptr) {
     return S_OK;
   }
+
   Log->Info(L"IUIAutomation Automation event received", GetCurrentThreadId(),
             __LONGFILE__);
-  {
-    wchar_t *buffer = new wchar_t[256]{};
-    StringCbPrintfW(buffer, 512, L"UIA focus event (0x%p)", pSender);
-    Log->Info(buffer, GetCurrentThreadId(), __LONGFILE__);
-    delete[] buffer;
-    buffer = nullptr;
-  }
+
   if (mUIALoopContext != nullptr && mUIALoopContext->HandleFunc != nullptr) {
-    mUIALoopContext->HandleFunc(0, pSender);
+    mUIALoopContext->HandleFunc(static_cast<INT64>(eventId), pSender);
   }
 
   return S_OK;

@@ -40,6 +40,8 @@ void eventCallback(HWINEVENTHOOK hHook, DWORD eventId, HWND hWindow,
     // todo
   }
 
+  winEventLoopCtx->HandleFunc(static_cast<INT64>(eventId), pAcc);
+
   Log->Info(L"IAccessible event received", GetCurrentThreadId(), __LONGFILE__);
 
   SafeRelease(&pAcc);
