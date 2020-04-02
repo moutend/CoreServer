@@ -52,7 +52,7 @@ func run(args []string) error {
 		name, err := e.CurrentName()
 
 		if err != nil {
-			fmt.Println("@@@Current name", err)
+			fmt.Println("@@@err", err)
 		} else {
 			fmt.Println("@@@Current name", name)
 		}
