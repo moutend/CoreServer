@@ -178,7 +178,7 @@ func (v *IUIAutomationElement) CurrentControlType() error {
 	return uiaeCurrentControlType(v)
 }
 
-func (v *IUIAutomationElement) CurrentLocalizedControlType() error {
+func (v *IUIAutomationElement) CurrentLocalizedControlType() (types.BSTR, error) {
 	return uiaeCurrentLocalizedControlType(v)
 }
 
@@ -186,11 +186,11 @@ func (v *IUIAutomationElement) CurrentName() (types.BSTR, error) {
 	return uiaeCurrentName(v)
 }
 
-func (v *IUIAutomationElement) CurrentAcceleratorKey() error {
+func (v *IUIAutomationElement) CurrentAcceleratorKey() (types.BSTR, error) {
 	return uiaeCurrentAcceleratorKey(v)
 }
 
-func (v *IUIAutomationElement) CurrentAccessKey() error {
+func (v *IUIAutomationElement) CurrentAccessKey() (types.BSTR, error) {
 	return uiaeCurrentAccessKey(v)
 }
 
@@ -206,15 +206,15 @@ func (v *IUIAutomationElement) CurrentIsEnabled() error {
 	return uiaeCurrentIsEnabled(v)
 }
 
-func (v *IUIAutomationElement) CurrentAutomationId() error {
+func (v *IUIAutomationElement) CurrentAutomationId() (types.BSTR, error) {
 	return uiaeCurrentAutomationId(v)
 }
 
-func (v *IUIAutomationElement) CurrentClassName() error {
+func (v *IUIAutomationElement) CurrentClassName() (types.BSTR, error) {
 	return uiaeCurrentClassName(v)
 }
 
-func (v *IUIAutomationElement) CurrentHelpText() error {
+func (v *IUIAutomationElement) CurrentHelpText() (types.BSTR, error) {
 	return uiaeCurrentHelpText(v)
 }
 
@@ -238,7 +238,7 @@ func (v *IUIAutomationElement) CurrentNativeWindowHandle() error {
 	return uiaeCurrentNativeWindowHandle(v)
 }
 
-func (v *IUIAutomationElement) CurrentItemType() error {
+func (v *IUIAutomationElement) CurrentItemType() (types.BSTR, error) {
 	return uiaeCurrentItemType(v)
 }
 
@@ -250,7 +250,7 @@ func (v *IUIAutomationElement) CurrentOrientation() error {
 	return uiaeCurrentOrientation(v)
 }
 
-func (v *IUIAutomationElement) CurrentFrameworkId() error {
+func (v *IUIAutomationElement) CurrentFrameworkId() (types.BSTR, error) {
 	return uiaeCurrentFrameworkId(v)
 }
 
@@ -258,7 +258,7 @@ func (v *IUIAutomationElement) CurrentIsRequiredForForm() error {
 	return uiaeCurrentIsRequiredForForm(v)
 }
 
-func (v *IUIAutomationElement) CurrentItemStatus() error {
+func (v *IUIAutomationElement) CurrentItemStatus() (types.BSTR, error) {
 	return uiaeCurrentItemStatus(v)
 }
 
@@ -270,11 +270,11 @@ func (v *IUIAutomationElement) CurrentLabeledBy() error {
 	return uiaeCurrentLabeledBy(v)
 }
 
-func (v *IUIAutomationElement) CurrentAriaRole() error {
+func (v *IUIAutomationElement) CurrentAriaRole() (types.BSTR, error) {
 	return uiaeCurrentAriaRole(v)
 }
 
-func (v *IUIAutomationElement) CurrentAriaProperties() error {
+func (v *IUIAutomationElement) CurrentAriaProperties() (types.BSTR, error) {
 	return uiaeCurrentAriaProperties(v)
 }
 
@@ -294,7 +294,7 @@ func (v *IUIAutomationElement) CurrentFlowsTo() error {
 	return uiaeCurrentFlowsTo(v)
 }
 
-func (v *IUIAutomationElement) CurrentProviderDescription() error {
+func (v *IUIAutomationElement) CurrentProviderDescription() (types.BSTR, error) {
 	return uiaeCurrentProviderDescription(v)
 }
 
@@ -306,7 +306,7 @@ func (v *IUIAutomationElement) CachedControlType() error {
 	return uiaeCachedControlType(v)
 }
 
-func (v *IUIAutomationElement) CachedLocalizedControlType() error {
+func (v *IUIAutomationElement) CachedLocalizedControlType() (types.BSTR, error) {
 	return uiaeCachedLocalizedControlType(v)
 }
 
@@ -314,11 +314,11 @@ func (v *IUIAutomationElement) CachedName() (types.BSTR, error) {
 	return uiaeCachedName(v)
 }
 
-func (v *IUIAutomationElement) CachedAcceleratorKey() error {
+func (v *IUIAutomationElement) CachedAcceleratorKey() (types.BSTR, error) {
 	return uiaeCachedAcceleratorKey(v)
 }
 
-func (v *IUIAutomationElement) CachedAccessKey() error {
+func (v *IUIAutomationElement) CachedAccessKey() (types.BSTR, error) {
 	return uiaeCachedAccessKey(v)
 }
 
@@ -334,15 +334,15 @@ func (v *IUIAutomationElement) CachedIsEnabled() error {
 	return uiaeCachedIsEnabled(v)
 }
 
-func (v *IUIAutomationElement) CachedAutomationId() error {
+func (v *IUIAutomationElement) CachedAutomationId() (types.BSTR, error) {
 	return uiaeCachedAutomationId(v)
 }
 
-func (v *IUIAutomationElement) CachedClassName() error {
+func (v *IUIAutomationElement) CachedClassName() (types.BSTR, error) {
 	return uiaeCachedClassName(v)
 }
 
-func (v *IUIAutomationElement) CachedHelpText() error {
+func (v *IUIAutomationElement) CachedHelpText() (types.BSTR, error) {
 	return uiaeCachedHelpText(v)
 }
 
@@ -366,7 +366,7 @@ func (v *IUIAutomationElement) CachedNativeWindowHandle() error {
 	return uiaeCachedNativeWindowHandle(v)
 }
 
-func (v *IUIAutomationElement) CachedItemType() error {
+func (v *IUIAutomationElement) CachedItemType() (types.BSTR, error) {
 	return uiaeCachedItemType(v)
 }
 
@@ -378,7 +378,7 @@ func (v *IUIAutomationElement) CachedOrientation() error {
 	return uiaeCachedOrientation(v)
 }
 
-func (v *IUIAutomationElement) CachedFrameworkId() error {
+func (v *IUIAutomationElement) CachedFrameworkId() (types.BSTR, error) {
 	return uiaeCachedFrameworkId(v)
 }
 
@@ -386,7 +386,7 @@ func (v *IUIAutomationElement) CachedIsRequiredForForm() error {
 	return uiaeCachedIsRequiredForForm(v)
 }
 
-func (v *IUIAutomationElement) CachedItemStatus() error {
+func (v *IUIAutomationElement) CachedItemStatus() (types.BSTR, error) {
 	return uiaeCachedItemStatus(v)
 }
 
@@ -398,11 +398,11 @@ func (v *IUIAutomationElement) CachedLabeledBy() error {
 	return uiaeCachedLabeledBy(v)
 }
 
-func (v *IUIAutomationElement) CachedAriaRole() error {
+func (v *IUIAutomationElement) CachedAriaRole() (types.BSTR, error) {
 	return uiaeCachedAriaRole(v)
 }
 
-func (v *IUIAutomationElement) CachedAriaProperties() error {
+func (v *IUIAutomationElement) CachedAriaProperties() (types.BSTR, error) {
 	return uiaeCachedAriaProperties(v)
 }
 
@@ -422,7 +422,7 @@ func (v *IUIAutomationElement) CachedFlowsTo() error {
 	return uiaeCachedFlowsTo(v)
 }
 
-func (v *IUIAutomationElement) CachedProviderDescription() error {
+func (v *IUIAutomationElement) CachedProviderDescription() (types.BSTR, error) {
 	return uiaeCachedProviderDescription(v)
 }
 
