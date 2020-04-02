@@ -7,6 +7,8 @@ import (
 	"time"
 	"unsafe"
 
+	"github.com/moutend/CoreServer/pkg/types"
+
 	"github.com/moutend/CoreServer/pkg/com"
 
 	"github.com/go-ole/go-ole"
@@ -40,7 +42,7 @@ func run(args []string) error {
 	err := foo.Start()
 	fmt.Println("Called ICoreServer::Start", err)
 
-	foo.SetIUIEventHandler(func(eventId int64, pInterface uintptr) int64 {
+	foo.SetIUIEventHandler(func(eventId types.UIAEvent, pInterface uintptr) int64 {
 		e := (*com.IUIAutomationElement)(unsafe.Pointer(pInterface))
 
 		rect, err := e.CurrentBoundingRectangle()
@@ -60,7 +62,7 @@ func run(args []string) error {
 		itemType, _ := e.CurrentItemType()
 		ariaRole, _ := e.CurrentAriaRole()
 		ariaProperties, _ := e.CurrentAriaProperties()
-		fmt.Printf("@@@Name:%q,ClassName:%q,Framework:%q,ItemType:%q,AriaRole:%q,AriaProperties:%q\n", name, className, framework, itemType, ariaRole, ariaProperties)
+		fmt.Printf("@@@Event:%q,Name:%q,ClassName:%q,Framework:%q,ItemType:%q,AriaRole:%q,AriaProperties:%q\n", eventId, name, className, framework, itemType, ariaRole, ariaProperties)
 
 		return 0
 	})

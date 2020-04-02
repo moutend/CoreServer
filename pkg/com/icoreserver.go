@@ -3,10 +3,12 @@ package com
 import (
 	"unsafe"
 
+	"github.com/moutend/CoreServer/pkg/types"
+
 	"github.com/go-ole/go-ole"
 )
 
-type UIEventHandler func(eventId int64, pInterface uintptr) int64
+type UIEventHandler func(eventId types.UIAEvent, pInterface uintptr) int64
 
 type ICoreServer struct {
 	ole.IDispatch
