@@ -83,20 +83,20 @@ func uiaeCurrentControlType(v *IUIAutomationElement) error {
 	return ole.NewError(ole.E_NOTIMPL)
 }
 
-func uiaeCurrentLocalizedControlType(v *IUIAutomationElement) error {
-	return ole.NewError(ole.E_NOTIMPL)
+func uiaeCurrentLocalizedControlType(v *IUIAutomationElement) (types.BSTR, error) {
+	return types.BSTR(0), ole.NewError(ole.E_NOTIMPL)
 }
 
 func uiaeCurrentName(v *IUIAutomationElement) (types.BSTR, error) {
-	return types.BSTR(0), nil
+	return types.BSTR(0), ole.NewError(ole.E_NOTIMPL)
 }
 
-func uiaeCurrentAcceleratorKey(v *IUIAutomationElement) error {
-	return ole.NewError(ole.E_NOTIMPL)
+func uiaeCurrentAcceleratorKey(v *IUIAutomationElement) (types.BSTR, error) {
+	return types.BSTR(0), ole.NewError(ole.E_NOTIMPL)
 }
 
-func uiaeCurrentAccessKey(v *IUIAutomationElement) error {
-	return ole.NewError(ole.E_NOTIMPL)
+func uiaeCurrentAccessKey(v *IUIAutomationElement) (types.BSTR, error) {
+	return types.BSTR(0), ole.NewError(ole.E_NOTIMPL)
 }
 
 func uiaeCurrentHasKeyboardFocus(v *IUIAutomationElement) error {
@@ -111,16 +111,16 @@ func uiaeCurrentIsEnabled(v *IUIAutomationElement) error {
 	return ole.NewError(ole.E_NOTIMPL)
 }
 
-func uiaeCurrentAutomationId(v *IUIAutomationElement) error {
-	return ole.NewError(ole.E_NOTIMPL)
+func uiaeCurrentAutomationId(v *IUIAutomationElement) (types.BSTR, error) {
+	return types.BSTR(0), ole.NewError(ole.E_NOTIMPL)
 }
 
-func uiaeCurrentClassName(v *IUIAutomationElement) error {
-	return ole.NewError(ole.E_NOTIMPL)
+func uiaeCurrentClassName(v *IUIAutomationElement) (types.BSTR, error) {
+	return types.BSTR(0), ole.NewError(ole.E_NOTIMPL)
 }
 
-func uiaeCurrentHelpText(v *IUIAutomationElement) error {
-	return ole.NewError(ole.E_NOTIMPL)
+func uiaeCurrentHelpText(v *IUIAutomationElement) (types.BSTR, error) {
+	return types.BSTR(0), ole.NewError(ole.E_NOTIMPL)
 }
 
 func uiaeCurrentCulture(v *IUIAutomationElement) error {
@@ -143,8 +143,8 @@ func uiaeCurrentNativeWindowHandle(v *IUIAutomationElement) error {
 	return ole.NewError(ole.E_NOTIMPL)
 }
 
-func uiaeCurrentItemType(v *IUIAutomationElement) error {
-	return ole.NewError(ole.E_NOTIMPL)
+func uiaeCurrentItemType(v *IUIAutomationElement) (types.BSTR, error) {
+	return types.BSTR(0), ole.NewError(ole.E_NOTIMPL)
 }
 
 func uiaeCurrentIsOffscreen(v *IUIAutomationElement) error {
@@ -155,16 +155,16 @@ func uiaeCurrentOrientation(v *IUIAutomationElement) error {
 	return ole.NewError(ole.E_NOTIMPL)
 }
 
-func uiaeCurrentFrameworkId(v *IUIAutomationElement) error {
-	return ole.NewError(ole.E_NOTIMPL)
+func uiaeCurrentFrameworkId(v *IUIAutomationElement) (types.BSTR, error) {
+	return types.BSTR(0), ole.NewError(ole.E_NOTIMPL)
 }
 
 func uiaeCurrentIsRequiredForForm(v *IUIAutomationElement) error {
 	return ole.NewError(ole.E_NOTIMPL)
 }
 
-func uiaeCurrentItemStatus(v *IUIAutomationElement) error {
-	return ole.NewError(ole.E_NOTIMPL)
+func uiaeCurrentItemStatus(v *IUIAutomationElement) (types.BSTR, error) {
+	return types.BSTR(0), ole.NewError(ole.E_NOTIMPL)
 }
 
 func uiaeCurrentBoundingRectangle(v *IUIAutomationElement) (*types.RECT, error) {
@@ -175,12 +175,12 @@ func uiaeCurrentLabeledBy(v *IUIAutomationElement) error {
 	return ole.NewError(ole.E_NOTIMPL)
 }
 
-func uiaeCurrentAriaRole(v *IUIAutomationElement) error {
-	return ole.NewError(ole.E_NOTIMPL)
+func uiaeCurrentAriaRole(v *IUIAutomationElement) (types.BSTR, error) {
+	return types.BSTR(0), ole.NewError(ole.E_NOTIMPL)
 }
 
-func uiaeCurrentAriaProperties(v *IUIAutomationElement) error {
-	return ole.NewError(ole.E_NOTIMPL)
+func uiaeCurrentAriaProperties(v *IUIAutomationElement) (types.BSTR, error) {
+	return types.BSTR(0), ole.NewError(ole.E_NOTIMPL)
 }
 
 func uiaeCurrentIsDataValidForForm(v *IUIAutomationElement) error {
@@ -199,8 +199,8 @@ func uiaeCurrentFlowsTo(v *IUIAutomationElement) error {
 	return ole.NewError(ole.E_NOTIMPL)
 }
 
-func uiaeCurrentProviderDescription(v *IUIAutomationElement) error {
-	return ole.NewError(ole.E_NOTIMPL)
+func uiaeCurrentProviderDescription(v *IUIAutomationElement) (types.BSTR, error) {
+	return types.BSTR(0), ole.NewError(ole.E_NOTIMPL)
 }
 
 func uiaeCachedProcessId(v *IUIAutomationElement) error {
@@ -211,20 +211,20 @@ func uiaeCachedControlType(v *IUIAutomationElement) error {
 	return ole.NewError(ole.E_NOTIMPL)
 }
 
-func uiaeCachedLocalizedControlType(v *IUIAutomationElement) error {
-	return ole.NewError(ole.E_NOTIMPL)
+func uiaeCachedLocalizedControlType(v *IUIAutomationElement) (types.BSTR, error) {
+	return types.BSTR(0), ole.NewError(ole.E_NOTIMPL)
 }
 
 func uiaeCachedName(v *IUIAutomationElement) (types.BSTR, error) {
-	return types.BSTR(0), nil
+	return types.BSTR(0), ole.NewError(ole.E_NOTIMPL)
 }
 
-func uiaeCachedAcceleratorKey(v *IUIAutomationElement) error {
-	return ole.NewError(ole.E_NOTIMPL)
+func uiaeCachedAcceleratorKey(v *IUIAutomationElement) (types.BSTR, error) {
+	return types.BSTR(0), ole.NewError(ole.E_NOTIMPL)
 }
 
-func uiaeCachedAccessKey(v *IUIAutomationElement) error {
-	return ole.NewError(ole.E_NOTIMPL)
+func uiaeCachedAccessKey(v *IUIAutomationElement) (types.BSTR, error) {
+	return types.BSTR(0), ole.NewError(ole.E_NOTIMPL)
 }
 
 func uiaeCachedHasKeyboardFocus(v *IUIAutomationElement) error {
@@ -239,16 +239,16 @@ func uiaeCachedIsEnabled(v *IUIAutomationElement) error {
 	return ole.NewError(ole.E_NOTIMPL)
 }
 
-func uiaeCachedAutomationId(v *IUIAutomationElement) error {
-	return ole.NewError(ole.E_NOTIMPL)
+func uiaeCachedAutomationId(v *IUIAutomationElement) (types.BSTR, error) {
+	return types.BSTR(0), ole.NewError(ole.E_NOTIMPL)
 }
 
-func uiaeCachedClassName(v *IUIAutomationElement) error {
-	return ole.NewError(ole.E_NOTIMPL)
+func uiaeCachedClassName(v *IUIAutomationElement) (types.BSTR, error) {
+	return types.BSTR(0), ole.NewError(ole.E_NOTIMPL)
 }
 
-func uiaeCachedHelpText(v *IUIAutomationElement) error {
-	return ole.NewError(ole.E_NOTIMPL)
+func uiaeCachedHelpText(v *IUIAutomationElement) (types.BSTR, error) {
+	return types.BSTR(0), ole.NewError(ole.E_NOTIMPL)
 }
 
 func uiaeCachedCulture(v *IUIAutomationElement) error {
@@ -271,8 +271,8 @@ func uiaeCachedNativeWindowHandle(v *IUIAutomationElement) error {
 	return ole.NewError(ole.E_NOTIMPL)
 }
 
-func uiaeCachedItemType(v *IUIAutomationElement) error {
-	return ole.NewError(ole.E_NOTIMPL)
+func uiaeCachedItemType(v *IUIAutomationElement) (types.BSTR, error) {
+	return types.BSTR(0), ole.NewError(ole.E_NOTIMPL)
 }
 
 func uiaeCachedIsOffscreen(v *IUIAutomationElement) error {
@@ -283,16 +283,16 @@ func uiaeCachedOrientation(v *IUIAutomationElement) error {
 	return ole.NewError(ole.E_NOTIMPL)
 }
 
-func uiaeCachedFrameworkId(v *IUIAutomationElement) error {
-	return ole.NewError(ole.E_NOTIMPL)
+func uiaeCachedFrameworkId(v *IUIAutomationElement) (types.BSTR, error) {
+	return types.BSTR(0), ole.NewError(ole.E_NOTIMPL)
 }
 
 func uiaeCachedIsRequiredForForm(v *IUIAutomationElement) error {
 	return ole.NewError(ole.E_NOTIMPL)
 }
 
-func uiaeCachedItemStatus(v *IUIAutomationElement) error {
-	return ole.NewError(ole.E_NOTIMPL)
+func uiaeCachedItemStatus(v *IUIAutomationElement) (types.BSTR, error) {
+	return types.BSTR(0), ole.NewError(ole.E_NOTIMPL)
 }
 
 func uiaeCachedBoundingRectangle(v *IUIAutomationElement) (*types.RECT, error) {
@@ -303,12 +303,12 @@ func uiaeCachedLabeledBy(v *IUIAutomationElement) error {
 	return ole.NewError(ole.E_NOTIMPL)
 }
 
-func uiaeCachedAriaRole(v *IUIAutomationElement) error {
-	return ole.NewError(ole.E_NOTIMPL)
+func uiaeCachedAriaRole(v *IUIAutomationElement) (types.BSTR, error) {
+	return types.BSTR(0), ole.NewError(ole.E_NOTIMPL)
 }
 
-func uiaeCachedAriaProperties(v *IUIAutomationElement) error {
-	return ole.NewError(ole.E_NOTIMPL)
+func uiaeCachedAriaProperties(v *IUIAutomationElement) (types.BSTR, error) {
+	return types.BSTR(0), ole.NewError(ole.E_NOTIMPL)
 }
 
 func uiaeCachedIsDataValidForForm(v *IUIAutomationElement) error {
@@ -327,8 +327,8 @@ func uiaeCachedFlowsTo(v *IUIAutomationElement) error {
 	return ole.NewError(ole.E_NOTIMPL)
 }
 
-func uiaeCachedProviderDescription(v *IUIAutomationElement) error {
-	return ole.NewError(ole.E_NOTIMPL)
+func uiaeCachedProviderDescription(v *IUIAutomationElement) (types.BSTR, error) {
+	return types.BSTR(0), ole.NewError(ole.E_NOTIMPL)
 }
 
 func uiaeGetClickablePoint(v *IUIAutomationElement) error {
