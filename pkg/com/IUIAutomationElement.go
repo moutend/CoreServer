@@ -198,11 +198,11 @@ func (v *IUIAutomationElement) CurrentHasKeyboardFocus() error {
 	return uiaeCurrentHasKeyboardFocus(v)
 }
 
-func (v *IUIAutomationElement) CurrentIsKeyboardFocusable() error {
+func (v *IUIAutomationElement) CurrentIsKeyboardFocusable() (bool, error) {
 	return uiaeCurrentIsKeyboardFocusable(v)
 }
 
-func (v *IUIAutomationElement) CurrentIsEnabled() error {
+func (v *IUIAutomationElement) CurrentIsEnabled() (bool, error) {
 	return uiaeCurrentIsEnabled(v)
 }
 
@@ -222,15 +222,15 @@ func (v *IUIAutomationElement) CurrentCulture() error {
 	return uiaeCurrentCulture(v)
 }
 
-func (v *IUIAutomationElement) CurrentIsControlElement() error {
+func (v *IUIAutomationElement) CurrentIsControlElement() (bool, error) {
 	return uiaeCurrentIsControlElement(v)
 }
 
-func (v *IUIAutomationElement) CurrentIsContentElement() error {
+func (v *IUIAutomationElement) CurrentIsContentElement() (bool, error) {
 	return uiaeCurrentIsContentElement(v)
 }
 
-func (v *IUIAutomationElement) CurrentIsPassword() error {
+func (v *IUIAutomationElement) CurrentIsPassword() (bool, error) {
 	return uiaeCurrentIsPassword(v)
 }
 
@@ -242,7 +242,7 @@ func (v *IUIAutomationElement) CurrentItemType() (types.BSTR, error) {
 	return uiaeCurrentItemType(v)
 }
 
-func (v *IUIAutomationElement) CurrentIsOffscreen() error {
+func (v *IUIAutomationElement) CurrentIsOffscreen() (bool, error) {
 	return uiaeCurrentIsOffscreen(v)
 }
 
@@ -254,7 +254,7 @@ func (v *IUIAutomationElement) CurrentFrameworkId() (types.BSTR, error) {
 	return uiaeCurrentFrameworkId(v)
 }
 
-func (v *IUIAutomationElement) CurrentIsRequiredForForm() error {
+func (v *IUIAutomationElement) CurrentIsRequiredForForm() (bool, error) {
 	return uiaeCurrentIsRequiredForForm(v)
 }
 
@@ -278,7 +278,7 @@ func (v *IUIAutomationElement) CurrentAriaProperties() (types.BSTR, error) {
 	return uiaeCurrentAriaProperties(v)
 }
 
-func (v *IUIAutomationElement) CurrentIsDataValidForForm() error {
+func (v *IUIAutomationElement) CurrentIsDataValidForForm() (bool, error) {
 	return uiaeCurrentIsDataValidForForm(v)
 }
 
@@ -326,11 +326,11 @@ func (v *IUIAutomationElement) CachedHasKeyboardFocus() error {
 	return uiaeCachedHasKeyboardFocus(v)
 }
 
-func (v *IUIAutomationElement) CachedIsKeyboardFocusable() error {
+func (v *IUIAutomationElement) CachedIsKeyboardFocusable() (bool, error) {
 	return uiaeCachedIsKeyboardFocusable(v)
 }
 
-func (v *IUIAutomationElement) CachedIsEnabled() error {
+func (v *IUIAutomationElement) CachedIsEnabled() (bool, error) {
 	return uiaeCachedIsEnabled(v)
 }
 
@@ -350,15 +350,15 @@ func (v *IUIAutomationElement) CachedCulture() error {
 	return uiaeCachedCulture(v)
 }
 
-func (v *IUIAutomationElement) CachedIsControlElement() error {
+func (v *IUIAutomationElement) CachedIsControlElement() (bool, error) {
 	return uiaeCachedIsControlElement(v)
 }
 
-func (v *IUIAutomationElement) CachedIsContentElement() error {
+func (v *IUIAutomationElement) CachedIsContentElement() (bool, error) {
 	return uiaeCachedIsContentElement(v)
 }
 
-func (v *IUIAutomationElement) CachedIsPassword() error {
+func (v *IUIAutomationElement) CachedIsPassword() (bool, error) {
 	return uiaeCachedIsPassword(v)
 }
 
@@ -370,7 +370,7 @@ func (v *IUIAutomationElement) CachedItemType() (types.BSTR, error) {
 	return uiaeCachedItemType(v)
 }
 
-func (v *IUIAutomationElement) CachedIsOffscreen() error {
+func (v *IUIAutomationElement) CachedIsOffscreen() (bool, error) {
 	return uiaeCachedIsOffscreen(v)
 }
 
@@ -382,7 +382,7 @@ func (v *IUIAutomationElement) CachedFrameworkId() (types.BSTR, error) {
 	return uiaeCachedFrameworkId(v)
 }
 
-func (v *IUIAutomationElement) CachedIsRequiredForForm() error {
+func (v *IUIAutomationElement) CachedIsRequiredForForm() (bool, error) {
 	return uiaeCachedIsRequiredForForm(v)
 }
 
@@ -406,7 +406,7 @@ func (v *IUIAutomationElement) CachedAriaProperties() (types.BSTR, error) {
 	return uiaeCachedAriaProperties(v)
 }
 
-func (v *IUIAutomationElement) CachedIsDataValidForForm() error {
+func (v *IUIAutomationElement) CachedIsDataValidForForm() (bool, error) {
 	return uiaeCachedIsDataValidForForm(v)
 }
 

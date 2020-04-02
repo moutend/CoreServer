@@ -172,12 +172,38 @@ func uiaeCurrentHasKeyboardFocus(v *IUIAutomationElement) error {
 	return ole.NewError(ole.E_NOTIMPL)
 }
 
-func uiaeCurrentIsKeyboardFocusable(v *IUIAutomationElement) error {
-	return ole.NewError(ole.E_NOTIMPL)
+func uiaeCurrentIsKeyboardFocusable(v *IUIAutomationElement) (bool, error) {
+	var result int64
+
+	hr, _, _ := syscall.Syscall(
+		v.VTable().CurrentIsKeyboardFocusable,
+		2,
+		uintptr(unsafe.Pointer(v)),
+		uintptr(unsafe.Pointer(&result)),
+		0)
+
+	if hr != 0 {
+		return false, ole.NewError(hr)
+	}
+
+	return result == 1, nil
 }
 
-func uiaeCurrentIsEnabled(v *IUIAutomationElement) error {
-	return ole.NewError(ole.E_NOTIMPL)
+func uiaeCurrentIsEnabled(v *IUIAutomationElement) (bool, error) {
+	var result int64
+
+	hr, _, _ := syscall.Syscall(
+		v.VTable().CurrentIsEnabled,
+		2,
+		uintptr(unsafe.Pointer(v)),
+		uintptr(unsafe.Pointer(&result)),
+		0)
+
+	if hr != 0 {
+		return false, ole.NewError(hr)
+	}
+
+	return result == 1, nil
 }
 
 func uiaeCurrentAutomationId(v *IUIAutomationElement) (types.BSTR, error) {
@@ -235,16 +261,55 @@ func uiaeCurrentCulture(v *IUIAutomationElement) error {
 	return ole.NewError(ole.E_NOTIMPL)
 }
 
-func uiaeCurrentIsControlElement(v *IUIAutomationElement) error {
-	return ole.NewError(ole.E_NOTIMPL)
+func uiaeCurrentIsControlElement(v *IUIAutomationElement) (bool, error) {
+	var result int64
+
+	hr, _, _ := syscall.Syscall(
+		v.VTable().CurrentIsControlElement,
+		2,
+		uintptr(unsafe.Pointer(v)),
+		uintptr(unsafe.Pointer(&result)),
+		0)
+
+	if hr != 0 {
+		return false, ole.NewError(hr)
+	}
+
+	return result == 1, nil
 }
 
-func uiaeCurrentIsContentElement(v *IUIAutomationElement) error {
-	return ole.NewError(ole.E_NOTIMPL)
+func uiaeCurrentIsContentElement(v *IUIAutomationElement) (bool, error) {
+	var result int64
+
+	hr, _, _ := syscall.Syscall(
+		v.VTable().CurrentIsContentElement,
+		2,
+		uintptr(unsafe.Pointer(v)),
+		uintptr(unsafe.Pointer(&result)),
+		0)
+
+	if hr != 0 {
+		return false, ole.NewError(hr)
+	}
+
+	return result == 1, nil
 }
 
-func uiaeCurrentIsPassword(v *IUIAutomationElement) error {
-	return ole.NewError(ole.E_NOTIMPL)
+func uiaeCurrentIsPassword(v *IUIAutomationElement) (bool, error) {
+	var result int64
+
+	hr, _, _ := syscall.Syscall(
+		v.VTable().CurrentIsPassword,
+		2,
+		uintptr(unsafe.Pointer(v)),
+		uintptr(unsafe.Pointer(&result)),
+		0)
+
+	if hr != 0 {
+		return false, ole.NewError(hr)
+	}
+
+	return result == 1, nil
 }
 
 func uiaeCurrentNativeWindowHandle(v *IUIAutomationElement) error {
@@ -268,8 +333,21 @@ func uiaeCurrentItemType(v *IUIAutomationElement) (types.BSTR, error) {
 	return bstr, nil
 }
 
-func uiaeCurrentIsOffscreen(v *IUIAutomationElement) error {
-	return ole.NewError(ole.E_NOTIMPL)
+func uiaeCurrentIsOffscreen(v *IUIAutomationElement) (bool, error) {
+	var result int64
+
+	hr, _, _ := syscall.Syscall(
+		v.VTable().CurrentIsOffscreen,
+		2,
+		uintptr(unsafe.Pointer(v)),
+		uintptr(unsafe.Pointer(&result)),
+		0)
+
+	if hr != 0 {
+		return false, ole.NewError(hr)
+	}
+
+	return result == 1, nil
 }
 
 func uiaeCurrentOrientation(v *IUIAutomationElement) error {
@@ -293,8 +371,21 @@ func uiaeCurrentFrameworkId(v *IUIAutomationElement) (types.BSTR, error) {
 	return bstr, nil
 }
 
-func uiaeCurrentIsRequiredForForm(v *IUIAutomationElement) error {
-	return ole.NewError(ole.E_NOTIMPL)
+func uiaeCurrentIsRequiredForForm(v *IUIAutomationElement) (bool, error) {
+	var result int64
+
+	hr, _, _ := syscall.Syscall(
+		v.VTable().CurrentIsRequiredForForm,
+		2,
+		uintptr(unsafe.Pointer(v)),
+		uintptr(unsafe.Pointer(&result)),
+		0)
+
+	if hr != 0 {
+		return false, ole.NewError(hr)
+	}
+
+	return result == 1, nil
 }
 
 func uiaeCurrentItemStatus(v *IUIAutomationElement) (types.BSTR, error) {
@@ -369,8 +460,21 @@ func uiaeCurrentAriaProperties(v *IUIAutomationElement) (types.BSTR, error) {
 	return bstr, nil
 }
 
-func uiaeCurrentIsDataValidForForm(v *IUIAutomationElement) error {
-	return ole.NewError(ole.E_NOTIMPL)
+func uiaeCurrentIsDataValidForForm(v *IUIAutomationElement) (bool, error) {
+	var result int64
+
+	hr, _, _ := syscall.Syscall(
+		v.VTable().CurrentIsDataValidForForm,
+		2,
+		uintptr(unsafe.Pointer(v)),
+		uintptr(unsafe.Pointer(&result)),
+		0)
+
+	if hr != 0 {
+		return false, ole.NewError(hr)
+	}
+
+	return result == 1, nil
 }
 
 func uiaeCurrentControllerFor(v *IUIAutomationElement) error {
@@ -482,12 +586,38 @@ func uiaeCachedHasKeyboardFocus(v *IUIAutomationElement) error {
 	return ole.NewError(ole.E_NOTIMPL)
 }
 
-func uiaeCachedIsKeyboardFocusable(v *IUIAutomationElement) error {
-	return ole.NewError(ole.E_NOTIMPL)
+func uiaeCachedIsKeyboardFocusable(v *IUIAutomationElement) (bool, error) {
+	var result int64
+
+	hr, _, _ := syscall.Syscall(
+		v.VTable().CachedIsKeyboardFocusable,
+		2,
+		uintptr(unsafe.Pointer(v)),
+		uintptr(unsafe.Pointer(&result)),
+		0)
+
+	if hr != 0 {
+		return false, ole.NewError(hr)
+	}
+
+	return result == 1, nil
 }
 
-func uiaeCachedIsEnabled(v *IUIAutomationElement) error {
-	return ole.NewError(ole.E_NOTIMPL)
+func uiaeCachedIsEnabled(v *IUIAutomationElement) (bool, error) {
+	var result int64
+
+	hr, _, _ := syscall.Syscall(
+		v.VTable().CachedIsEnabled,
+		2,
+		uintptr(unsafe.Pointer(v)),
+		uintptr(unsafe.Pointer(&result)),
+		0)
+
+	if hr != 0 {
+		return false, ole.NewError(hr)
+	}
+
+	return result == 1, nil
 }
 
 func uiaeCachedAutomationId(v *IUIAutomationElement) (types.BSTR, error) {
@@ -545,16 +675,55 @@ func uiaeCachedCulture(v *IUIAutomationElement) error {
 	return ole.NewError(ole.E_NOTIMPL)
 }
 
-func uiaeCachedIsControlElement(v *IUIAutomationElement) error {
-	return ole.NewError(ole.E_NOTIMPL)
+func uiaeCachedIsControlElement(v *IUIAutomationElement) (bool, error) {
+	var result int64
+
+	hr, _, _ := syscall.Syscall(
+		v.VTable().CachedIsControlElement,
+		2,
+		uintptr(unsafe.Pointer(v)),
+		uintptr(unsafe.Pointer(&result)),
+		0)
+
+	if hr != 0 {
+		return false, ole.NewError(hr)
+	}
+
+	return result == 1, nil
 }
 
-func uiaeCachedIsContentElement(v *IUIAutomationElement) error {
-	return ole.NewError(ole.E_NOTIMPL)
+func uiaeCachedIsContentElement(v *IUIAutomationElement) (bool, error) {
+	var result int64
+
+	hr, _, _ := syscall.Syscall(
+		v.VTable().CachedIsContentElement,
+		2,
+		uintptr(unsafe.Pointer(v)),
+		uintptr(unsafe.Pointer(&result)),
+		0)
+
+	if hr != 0 {
+		return false, ole.NewError(hr)
+	}
+
+	return result == 1, nil
 }
 
-func uiaeCachedIsPassword(v *IUIAutomationElement) error {
-	return ole.NewError(ole.E_NOTIMPL)
+func uiaeCachedIsPassword(v *IUIAutomationElement) (bool, error) {
+	var result int64
+
+	hr, _, _ := syscall.Syscall(
+		v.VTable().CachedIsPassword,
+		2,
+		uintptr(unsafe.Pointer(v)),
+		uintptr(unsafe.Pointer(&result)),
+		0)
+
+	if hr != 0 {
+		return false, ole.NewError(hr)
+	}
+
+	return result == 1, nil
 }
 
 func uiaeCachedNativeWindowHandle(v *IUIAutomationElement) error {
@@ -578,8 +747,21 @@ func uiaeCachedItemType(v *IUIAutomationElement) (types.BSTR, error) {
 	return bstr, nil
 }
 
-func uiaeCachedIsOffscreen(v *IUIAutomationElement) error {
-	return ole.NewError(ole.E_NOTIMPL)
+func uiaeCachedIsOffscreen(v *IUIAutomationElement) (bool, error) {
+	var result int64
+
+	hr, _, _ := syscall.Syscall(
+		v.VTable().CachedIsOffscreen,
+		2,
+		uintptr(unsafe.Pointer(v)),
+		uintptr(unsafe.Pointer(&result)),
+		0)
+
+	if hr != 0 {
+		return false, ole.NewError(hr)
+	}
+
+	return result == 1, nil
 }
 
 func uiaeCachedOrientation(v *IUIAutomationElement) error {
@@ -603,8 +785,21 @@ func uiaeCachedFrameworkId(v *IUIAutomationElement) (types.BSTR, error) {
 	return bstr, nil
 }
 
-func uiaeCachedIsRequiredForForm(v *IUIAutomationElement) error {
-	return ole.NewError(ole.E_NOTIMPL)
+func uiaeCachedIsRequiredForForm(v *IUIAutomationElement) (bool, error) {
+	var result int64
+
+	hr, _, _ := syscall.Syscall(
+		v.VTable().CachedIsRequiredForForm,
+		2,
+		uintptr(unsafe.Pointer(v)),
+		uintptr(unsafe.Pointer(&result)),
+		0)
+
+	if hr != 0 {
+		return false, ole.NewError(hr)
+	}
+
+	return result == 1, nil
 }
 
 func uiaeCachedItemStatus(v *IUIAutomationElement) (types.BSTR, error) {
@@ -679,8 +874,21 @@ func uiaeCachedAriaProperties(v *IUIAutomationElement) (types.BSTR, error) {
 	return bstr, nil
 }
 
-func uiaeCachedIsDataValidForForm(v *IUIAutomationElement) error {
-	return ole.NewError(ole.E_NOTIMPL)
+func uiaeCachedIsDataValidForForm(v *IUIAutomationElement) (bool, error) {
+	var result int64
+
+	hr, _, _ := syscall.Syscall(
+		v.VTable().CachedIsDataValidForForm,
+		2,
+		uintptr(unsafe.Pointer(v)),
+		uintptr(unsafe.Pointer(&result)),
+		0)
+
+	if hr != 0 {
+		return false, ole.NewError(hr)
+	}
+
+	return result == 1, nil
 }
 
 func uiaeCachedControllerFor(v *IUIAutomationElement) error {
