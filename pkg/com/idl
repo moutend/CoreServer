@@ -1,0 +1,278 @@
+{
+        HRESULT SetFocus ( );
+
+        HRESULT GetRuntimeId (
+            [out, retval] SAFEARRAY(int) * runtimeId );
+
+        HRESULT FindFirst (
+            [in] enum TreeScope scope,
+            [in] IUIAutomationCondition * condition,
+            [out, retval] IUIAutomationElement ** found );
+
+        HRESULT FindAll (
+            [in] enum TreeScope scope,
+            [in] IUIAutomationCondition * condition,
+            [out, retval] IUIAutomationElementArray ** found );
+
+        HRESULT FindFirstBuildCache (
+            [in] enum TreeScope scope,
+            [in] IUIAutomationCondition * condition,
+            [in] IUIAutomationCacheRequest * cacheRequest,
+            [out, retval] IUIAutomationElement ** found );
+
+        HRESULT FindAllBuildCache (
+            [in] enum TreeScope scope,
+            [in] IUIAutomationCondition * condition,
+            [in] IUIAutomationCacheRequest * cacheRequest,
+            [out, retval] IUIAutomationElementArray ** found );
+
+        HRESULT BuildUpdatedCache (
+            [in] IUIAutomationCacheRequest * cacheRequest,
+            [out, retval] IUIAutomationElement ** updatedElement );
+
+        HRESULT GetCurrentPropertyValue (
+            [in] PROPERTYID propertyId,
+            [out, retval] VARIANT * retVal);
+
+        HRESULT GetCurrentPropertyValueEx (
+            [in] PROPERTYID propertyId,
+            [in] BOOL ignoreDefaultValue,
+            [out, retval] VARIANT * retVal );
+
+        HRESULT GetCachedPropertyValue (
+            [in] PROPERTYID propertyId,
+            [out, retval] VARIANT * retVal );
+
+        HRESULT GetCachedPropertyValueEx (
+            [in] PROPERTYID propertyId,
+            [in] BOOL ignoreDefaultValue,
+            [out, retval] VARIANT * retVal );
+
+
+        // These versions exist to simplify using these methods, avoiding the extra Query
+        // Interface step that inevitably follows getting the Pattern.
+        HRESULT GetCurrentPatternAs (
+            [in] PATTERNID patternId,
+            [in] REFIID riid,
+            [out, iid_is(riid), retval] void ** patternObject );
+
+        HRESULT GetCachedPatternAs (
+            [in] PATTERNID patternId,
+            [in] REFIID riid,
+            [out, iid_is(riid), retval] void ** patternObject );
+
+        // These versions are better for managed code, or code that wants a generalized
+        // handling path, they return as pure IUnknowns
+        HRESULT GetCurrentPattern (
+            [in] PATTERNID patternId,
+            [out, retval] IUnknown ** patternObject );
+
+        HRESULT GetCachedPattern (
+            [in] PATTERNID patternId,
+            [out, retval] IUnknown ** patternObject );
+
+        HRESULT GetCachedParent (
+            [out, retval] IUIAutomationElement ** parent );
+
+        HRESULT GetCachedChildren (
+            [out, retval] IUIAutomationElementArray ** children );
+
+        // Current Property Getters (for convenience)
+        [propget] HRESULT CurrentProcessId (
+            [out, retval] int * retVal );
+
+        [propget] HRESULT CurrentControlType (
+            [out, retval] CONTROLTYPEID * retVal );
+
+        [propget] HRESULT CurrentLocalizedControlType (
+            [out, retval] BSTR * retVal );
+
+        [propget] HRESULT CurrentName (
+            [out, retval] BSTR * retVal );
+
+        [propget] HRESULT CurrentAcceleratorKey (
+            [out, retval] BSTR * retVal );
+
+        [propget] HRESULT CurrentAccessKey (
+            [out, retval] BSTR * retVal );
+
+        [propget] HRESULT CurrentHasKeyboardFocus (
+            [out, retval] BOOL * retVal );
+
+        [propget] HRESULT CurrentIsKeyboardFocusable (
+            [out, retval] BOOL * retVal );
+
+        [propget] HRESULT CurrentIsEnabled (
+            [out, retval] BOOL * retVal );
+
+        [propget] HRESULT CurrentAutomationId (
+            [out, retval] BSTR * retVal );
+
+        [propget] HRESULT CurrentClassName (
+            [out, retval] BSTR * retVal );
+
+        [propget] HRESULT CurrentHelpText (
+            [out, retval] BSTR * retVal );
+
+        [propget] HRESULT CurrentCulture (
+            [out, retval] int * retVal );
+
+        [propget] HRESULT CurrentIsControlElement (
+            [out, retval] BOOL * retVal );
+
+        [propget] HRESULT CurrentIsContentElement (
+            [out, retval] BOOL * retVal );
+
+        [propget] HRESULT CurrentIsPassword (
+            [out, retval] BOOL * retVal );
+
+        [propget] HRESULT CurrentNativeWindowHandle (
+            [out, retval] UIA_HWND * retVal );
+
+        [propget] HRESULT CurrentItemType (
+            [out, retval] BSTR * retVal );
+
+        [propget] HRESULT CurrentIsOffscreen (
+            [out, retval] BOOL * retVal );
+
+        [propget] HRESULT CurrentOrientation (
+            [out, retval] enum OrientationType * retVal );
+
+        [propget] HRESULT CurrentFrameworkId (
+            [out, retval] BSTR * retVal );
+
+        [propget] HRESULT CurrentIsRequiredForForm (
+            [out, retval] BOOL * retVal );
+
+        [propget] HRESULT CurrentItemStatus (
+            [out, retval] BSTR * retVal );
+
+        [propget] HRESULT CurrentBoundingRectangle (
+            [out, retval] RECT * retVal );
+
+        [propget] HRESULT CurrentLabeledBy (
+            [out, retval] IUIAutomationElement ** retVal );        
+
+        [propget] HRESULT CurrentAriaRole (
+            [out, retval] BSTR * retVal );
+
+        [propget] HRESULT CurrentAriaProperties (
+            [out, retval] BSTR * retVal );
+
+        [propget] HRESULT CurrentIsDataValidForForm (
+            [out, retval] BOOL * retVal );
+
+        [propget] HRESULT CurrentControllerFor (
+            [out, retval] IUIAutomationElementArray ** retVal ); 
+
+        [propget] HRESULT CurrentDescribedBy (
+            [out, retval] IUIAutomationElementArray ** retVal );
+
+        [propget] HRESULT CurrentFlowsTo (
+            [out, retval] IUIAutomationElementArray ** retVal );
+
+        [propget] HRESULT CurrentProviderDescription (
+            [out, retval] BSTR * retVal );        
+
+        // Cached Property Getters (for convenience)
+        [propget] HRESULT CachedProcessId (
+            [out, retval] int * retVal );
+
+        [propget] HRESULT CachedControlType (
+            [out, retval] CONTROLTYPEID * retVal );
+
+        [propget] HRESULT CachedLocalizedControlType (
+            [out, retval] BSTR * retVal );
+
+        [propget] HRESULT CachedName (
+            [out, retval] BSTR * retVal );
+
+        [propget] HRESULT CachedAcceleratorKey (
+            [out, retval] BSTR * retVal );
+
+        [propget] HRESULT CachedAccessKey (
+            [out, retval] BSTR * retVal );
+
+        [propget] HRESULT CachedHasKeyboardFocus (
+            [out, retval] BOOL * retVal );
+
+        [propget] HRESULT CachedIsKeyboardFocusable (
+            [out, retval] BOOL * retVal );
+
+        [propget] HRESULT CachedIsEnabled (
+            [out, retval] BOOL * retVal );
+
+        [propget] HRESULT CachedAutomationId (
+            [out, retval] BSTR * retVal );
+
+        [propget] HRESULT CachedClassName (
+            [out, retval] BSTR * retVal );
+
+        [propget] HRESULT CachedHelpText (
+            [out, retval] BSTR * retVal );
+
+        [propget] HRESULT CachedCulture (
+            [out, retval] int * retVal );
+
+        [propget] HRESULT CachedIsControlElement (
+            [out, retval] BOOL * retVal );
+
+        [propget] HRESULT CachedIsContentElement (
+            [out, retval] BOOL * retVal );
+
+        [propget] HRESULT CachedIsPassword (
+            [out, retval] BOOL * retVal );
+
+        [propget] HRESULT CachedNativeWindowHandle (
+            [out, retval] UIA_HWND * retVal );
+
+        [propget] HRESULT CachedItemType (
+            [out, retval] BSTR * retVal );
+
+        [propget] HRESULT CachedIsOffscreen (
+            [out, retval] BOOL * retVal );
+
+        [propget] HRESULT CachedOrientation (
+            [out, retval] enum OrientationType * retVal );
+
+        [propget] HRESULT CachedFrameworkId (
+            [out, retval] BSTR * retVal );
+
+        [propget] HRESULT CachedIsRequiredForForm (
+            [out, retval] BOOL * retVal );
+
+        [propget] HRESULT CachedItemStatus (
+            [out, retval] BSTR * retVal );
+
+        [propget] HRESULT CachedBoundingRectangle (
+            [out, retval] RECT * retVal );
+
+        [propget] HRESULT CachedLabeledBy (
+            [out, retval] IUIAutomationElement ** retVal );
+
+        [propget] HRESULT CachedAriaRole (
+            [out, retval] BSTR * retVal );
+
+        [propget] HRESULT CachedAriaProperties (
+            [out, retval] BSTR * retVal );
+
+        [propget] HRESULT CachedIsDataValidForForm (
+            [out, retval] BOOL * retVal );
+
+        [propget] HRESULT CachedControllerFor (
+            [out, retval] IUIAutomationElementArray ** retVal ); 
+
+        [propget] HRESULT CachedDescribedBy (
+            [out, retval] IUIAutomationElementArray ** retVal );
+
+        [propget] HRESULT CachedFlowsTo (
+            [out, retval] IUIAutomationElementArray ** retVal );
+
+        [propget] HRESULT CachedProviderDescription (
+            [out, retval] BSTR * retVal );        
+
+        // Clickable point helper
+        HRESULT GetClickablePoint(
+            [out] POINT * clickable,
+            [out, retval] BOOL * gotClickable );
+    }
