@@ -60,7 +60,7 @@ func run(args []string) error {
 		itemType, _ := e.CurrentItemType()
 		ariaRole, _ := e.CurrentAriaRole()
 		ariaProperties, _ := e.CurrentAriaProperties()
-		fmt.Println("@@@Name:%s\tClassName:%s\tFramework:%s\tItemType:%s\tAriaRole:%s\tAriaProperties:%s\n", name, className, framework, itemType, ariaRole, ariaProperties)
+		fmt.Printf("@@@Name:%s\tClassName:%s\tFramework:%s\tItemType:%s\tAriaRole:%s\tAriaProperties:%s\n", name, className, framework, itemType, ariaRole, ariaProperties)
 
 		return 0
 	})
