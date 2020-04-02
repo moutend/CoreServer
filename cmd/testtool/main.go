@@ -42,7 +42,7 @@ func run(args []string) error {
 	err := foo.Start()
 	fmt.Println("Called ICoreServer::Start", err)
 
-	foo.SetIUIEventHandler(func(eventId types.UIAEvent, pInterface uintptr) int64 {
+	foo.SetUIAEventHandler(func(eventId types.UIAEvent, pInterface uintptr) int64 {
 		e := (*com.IUIAutomationElement)(unsafe.Pointer(pInterface))
 
 		rect, err := e.CurrentBoundingRectangle()
