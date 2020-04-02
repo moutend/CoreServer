@@ -14,10 +14,10 @@ func csStop(v *ICoreServer) error {
 	return ole.NewError(ole.E_NOTIMPL)
 }
 
-func csSetIAEventHandler(v *ICoreServer, handleFunc UIEventHandler) error {
+func csSetMSAAEventHandler(v *ICoreServer, handleFunc MSAAEventHandler) error {
 	return ole.NewError(ole.E_NOTIMPL)
 }
 
-func csSetIUIEventHandler(v *ICoreServer, handleFunc UIEventHandler) error {
+func csSetIUIEventHandler(v *ICoreServer, handleFunc UIAEventHandler) error {
 	return ole.NewError(ole.E_NOTIMPL)
 }

@@ -8,7 +8,9 @@ import (
 	"github.com/go-ole/go-ole"
 )
 
-type UIEventHandler func(eventId types.UIAEvent, pInterface uintptr) int64
+type MSAAEventHandler func(eventId types.MSAAEvent, pInterface uintptr) int64
+
+type UIAEventHandler func(eventId types.UIAEvent, pInterface uintptr) int64
 
 type ICoreServer struct {
 	ole.IDispatch
@@ -16,10 +18,10 @@ type ICoreServer struct {
 
 type ICoreServerVtbl struct {
 	ole.IDispatchVtbl
-	Start              uintptr
-	Stop               uintptr
-	SetIAEventHandler  uintptr
-	SetIUIEventHandler uintptr
+	Start               uintptr
+	Stop                uintptr
+	SetMSAAEventHandler uintptr
+	SetUIAEventHandler  uintptr
 }
 
 func (v *ICoreServer) VTable() *ICoreServerVtbl {
@@ -34,10 +36,10 @@ func (v *ICoreServer) Stop() error {
 	return csStop(v)
 }
 
-func (v *ICoreServer) SetIUIEventHandler(handleFunc UIEventHandler) error {
-	return csSetIUIEventHandler(v, handleFunc)
+func (v *ICoreServer) SetMSAAEventHandler(handleFunc MSAAEventHandler) error {
+	return csSetMSAAEventHandler(v, handleFunc)
 }
 
-func (v *ICoreServer) SetIAEventHandler(handleFunc UIEventHandler) error {
-	return csSetIAEventHandler(v, handleFunc)
+func (v *ICoreServer) SetUIAEventHandler(handleFunc UIAEventHandler) error {
+	return csSetUIAEventHandler(v, handleFunc)
 }

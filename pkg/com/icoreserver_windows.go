@@ -39,9 +39,9 @@ func csStop(v *ICoreServer) error {
 	return nil
 }
 
-func csSetIAEventHandler(v *ICoreServer, handleFunc UIEventHandler) error {
+func csSetMSAAEventHandler(v *ICoreServer, handleFunc MSAAEventHandler) error {
 	hr, _, _ := syscall.Syscall(
-		v.VTable().SetIAEventHandler,
+		v.VTable().SetMSAAEventHandler,
 		2,
 		uintptr(unsafe.Pointer(v)),
 		syscall.NewCallback(handleFunc),
@@ -54,9 +54,9 @@ func csSetIAEventHandler(v *ICoreServer, handleFunc UIEventHandler) error {
 	return nil
 }
 
-func csSetIUIEventHandler(v *ICoreServer, handleFunc UIEventHandler) error {
+func csSetUIAEventHandler(v *ICoreServer, handleFunc UIAEventHandler) error {
 	hr, _, _ := syscall.Syscall(
-		v.VTable().SetIUIEventHandler,
+		v.VTable().SetUIAEventHandler,
 		2,
 		uintptr(unsafe.Pointer(v)),
 		syscall.NewCallback(handleFunc),
