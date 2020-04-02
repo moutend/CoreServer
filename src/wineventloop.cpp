@@ -40,7 +40,9 @@ void eventCallback(HWINEVENTHOOK hHook, DWORD eventId, HWND hWindow,
     // todo
   }
 
-  winEventLoopCtx->HandleFunc(static_cast<INT64>(eventId), pAcc);
+  if (winEventLoopCtx->HandleFunc != nullptr) {
+    winEventLoopCtx->HandleFunc(static_cast<INT64>(eventId), pAcc);
+  }
 
   Log->Info(L"IAccessible event received", GetCurrentThreadId(), __LONGFILE__);
 
