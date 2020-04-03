@@ -4,6 +4,7 @@ import (
 	"unsafe"
 
 	"github.com/go-ole/go-ole"
+	"github.com/moutend/CoreServer/pkg/types"
 )
 
 type IAccessible struct {
@@ -51,8 +52,8 @@ func (v *IAccessible) GetAccChild() error {
 	return accGetAccChild(v)
 }
 
-func (v *IAccessible) GetAccName() error {
-	return accGetAccName(v)
+func (v *IAccessible) GetAccName(child ole.VARIANT) (types.BSTR, error) {
+	return accGetAccName(v, child)
 }
 
 func (v *IAccessible) GetAccValue() error {
@@ -99,8 +100,8 @@ func (v *IAccessible) AccSelect() error {
 	return accAccSelect(v)
 }
 
-func (v *IAccessible) AccLocation() error {
-	return accAccLocation(v)
+func (v *IAccessible) AccLocation(child ole.VARIANT) (left, top, width, height int32, err error) {
+	return accAccLocation(v, child)
 }
 
 func (v *IAccessible) AccNavigate() error {
