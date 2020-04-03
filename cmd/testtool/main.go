@@ -41,9 +41,10 @@ func run(args []string) error {
 
 	err := foo.Start()
 	fmt.Println("Called ICoreServer::Start", err)
+	t0 := time.Now()
 	foo.SetMSAAEventHandler(func(eventId types.MSAAEvent, pInterface uintptr) int64 {
 		e := (*com.IAccessible)(unsafe.Pointer(pInterface))
-
+		diff := time.Now().Sub(t0)
 		child := ole.NewVariant(ole.VT_I4, 0)
 
 		left, top, width, height, err := e.AccLocation(child)
@@ -60,11 +61,12 @@ func run(args []string) error {
 			return 0
 		}
 
-		fmt.Printf("@@@Event:%q,Name:%q,Location:{%d,%d,%d,%d}\n", eventId, name.String(), left, top, width, height)
+		fmt.Printf("@@@Time:%v,Event:%q,Name:%q,Location:{%d,%d,%d,%d}\n", diff, eventId, name.String(), left, top, width, height)
 		return 0
 	})
 	foo.SetUIAEventHandler(func(eventId types.UIAEvent, pInterface uintptr) int64 {
 		e := (*com.IUIAutomationElement)(unsafe.Pointer(pInterface))
+		diff := time.Now().Sub(t0)
 
 		rect, err := e.CurrentBoundingRectangle()
 
@@ -83,7 +85,7 @@ func run(args []string) error {
 		itemType, _ := e.CurrentItemType()
 		ariaRole, _ := e.CurrentAriaRole()
 		ariaProperties, _ := e.CurrentAriaProperties()
-		fmt.Printf("@@@Event:%q,Name:%q,ClassName:%q,Framework:%q,ItemType:%q,AriaRole:%q,AriaProperties:%q\n", eventId, name, className, framework, itemType, ariaRole, ariaProperties)
+		fmt.Printf("@@@Time:%v,Event:%q,Name:%q,ClassName:%q,Framework:%q,ItemType:%q,AriaRole:%q,AriaProperties:%q\n", diff, eventId, name, className, framework, itemType, ariaRole, ariaProperties)
 
 		return 0
 	})
