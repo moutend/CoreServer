@@ -52,7 +52,15 @@ func run(args []string) error {
 			fmt.Println("@@@err", err)
 			return 0
 		}
-		fmt.Printf("@@@Event:%q,Location:{%d,%d,%d,%d}\n", eventId, left, top, width, height)
+
+		name, err := e.GetAccName(child)
+
+		if err != nil {
+			fmt.Println("@@@err", err)
+			return 0
+		}
+
+		fmt.Printf("@@@Event:%q,Name:%q,Location:{%d,%d,%d,%d}\n", eventId, name.String(), left, top, width, height)
 		return 0
 	})
 	foo.SetUIAEventHandler(func(eventId types.UIAEvent, pInterface uintptr) int64 {
