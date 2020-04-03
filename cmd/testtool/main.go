@@ -41,7 +41,20 @@ func run(args []string) error {
 
 	err := foo.Start()
 	fmt.Println("Called ICoreServer::Start", err)
+	foo.SetMSAAEventHandler(func(eventId types.MSAAEvent, pInterface uintptr) int64 {
+		e := (*com.IAccessible)(unsafe.Pointer(pInterface))
 
+		child := ole.NewVariant(ole.VT_I4, 0)
+
+		left, top, width, height, err := e.AccLocation(child)
+
+		if err != nil {
+			fmt.Println("@@@err", err)
+			return 0
+		}
+		fmt.Printf("@@@Event:%q,Location:{%d,%d,%d,%d}\n", eventID, left, top, width, height)
+		return 0
+	})
 	foo.SetUIAEventHandler(func(eventId types.UIAEvent, pInterface uintptr) int64 {
 		e := (*com.IUIAutomationElement)(unsafe.Pointer(pInterface))
 
