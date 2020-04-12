@@ -88,7 +88,7 @@ func run(args []string) error {
 		return 0
 	})
 
-	time.Sleep(30 * time.Second)
+	time.Sleep(300 * time.Second)
 
 	err = foo.Stop()
 	fmt.Println("Called Foo::Stop()")
