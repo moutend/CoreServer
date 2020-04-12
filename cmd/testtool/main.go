@@ -83,6 +83,7 @@ func run(args []string) error {
 		itemType, _ := e.CurrentItemType()
 		ariaRole, _ := e.CurrentAriaRole()
 		ariaProperties, _ := e.CurrentAriaProperties()
+		return 0
 		fmt.Printf("@@@Event:%q,Name:%q,ClassName:%q,Framework:%q,ItemType:%q,AriaRole:%q,AriaProperties:%q\n", eventId, name, className, framework, itemType, ariaRole, ariaProperties)
 
 		return 0
