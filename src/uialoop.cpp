@@ -64,7 +64,6 @@ CLEANUP:
 }
 
 DWORD WINAPI uiaLoop(LPVOID context) {
-  return S_OK;
   Log->Info(L"Start UI Automation loop", GetCurrentThreadId(), __LONGFILE__);
 
   HRESULT hr = CoInitializeEx(nullptr, COINIT_MULTITHREADED);
@@ -192,10 +191,10 @@ DWORD WINAPI uiaLoop(LPVOID context) {
 
   FocusChangeEventHandler *pFocusChangeEventHandler =
       new FocusChangeEventHandler(ctx);
-  /*
-    hr = pUIAutomation->AddFocusChangedEventHandler(pBaseCacheRequest,
-                                                    pFocusChangeEventHandler);
-  */
+
+  hr = pUIAutomation->AddFocusChangedEventHandler(pBaseCacheRequest,
+                                                  pFocusChangeEventHandler);
+
   if (FAILED(hr)) {
     Log->Fail(L"Failed to call IUIAutomation::AddFocusChangedEventHandler",
               GetCurrentThreadId(), __LONGFILE__);
@@ -248,11 +247,11 @@ DWORD WINAPI uiaLoop(LPVOID context) {
               __LONGFILE__);
     goto CLEANUP;
   }
-  /*
-    hr = pUIAutomation->AddPropertyChangedEventHandler(
-        pRootElement, TreeScope_Subtree, pBaseCacheRequest,
-        pPropertyChangeEventHandler, pProperties);
-  */
+
+  hr = pUIAutomation->AddPropertyChangedEventHandler(
+      pRootElement, TreeScope_Subtree, pBaseCacheRequest,
+      pPropertyChangeEventHandler, pProperties);
+
   if (FAILED(hr)) {
     Log->Fail(L"Failed to call IUIAutomation::AddPropertyChangedEventHandler",
               GetCurrentThreadId(), __LONGFILE__);
