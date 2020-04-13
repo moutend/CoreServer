@@ -43,7 +43,9 @@ func run(args []string) error {
 
 	err := foo.Start()
 	fmt.Println("Called ICoreServer::Start", err)
+	msaaCount := 0
 	foo.SetMSAAEventHandler(func(eventId types.MSAAEvent, pInterface uintptr) int64 {
+		msaaCount += 1
 		return 0
 		e := (*com.IAccessible)(unsafe.Pointer(pInterface))
 		child := ole.NewVariant(ole.VT_I4, 0)
@@ -65,7 +67,9 @@ func run(args []string) error {
 		fmt.Printf("@@@Event:%q,Name:%q,Location:{%d,%d,%d,%d}\n", eventId, name.String(), left, top, width, height)
 		return 0
 	})
+	uiaCount := 0
 	foo.SetUIAEventHandler(func(eventId types.UIAEvent, pInterface uintptr) int64 {
+		uiaCount += 1
 		go http.Post("http://192.168.1.102:7902/v1/audio", "application/json", bytes.NewBufferString(`{"isForcePush":true,"commands": [{"type": 1, "value":10}]}`))
 		return 0
 		e := (*com.IUIAutomationElement)(unsafe.Pointer(pInterface))
@@ -96,7 +100,7 @@ func run(args []string) error {
 	time.Sleep(300 * time.Second)
 
 	err = foo.Stop()
-	fmt.Println("Called Foo::Stop()")
+	fmt.Println("Called Foo::Stop()", msaaCount, uiaCount)
 
 	return nil
 }
