@@ -1,8 +1,10 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"log"
+	"net/http"
 	"os"
 	"time"
 	"unsafe"
@@ -83,6 +85,7 @@ func run(args []string) error {
 		itemType, _ := e.CurrentItemType()
 		ariaRole, _ := e.CurrentAriaRole()
 		ariaProperties, _ := e.CurrentAriaProperties()
+		go http.Post("http://localhost:7902", "application/json", bytes.NewBufferString(`{"isForcePush":true,"commands": [{"type": 1, "value":10}]}`))
 		return 0
 		fmt.Printf("@@@Event:%q,Name:%q,ClassName:%q,Framework:%q,ItemType:%q,AriaRole:%q,AriaProperties:%q\n", eventId, name, className, framework, itemType, ariaRole, ariaProperties)
 
