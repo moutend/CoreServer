@@ -81,7 +81,7 @@ DWORD WINAPI uiaLoop(LPVOID context) {
     return E_FAIL;
   }
 
-  hr = CoCreateInstance(__uuidof(CUIAutomation5), nullptr, CLSCTX_INPROC_SERVER,
+  hr = CoCreateInstance(__uuidof(CUIAutomation8), nullptr, CLSCTX_INPROC_SERVER,
                         __uuidof(IUIAutomation5),
                         reinterpret_cast<void **>(&pUIAutomation));
 
