@@ -10,7 +10,7 @@
 
 extern Logger::Logger *Log;
 
-static IUIAutomation *pUIAutomation{};
+static IUIAutomation5 *pUIAutomation{};
 static IUIAutomationTreeWalker *pWindowTreeWalker{};
 static IUIAutomationTreeWalker *pBaseTreeWalker{};
 static IUIAutomationCacheRequest *pWindowCacheRequest{};
@@ -82,7 +82,7 @@ DWORD WINAPI uiaLoop(LPVOID context) {
   }
 
   hr = CoCreateInstance(__uuidof(CUIAutomation), nullptr, CLSCTX_INPROC_SERVER,
-                        __uuidof(IUIAutomation),
+                        __uuidof(IUIAutomation5),
                         reinterpret_cast<void **>(&pUIAutomation));
 
   if (FAILED(hr)) {
