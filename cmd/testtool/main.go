@@ -100,9 +100,6 @@ func run(args []string) error {
 	})
 
 	time.Sleep(30 * time.Second)
-
-	err = foo.Stop()
-	fmt.Println("Called Foo::Stop()", msaaCount, uiaCount)
 	{
 		n := 0
 		for _, v := range uiaMap {
@@ -112,6 +109,8 @@ func run(args []string) error {
 		}
 		fmt.Println("@@@uniq count", n)
 	}
+	err = foo.Stop()
+	fmt.Println("Called Foo::Stop()", msaaCount, uiaCount)
 
 	return nil
 }
