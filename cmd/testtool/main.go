@@ -68,8 +68,10 @@ func run(args []string) error {
 		return 0
 	})
 	uiaCount := 0
+	uiaMap := make(map[uintptr]bool)
 	foo.SetUIAEventHandler(func(eventId types.UIAEvent, pInterface uintptr) int64 {
 		uiaCount += 1
+		uiaMap[pInterface] = true
 		go http.Post("http://192.168.1.102:7902/v1/audio", "application/json", bytes.NewBufferString(`{"isForcePush":true,"commands": [{"type": 1, "value":10}]}`))
 		return 0
 		e := (*com.IUIAutomationElement)(unsafe.Pointer(pInterface))
@@ -97,10 +99,19 @@ func run(args []string) error {
 		return 0
 	})
 
-	time.Sleep(300 * time.Second)
+	time.Sleep(30 * time.Second)
 
 	err = foo.Stop()
 	fmt.Println("Called Foo::Stop()", msaaCount, uiaCount)
+	{
+		n := 0
+		for _, v := range uiaMap {
+			if v {
+				n += 1
+			}
+		}
+		fmt.Println("@@@uniq count", n)
+	}
 
 	return nil
 }
