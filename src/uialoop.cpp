@@ -192,7 +192,7 @@ DWORD WINAPI uiaLoop(LPVOID context) {
   FocusChangeEventHandler *pFocusChangeEventHandler =
       new FocusChangeEventHandler(ctx);
 
-  hr = pUIAutomation->AddFocusChangedEventHandler(pBaseCacheRequest,
+  hr = pUIAutomation->AddFocusChangedEventHandler(nullptr,
                                                   pFocusChangeEventHandler);
 
   if (FAILED(hr)) {
@@ -249,7 +249,7 @@ DWORD WINAPI uiaLoop(LPVOID context) {
   }
 
   hr = pUIAutomation->AddPropertyChangedEventHandler(
-      pRootElement, TreeScope_Subtree, pBaseCacheRequest,
+      pRootElement, TreeScope_Subtree, nullptr,
       pPropertyChangeEventHandler, pProperties);
 
   if (FAILED(hr)) {
@@ -274,7 +274,7 @@ DWORD WINAPI uiaLoop(LPVOID context) {
   for (int i = 0; i < 8; i++) {
     continue;
     hr = pUIAutomation->AddAutomationEventHandler(
-        eventProperties[i], pRootElement, TreeScope_Subtree, pBaseCacheRequest,
+        eventProperties[i], pRootElement, TreeScope_Subtree, nullptr,
         pAutomationEventHandler);
 
     if (FAILED(hr)) {
