@@ -139,7 +139,7 @@ DWORD WINAPI uiaLoop(LPVOID context) {
     goto CLEANUP;
   }
 
-  hr = pUIAutomation->get_RawViewWalker(&(ctx->pBaseTreeWalker));
+  hr = pUIAutomation->get_RawViewWalker(&(ctx->BaseTreeWalker));
 
   if (FAILED(hr)) {
     Log->Fail(L"Failed to call IUIAutomation::get_RawViewWalker",
@@ -322,9 +322,9 @@ CLEANUP:
   SafeRelease(&pCondition);
   SafeRelease(&pRootElement);
   SafeRelease(&pWindowTreeWalker);
-  SafeRelease(&pBaseTreeWalker);
+  SafeRelease(&(ctx->BaseTreeWalker));
   SafeRelease(&pWindowCacheRequest);
-  SafeRelease(&(ctx->BaseCacheRequest));
+  SafeRelease(&pBaseCacheRequest);
   SafeRelease(&pUIAutomation);
 
   if (pProperties != nullptr) {
