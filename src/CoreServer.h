@@ -34,9 +34,9 @@ public:
   STDMETHODIMP SetIAEventHandler(IAEventHandler handleFunc);
   STDMETHODIMP SetIUIEventHandler(IUIEventHandler handleFunc);
   STDMETHODIMP
-  GetIUIAutomationElementFromTreeWalker(TreeWalkerDirection direction,
-                                        IUIAutomationElement *pRootElement,
-                                        IUIAutomationElement **ppElement);
+  GetIUIAutomationElement(TreeWalkerDirection direction,
+                          IUIAutomationElement *pRootElement,
+                          IUIAutomationElement **ppElement);
 
   CCoreServer();
   ~CCoreServer();

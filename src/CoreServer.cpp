@@ -276,9 +276,10 @@ STDMETHODIMP CCoreServer::SetIAEventHandler(IAEventHandler handleFunc) {
   return S_OK;
 }
 
-STDMETHODIMP CCoreServer::GetIUIAutomationElementFromTreeWalker(
-    TreeWalkerDirection direction, IUIAutomationElement *pRootElement,
-    IUIAutomationElement **ppElement) {
+STDMETHODIMP
+CCoreServer::GetIUIAutomationElement(TreeWalkerDirection direction,
+                                     IUIAutomationElement *pRootElement,
+                                     IUIAutomationElement **ppElement) {
   std::lock_guard<std::mutex> lock(mMutex);
 
   if (ppElement == nullptr) {
