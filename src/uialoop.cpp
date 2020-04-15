@@ -12,7 +12,7 @@ extern Logger::Logger *Log;
 
 static IUIAutomation5 *pUIAutomation{};
 static IUIAutomationTreeWalker *pWindowTreeWalker{};
-static IUIAutomationTreeWalker *pBaseTreeWalker{};
+// static IUIAutomationTreeWalker *pBaseTreeWalker{};
 static IUIAutomationCacheRequest *pWindowCacheRequest{};
 static IUIAutomationCacheRequest *pBaseCacheRequest{};
 static IUIAutomationElement *pRootElement{};
@@ -139,7 +139,7 @@ DWORD WINAPI uiaLoop(LPVOID context) {
     goto CLEANUP;
   }
 
-  hr = pUIAutomation->get_RawViewWalker(&pBaseTreeWalker);
+  hr = pUIAutomation->get_RawViewWalker(&(ctx->pBaseTreeWalker));
 
   if (FAILED(hr)) {
     Log->Fail(L"Failed to call IUIAutomation::get_RawViewWalker",
