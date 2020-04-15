@@ -51,7 +51,7 @@ func rootRunE(cmd *cobra.Command, args []string) error {
 		go http.Post("http://192.168.1.102:7902/v1/audio", "application/json", bytes.NewBufferString(`{"isForcePush":true,"commands": [{"type": 1, "value":10}]}`))
 		if res, err := core.GetIUIAutomationElement(types.TW_NEXT, pInterface); err != nil {
 			log.Println("@@@err", err)
-		} else {
+		} else if res != nil {
 			name, _ := res.CurrentName()
 			log.Println("@@@next", name)
 		}
