@@ -276,6 +276,43 @@ STDMETHODIMP CCoreServer::SetIAEventHandler(IAEventHandler handleFunc) {
   return S_OK;
 }
 
+STDMETHODIMP CCoreServer::GetIUIAutomationElementFromTreeWalker(
+    TreeWalkerDirection direction, IUIAutomationElement *pRootElement,
+    IUIAutomationElement **ppElement) {
+  std::lock_guard<std::mutex> lock(mMutex);
+
+  if (ppElement == nullptr) {
+    return E_FAIL;
+  }
+
+  Log->Info(L"Called ICoreServer::GetIUIAutomationElement()",
+            GetCurrentThreadId(), __LONGFILE__);
+
+  HRESULT hr{};
+
+  switch (direction) {
+  case TW_NEXT:
+    hr = mUIALoopCtx->GetNextSiblingElement(pRootElement, ppElement);
+    break;
+  case TW_PREVIOUS:
+    hr = mUIALoopCtx->GetPreviousSiblingElement(pRootElement, ppElement);
+    break;
+  case TW_FIRST_CHILD:
+    hr = mUIALoopCtx->GetFirstChildElement(pRootElement, ppElement);
+    break;
+  case TW_LAST_CHILD:
+    hr = mUIALoopCtx->GetLastChildElement(pRootElement, ppElement);
+    break;
+  case TW_PARENT:
+    hr = mUIALoopCtx->GetParentElement(pRootElement, ppElement);
+    break;
+  default:
+    return S_OK;
+  }
+
+  return S_OK;
+}
+
 // CCoreServerFactory
 STDMETHODIMP CCoreServerFactory::QueryInterface(REFIID riid, void **ppvObject) {
   *ppvObject = nullptr;
