@@ -282,7 +282,7 @@ CCoreServer::GetIUIAutomationElement(TreeWalkerDirection direction,
                                      IUIAutomationElement **ppElement) {
   std::lock_guard<std::mutex> lock(mMutex);
 
-  if (ppElement == nullptr) {
+  if (ppElement == nullptr || mUIALoopCtx->BaseTreeWalker == nullptr) {
     return E_FAIL;
   }
 
@@ -293,19 +293,23 @@ CCoreServer::GetIUIAutomationElement(TreeWalkerDirection direction,
 
   switch (direction) {
   case TW_NEXT:
-    hr = mUIALoopCtx->GetNextSiblingElement(pRootElement, ppElement);
+    hr = mUIALoopCtx->BaseTreeWalker->GetNextSiblingElement(pRootElement,
+                                                            ppElement);
     break;
   case TW_PREVIOUS:
-    hr = mUIALoopCtx->GetPreviousSiblingElement(pRootElement, ppElement);
+    hr = mUIALoopCtx->BaseTreeWalker->GetPreviousSiblingElement(pRootElement,
+                                                                ppElement);
     break;
   case TW_FIRST_CHILD:
-    hr = mUIALoopCtx->GetFirstChildElement(pRootElement, ppElement);
+    hr = mUIALoopCtx->BaseTreeWalker->GetFirstChildElement(pRootElement,
+                                                           ppElement);
     break;
   case TW_LAST_CHILD:
-    hr = mUIALoopCtx->GetLastChildElement(pRootElement, ppElement);
+    hr = mUIALoopCtx->BaseTreeWalker->GetLastChildElement(pRootElement,
+                                                          ppElement);
     break;
   case TW_PARENT:
-    hr = mUIALoopCtx->GetParentElement(pRootElement, ppElement);
+    hr = mUIALoopCtx->BaseTreeWalker->GetParentElement(pRootElement, ppElement);
     break;
   default:
     return S_OK;
