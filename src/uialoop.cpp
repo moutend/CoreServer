@@ -324,7 +324,7 @@ CLEANUP:
   SafeRelease(&pWindowTreeWalker);
   SafeRelease(&pBaseTreeWalker);
   SafeRelease(&pWindowCacheRequest);
-  SafeRelease(&pBaseCacheRequest);
+  SafeRelease(&(ctx->BaseCacheRequest));
   SafeRelease(&pUIAutomation);
 
   if (pProperties != nullptr) {
