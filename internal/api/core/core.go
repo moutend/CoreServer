@@ -3,22 +3,21 @@ package core
 import (
 	"log"
 	"net/http"
+
+	"github.com/moutend/CoreServer/internal/core"
+	"github.com/moutend/CoreServer/pkg/types"
 )
-
-type PostAudioReq struct {
-	IsForcePush bool      `json:"isForcePush"`
-	Commands    []Command `json:"commands"`
-}
-
-type Command struct {
-	Type  int16       `json:"type"`
-	Value interface{} `json:"value"`
-}
 
 func putCursorNextElement(w http.ResponseWriter, r *http.Request) {
 	log.Println(r.Method, r.URL)
 
 	w.Header().Set("Content-Type", "application/json")
+
+	if core.FocusElement != 0 {
+		pElement, err := core.GetIUIAutomationElement(types.TW_NEXT, core.FocusElement)
+
+		log.Println("@@@next", err, pElement)
+	}
 
 	response := "{\"error\": \"Not implemented\"}"
 	http.Error(w, response, http.StatusInternalServerError)

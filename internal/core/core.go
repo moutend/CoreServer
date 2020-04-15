@@ -5,11 +5,13 @@ import (
 
 	"github.com/go-ole/go-ole"
 	"github.com/moutend/CoreServer/pkg/com"
+	"github.com/moutend/CoreServer/pkg/types"
 )
 
 var (
-	isRunning bool
-	server    *com.ICoreServer
+	FocusElement uintptr
+	isRunning    bool
+	server       *com.ICoreServer
 )
 
 func Setup() error {
@@ -47,4 +49,8 @@ func Teardown() error {
 
 func SetUIAEventHandler(fn com.UIAEventHandler) {
 	server.SetUIAEventHandler(fn)
+}
+
+func GetIUIAutomationElement(direction types.TreeWalkerDirection, pRootElement uintptr) (pElement *com.IUIAutomationElement, err error) {
+	return server.GetIUIAutomationElement(direction, pRootElement)
 }
