@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/go-ole/go-ole"
+	"github.com/moutend/CoreServer/pkg/types"
 )
 
 func csStart(v *ICoreServer) error {
@@ -67,4 +68,22 @@ func csSetUIAEventHandler(v *ICoreServer, handleFunc UIAEventHandler) error {
 	}
 
 	return nil
+}
+
+func csGetIUIAutomationElement(v *ICoreServer, direction types.TreeWalkerDirection, pRootElement uintptr) (pElement *IUIAutomationElement, err error) {
+	hr, _, _ := syscall.Syscall6(
+		v.VTable().GetIUIAutomationElement,
+		4,
+		uintptr(unsafe.Pointer(v)),
+		uintptr(direction),
+		pRootElement,
+		uintptr(unsafe.Pointer(&pElement)),
+		0,
+		0)
+
+	if hr != 0 {
+		return nil, ole.NewError(hr)
+	}
+
+	return pElement, nil
 }

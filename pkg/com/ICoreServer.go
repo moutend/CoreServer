@@ -18,10 +18,11 @@ type ICoreServer struct {
 
 type ICoreServerVtbl struct {
 	ole.IDispatchVtbl
-	Start               uintptr
-	Stop                uintptr
-	SetMSAAEventHandler uintptr
-	SetUIAEventHandler  uintptr
+	Start                   uintptr
+	Stop                    uintptr
+	SetMSAAEventHandler     uintptr
+	SetUIAEventHandler      uintptr
+	GetIUIAutomationElement uintptr
 }
 
 func (v *ICoreServer) VTable() *ICoreServerVtbl {
@@ -42,4 +43,8 @@ func (v *ICoreServer) SetMSAAEventHandler(handleFunc MSAAEventHandler) error {
 
 func (v *ICoreServer) SetUIAEventHandler(handleFunc UIAEventHandler) error {
 	return csSetUIAEventHandler(v, handleFunc)
+}
+
+func (v *ICoreServer) GetIUIAutomationElement(direction types.TreeWalkerDirection, pRootElement uintptr) (pElement *IUIAutomationElement, err error) {
+	return csGetIUIAutomationElement(v, direction, pRootElement)
 }
