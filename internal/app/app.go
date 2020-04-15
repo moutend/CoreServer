@@ -53,8 +53,12 @@ func rootRunE(cmd *cobra.Command, args []string) error {
 			name, _ := res.CurrentName()
 			log.Println("@@@next", name)
 		}
-		return 0
+
 		e := (*com.IUIAutomationElement)(unsafe.Pointer(pInterface))
+
+		name, _ := e.CurrentName()
+
+		log.Println("@@@current name", name)
 
 		rect, err := e.CurrentBoundingRectangle()
 
@@ -67,7 +71,7 @@ func rootRunE(cmd *cobra.Command, args []string) error {
 			return 0
 		}
 
-		name, _ := e.CurrentName()
+		// name, _ := e.CurrentName()
 		className, _ := e.CurrentClassName()
 		framework, _ := e.CurrentFrameworkId()
 		itemType, _ := e.CurrentItemType()
