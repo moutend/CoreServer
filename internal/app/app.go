@@ -16,8 +16,8 @@ import (
 
 	"github.com/moutend/CoreServer/internal/core"
 	"github.com/moutend/CoreServer/internal/util"
-	"github.com/moutend/CoreServer/pkg/types"
 	"github.com/moutend/CoreServer/pkg/com"
+	"github.com/moutend/CoreServer/pkg/types"
 
 	"github.com/go-chi/chi"
 	"github.com/moutend/CoreServer/internal/api"
@@ -48,6 +48,7 @@ func rootRunE(cmd *cobra.Command, args []string) error {
 	defer core.Teardown()
 
 	core.SetUIAEventHandler(func(eventId types.UIAEvent, pInterface uintptr) int64 {
+		core.FocusElement = pInterface
 		go http.Post("http://192.168.1.102:7902/v1/audio", "application/json", bytes.NewBufferString(`{"isForcePush":true,"commands": [{"type": 1, "value":10}]}`))
 		return 0
 		e := (*com.IUIAutomationElement)(unsafe.Pointer(pInterface))
