@@ -71,8 +71,8 @@ public:
 
   // IUIAutomationStructureChangedEventHandler methods
   STDMETHODIMP HandleStructureChangedEvent(IUIAutomationElement *pSender,
-                                           StructureChangeType changeType,
-                                           SAFEARRAY(int) runtimeId);
+                                           enum StructureChangeType changeType,
+                                           SAFEARRAY runtimeId);
 
   StructureChangeEventHandler(UIALoopContext *ctx);
 
