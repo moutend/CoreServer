@@ -192,7 +192,7 @@ HRESULT StructureChangeEventHandler::QueryInterface(REFIID riid,
 HRESULT
 StructureChangeEventHandler::HandleStructureChangedEvent(
     IUIAutomationElement *pSender, StructureChangeType changeType,
-    SAFEARRAY runtimeId) {
+    SAFEARRAY(int) runtimeId) {
   if (pSender == nullptr) {
     return S_OK;
   }
