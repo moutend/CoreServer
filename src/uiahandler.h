@@ -60,3 +60,23 @@ private:
   LONG mRefCount;
   UIALoopContext *mUIALoopContext;
 };
+
+class StructureChangeEventHandler
+    : public IUIAutomationStructureChangedEventHandler {
+public:
+  // IUnknown methods
+  STDMETHODIMP QueryInterface(REFIID riid, void **ppvObject);
+  STDMETHODIMP_(ULONG) AddRef();
+  STDMETHODIMP_(ULONG) Release();
+
+  // IUIAutomationStructureChangedEventHandler methods
+  STDMETHODIMP HandleStructureChangedEvent(IUIAutomationElement *pSender,
+                                           StructureChangeType changeType,
+                                           SAFEARRAY runtimeId);
+
+  StructureChangeEventHandler(UIALoopContext *ctx);
+
+private:
+  LONG mRefCount;
+  UIALoopContext *mUIALoopContext;
+};

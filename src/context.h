@@ -12,7 +12,10 @@ struct LogLoopContext {
 struct UIALoopContext {
   HANDLE QuitEvent = nullptr;
   IUIEventHandler HandleFunc = nullptr;
+  IUIAutomationElement *RootElement = nullptr;
+  IUIAutomation5 *UIAutomation = nullptr;
   IUIAutomationTreeWalker *BaseTreeWalker = nullptr;
+  IUIAutomationCacheRequest *BaseCacheRequest = nullptr;
 };
 
 struct WinEventLoopContext {

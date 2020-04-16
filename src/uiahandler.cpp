@@ -155,3 +155,53 @@ AutomationEventHandler::HandleAutomationEvent(IUIAutomationElement *pSender,
 
   return S_OK;
 }
+
+StructureChangeEventHandler::StructureChangeEventHandler(UIALoopContext *ctx)
+    : mUIALoopContext(ctx) {}
+
+ULONG StructureChangeEventHandler::AddRef() {
+  ULONG ret = InterlockedIncrement(&mRefCount);
+  return ret;
+}
+
+ULONG StructureChangeEventHandler::Release() {
+  ULONG ret = InterlockedDecrement(&mRefCount);
+  if (ret == 0) {
+    delete this;
+    return 0;
+  }
+  return ret;
+}
+
+HRESULT StructureChangeEventHandler::QueryInterface(REFIID riid,
+                                                    void **ppInterface) {
+  if (riid == __uuidof(IUnknown))
+    *ppInterface = static_cast<IUIStructureChangeEventHandler *>(this);
+  else if (riid == __uuidof(IUIStructureChangeEventHandler))
+    *ppInterface = static_cast<IUIStructureChangeEventHandler *>(this);
+  else {
+    *ppInterface = nullptr;
+    return E_NOINTERFACE;
+  }
+  this->AddRef();
+  return S_OK;
+}
+
+HRESULT
+StructureChangeEventHandler::HandleStructureChangeEvent(
+    IUIAutomationElement *pSender, StructureChangeType changeType,
+    SAFEARRAY runtimeId) {
+  if (pSender == nullptr) {
+    return S_OK;
+  }
+
+  Log->Info(
+      L"Called StructureChangeEventHandler::HandleStructureChangedEvent()",
+      GetCurrentThreadId(), __LONGFILE__);
+
+  if (mUIALoopContext != nullptr && mUIALoopContext->HandleFunc != nullptr) {
+    mUIALoopContext->HandleFunc(static_cast<INT64>(eventId), pSender);
+  }
+
+  return S_OK;
+}

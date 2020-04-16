@@ -10,13 +10,6 @@
 
 extern Logger::Logger *Log;
 
-static IUIAutomation5 *pUIAutomation{};
-static IUIAutomationTreeWalker *pWindowTreeWalker{};
-// static IUIAutomationTreeWalker *pBaseTreeWalker{};
-static IUIAutomationCacheRequest *pWindowCacheRequest{};
-static IUIAutomationCacheRequest *pBaseCacheRequest{};
-static IUIAutomationElement *pRootElement{};
-
 static PROPERTYID itemIndexPropertyId{};
 static PROPERTYID itemCountPropertyId{};
 
@@ -35,7 +28,7 @@ HRESULT registerPropertyId(const std::wstring &propertyGUID,
     return hr;
   }
 
-  IUIAutomationRegistrar *pRegistrar{nullptr};
+  IUIAutomationRegistrar *pRegistrar{};
 
   hr = CoCreateInstance(CLSID_CUIAutomationRegistrar, nullptr,
                         CLSCTX_INPROC_SERVER, IID_IUIAutomationRegistrar,
@@ -83,7 +76,7 @@ DWORD WINAPI uiaLoop(LPVOID context) {
 
   hr = CoCreateInstance(__uuidof(CUIAutomation8), nullptr, CLSCTX_INPROC_SERVER,
                         __uuidof(IUIAutomation5),
-                        reinterpret_cast<void **>(&pUIAutomation));
+                        reinterpret_cast<void **>(&(ctx->UIAutomation)));
 
   if (FAILED(hr)) {
     Log->Fail(L"Failed to create an instance of IUIAutomation",
@@ -98,8 +91,8 @@ DWORD WINAPI uiaLoop(LPVOID context) {
   IUIAutomationCondition *pCondition{};
   IUIAutomationCondition *pWindowCondition{};
 
-  hr = pUIAutomation->CreatePropertyCondition(UIA_NativeWindowHandlePropertyId,
-                                              vEmpty, &pCondition);
+  hr = ctx->UIAutomation->CreatePropertyCondition(
+      UIA_NativeWindowHandlePropertyId, vEmpty, &pCondition);
 
   if (FAILED(hr)) {
     Log->Fail(L"Failed to create an instance of IUIAutomationCondition",
@@ -107,7 +100,7 @@ DWORD WINAPI uiaLoop(LPVOID context) {
     goto CLEANUP;
   }
 
-  hr = pUIAutomation->CreateNotCondition(pCondition, &pWindowCondition);
+  hr = ctx->UIAutomation->CreateNotCondition(pCondition, &pWindowCondition);
 
   if (FAILED(hr)) {
     Log->Fail(L"Failed to create an instance of IUIAutomationCondition",
@@ -115,7 +108,10 @@ DWORD WINAPI uiaLoop(LPVOID context) {
     goto CLEANUP;
   }
 
-  hr = pUIAutomation->CreateTreeWalker(pWindowCondition, &pWindowTreeWalker);
+  IUIAutomationTreeWalker *pWindowTreeWalker{};
+
+  hr =
+      ctx->UIAutomation->CreateTreeWalker(pWindowCondition, &pWindowTreeWalker);
 
   if (FAILED(hr)) {
     Log->Fail(L"Failed to create an instance of IUIAutomationTreeWalker",
@@ -123,7 +119,9 @@ DWORD WINAPI uiaLoop(LPVOID context) {
     goto CLEANUP;
   }
 
-  hr = pUIAutomation->CreateCacheRequest(&pWindowCacheRequest);
+  IUIAutomationCacheRequest *pWindowCacheRequest{};
+
+  hr = ctx->UIAutomation->CreateCacheRequest(&pWindowCacheRequest);
 
   if (FAILED(hr)) {
     Log->Fail(L"Failed to create an instance of IUIAutomationCacheRequest",
@@ -139,7 +137,7 @@ DWORD WINAPI uiaLoop(LPVOID context) {
     goto CLEANUP;
   }
 
-  hr = pUIAutomation->get_RawViewWalker(&(ctx->BaseTreeWalker));
+  hr = ctx->UIAutomation->get_RawViewWalker(&(ctx->BaseTreeWalker));
 
   if (FAILED(hr)) {
     Log->Fail(L"Failed to call IUIAutomation::get_RawViewWalker",
@@ -147,7 +145,7 @@ DWORD WINAPI uiaLoop(LPVOID context) {
     goto CLEANUP;
   }
 
-  hr = pWindowCacheRequest->Clone(&pBaseCacheRequest);
+  hr = pWindowCacheRequest->Clone(&(ctx->BaseCacheRequest));
 
   if (FAILED(hr)) {
     Log->Fail(L"Failed to call IUIAutomationCacheRequest::Clone",
@@ -163,7 +161,7 @@ DWORD WINAPI uiaLoop(LPVOID context) {
       UIA_IsContentElementPropertyId,   UIA_IsControlElementPropertyId};
 
   for (int i = 0; i < 10; i++) {
-    hr = pBaseCacheRequest->AddProperty(automationElementProperties[i]);
+    hr = ctx->BaseCacheRequest->AddProperty(automationElementProperties[i]);
 
     if (FAILED(hr)) {
       Log->Fail(L"Failed to call IUIAutomationCacheRequest::AddProperty",
@@ -172,7 +170,7 @@ DWORD WINAPI uiaLoop(LPVOID context) {
     }
   }
 
-  hr = pBaseCacheRequest->AddPattern(UIA_TextPatternId);
+  hr = ctx->BaseCacheRequest->AddPattern(UIA_TextPatternId);
 
   if (FAILED(hr)) {
     Log->Fail(L"Failed to call IUIAutomationCacheRequest::AddPattern",
@@ -180,8 +178,8 @@ DWORD WINAPI uiaLoop(LPVOID context) {
     goto CLEANUP;
   }
 
-  hr =
-      pUIAutomation->GetRootElementBuildCache(pBaseCacheRequest, &pRootElement);
+  hr = ctx->UIAutomation->GetRootElementBuildCache(ctx->BaseCacheRequest,
+                                                   &(ctx->RootElement));
 
   if (FAILED(hr)) {
     Log->Fail(L"Failed to call IUIAutomation::GetRootElementBuildCache",
@@ -192,8 +190,8 @@ DWORD WINAPI uiaLoop(LPVOID context) {
   FocusChangeEventHandler *pFocusChangeEventHandler =
       new FocusChangeEventHandler(ctx);
 
-  hr = pUIAutomation->AddFocusChangedEventHandler(pBaseCacheRequest,
-                                                  pFocusChangeEventHandler);
+  hr = ctx->UIAutomation->AddFocusChangedEventHandler(pBaseCacheRequest,
+                                                      pFocusChangeEventHandler);
 
   if (FAILED(hr)) {
     Log->Fail(L"Failed to call IUIAutomation::AddFocusChangedEventHandler",
@@ -248,8 +246,8 @@ DWORD WINAPI uiaLoop(LPVOID context) {
     goto CLEANUP;
   }
 
-  hr = pUIAutomation->AddPropertyChangedEventHandler(
-      pRootElement, TreeScope_Subtree, pBaseCacheRequest,
+  hr = ctx->UIAutomation->AddPropertyChangedEventHandler(
+      ctx->RootElement, TreeScope_Subtree, pBaseCacheRequest,
       pPropertyChangeEventHandler, pProperties);
 
   if (FAILED(hr)) {
@@ -273,12 +271,11 @@ DWORD WINAPI uiaLoop(LPVOID context) {
 
   for (int i = 0; i < 8; i++) {
     continue;
-    hr = pUIAutomation->AddAutomationEventHandler(
+    hr = ctx->UIAutomation->AddAutomationEventHandler(
         eventProperties[i], pRootElement, TreeScope_Subtree, pBaseCacheRequest,
         pAutomationEventHandler);
 
     if (FAILED(hr)) {
-
       Log->Fail(L"Failed to call IUIAutomation::AddAutomationEventHandler ",
                 GetCurrentThreadId(), __LONGFILE__);
       goto CLEANUP;
@@ -319,14 +316,14 @@ CLEANUP:
 
   Log->Info(L"Cleanup", GetCurrentThreadId(), __LONGFILE__);
 
+  SafeRelease(&(ctx->UIAutomation));
+  SafeRelease(&(ctx->RootElement));
+  SafeRelease(&(ctx->BaseTreeWalker));
+  SafeRelease(&(ctx->BaseCacheRequest));
   SafeRelease(&pWindowCondition);
   SafeRelease(&pCondition);
-  SafeRelease(&pRootElement);
   SafeRelease(&pWindowTreeWalker);
-  SafeRelease(&(ctx->BaseTreeWalker));
   SafeRelease(&pWindowCacheRequest);
-  SafeRelease(&pBaseCacheRequest);
-  SafeRelease(&pUIAutomation);
 
   if (pProperties != nullptr) {
     SafeArrayDestroy(pProperties);
