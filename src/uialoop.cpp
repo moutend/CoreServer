@@ -272,7 +272,7 @@ DWORD WINAPI uiaLoop(LPVOID context) {
   for (int i = 0; i < 8; i++) {
     continue;
     hr = ctx->UIAutomation->AddAutomationEventHandler(
-        eventProperties[i], pRootElement, TreeScope_Subtree,
+        eventProperties[i], ctx->RootElement, TreeScope_Subtree,
         ctx->BaseCacheRequest, pAutomationEventHandler);
 
     if (FAILED(hr)) {
