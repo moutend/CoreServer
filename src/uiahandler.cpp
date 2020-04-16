@@ -178,7 +178,7 @@ HRESULT StructureChangeEventHandler::QueryInterface(REFIID riid,
   if (riid == __uuidof(IUnknown))
     *ppInterface =
         static_cast<IUIAutomationStructureChangedEventHandler *>(this);
-  else if (riid == __uuidof(IUIStructureChangeEventHandler))
+  else if (riid == __uuidof(IUIAutomationStructureChangedEventHandler))
     *ppInterface =
         static_cast<IUIAutomationStructureChangedEventHandler *>(this);
   else {
@@ -201,7 +201,7 @@ StructureChangeEventHandler::HandleStructureChangedEvent(
             __LONGFILE__);
 
   if (mUIALoopContext != nullptr && mUIALoopContext->HandleFunc != nullptr) {
-    mUIALoopContext->HandleFunc(static_cast<INT64>(eventId), pSender);
+    mUIALoopContext->HandleFunc(0, pSender);
   }
 
   return S_OK;
