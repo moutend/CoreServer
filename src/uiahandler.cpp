@@ -48,7 +48,7 @@ FocusChangeEventHandler::HandleFocusChangedEvent(
     return S_OK;
   }
 
-  Log->Info(L"IUIAutomation Focus change event received", GetCurrentThreadId(),
+  Log->Info(L"Called HandleFocusChangedEvent()", GetCurrentThreadId(),
             __LONGFILE__);
 
   if (mUIALoopContext != nullptr && mUIALoopContext->HandleFunc != nullptr) {
@@ -98,8 +98,8 @@ PropertyChangeEventHandler::HandlePropertyChangedEvent(
     return S_OK;
   }
 
-  Log->Info(L"IUIAutomation Property change event received",
-            GetCurrentThreadId(), __LONGFILE__);
+  Log->Info(L"Called HandlePropertyChangedEvent()", GetCurrentThreadId(),
+            __LONGFILE__);
 
   if (mUIALoopContext != nullptr && mUIALoopContext->HandleFunc != nullptr) {
     mUIALoopContext->HandleFunc(UIA_AutomationPropertyChangedEventId, pSender);
@@ -146,7 +146,7 @@ AutomationEventHandler::HandleAutomationEvent(IUIAutomationElement *pSender,
     return S_OK;
   }
 
-  Log->Info(L"IUIAutomation Automation event received", GetCurrentThreadId(),
+  Log->Info(L"Called HandleAutomationEvent()", GetCurrentThreadId(),
             __LONGFILE__);
 
   if (mUIALoopContext != nullptr && mUIALoopContext->HandleFunc != nullptr) {
@@ -176,9 +176,11 @@ ULONG StructureChangeEventHandler::Release() {
 HRESULT StructureChangeEventHandler::QueryInterface(REFIID riid,
                                                     void **ppInterface) {
   if (riid == __uuidof(IUnknown))
-    *ppInterface = static_cast<IUIStructureChangeEventHandler *>(this);
+    *ppInterface =
+        static_cast<IUIAutomationStructureChangedEventHandler *>(this);
   else if (riid == __uuidof(IUIStructureChangeEventHandler))
-    *ppInterface = static_cast<IUIStructureChangeEventHandler *>(this);
+    *ppInterface =
+        static_cast<IUIAutomationStructureChangedEventHandler *>(this);
   else {
     *ppInterface = nullptr;
     return E_NOINTERFACE;
@@ -188,16 +190,15 @@ HRESULT StructureChangeEventHandler::QueryInterface(REFIID riid,
 }
 
 HRESULT
-StructureChangeEventHandler::HandleStructureChangeEvent(
+StructureChangeEventHandler::HandleStructureChangedEvent(
     IUIAutomationElement *pSender, StructureChangeType changeType,
     SAFEARRAY runtimeId) {
   if (pSender == nullptr) {
     return S_OK;
   }
 
-  Log->Info(
-      L"Called StructureChangeEventHandler::HandleStructureChangedEvent()",
-      GetCurrentThreadId(), __LONGFILE__);
+  Log->Info(L"Called HandleStructureChangedEvent()", GetCurrentThreadId(),
+            __LONGFILE__);
 
   if (mUIALoopContext != nullptr && mUIALoopContext->HandleFunc != nullptr) {
     mUIALoopContext->HandleFunc(static_cast<INT64>(eventId), pSender);
