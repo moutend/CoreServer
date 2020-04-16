@@ -187,6 +187,20 @@ DWORD WINAPI uiaLoop(LPVOID context) {
     goto CLEANUP;
   }
 
+  StructureChangeEventHandler *pStructureChangeEventHandler =
+      new StructureChangeEventHandler(ctx);
+
+  hr = ctx->UIAutomation->AddStructureChangedEventHandler(
+      ctx->RootElement, TreeScope_Subtree, ctx->BaseCacheRequest,
+      pStructureChangeEventHandler);
+
+  if (FAILED(hr)) {
+    Log->Fail(
+        L"Failed to call IUIAutomation::AddStructureChangedEventHandler()",
+        GetCurrentThreadId(), __LONGFILE__);
+    goto CLEANUP;
+  }
+
   FocusChangeEventHandler *pFocusChangeEventHandler =
       new FocusChangeEventHandler(ctx);
 
