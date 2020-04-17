@@ -282,10 +282,10 @@ DWORD WINAPI uiaLoop(LPVOID context) {
       UIA_ToolTipOpenedEventId,
       UIA_SystemAlertEventId,
       UIA_Window_WindowOpenedEventId,
-      UIA_Window_WindowClosedEventId};
+      UIA_TextEdit_ConversionTargetChangedEventId};
 
   for (int i = 0; i < 9; i++) {
-    if (i <= 6) {
+    if (i <= 7) {
       continue;
     }
     hr = ctx->UIAutomation->AddAutomationEventHandler(
