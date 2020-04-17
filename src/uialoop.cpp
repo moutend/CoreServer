@@ -284,7 +284,7 @@ DWORD WINAPI uiaLoop(LPVOID context) {
       UIA_Window_WindowOpenedEventId,
       UIA_Window_WindowClosedEventId};
 
-  for (int i = 0; i < 8; i++) {
+  for (int i = 0; i < 9; i++) {
     if (i <= 6) {
       continue;
     }
