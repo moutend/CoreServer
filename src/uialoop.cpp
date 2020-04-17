@@ -284,7 +284,7 @@ DWORD WINAPI uiaLoop(LPVOID context) {
       UIA_Window_WindowOpenedEventId};
 
   for (int i = 0; i < 8; i++) {
-    if (i != 0) {
+    if (i != 1) {
       continue;
     }
     hr = ctx->UIAutomation->AddAutomationEventHandler(
