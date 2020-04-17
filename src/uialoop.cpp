@@ -273,18 +273,19 @@ DWORD WINAPI uiaLoop(LPVOID context) {
   AutomationEventHandler *pAutomationEventHandler =
       new AutomationEventHandler(ctx);
 
-  const PROPERTYID eventProperties[8] = {
+  const PROPERTYID eventProperties[9] = {
       UIA_LiveRegionChangedEventId,
       UIA_SelectionItem_ElementSelectedEventId,
       UIA_MenuOpenedEventId,
       UIA_SelectionItem_ElementAddedToSelectionEventId,
       UIA_SelectionItem_ElementRemovedFromSelectionEventId,
       UIA_ToolTipOpenedEventId,
+      UIA_SystemAlertEventId,
       UIA_Window_WindowOpenedEventId,
-      UIA_SystemAlertEventId};
+      UIA_Window_WindowClosedEventId};
 
   for (int i = 0; i < 8; i++) {
-    if (i != 6) {
+    if (i <= 6) {
       continue;
     }
     hr = ctx->UIAutomation->AddAutomationEventHandler(
