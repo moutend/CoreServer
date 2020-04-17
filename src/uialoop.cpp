@@ -280,11 +280,11 @@ DWORD WINAPI uiaLoop(LPVOID context) {
       UIA_SelectionItem_ElementRemovedFromSelectionEventId,
       UIA_MenuOpenedEventId,
       UIA_ToolTipOpenedEventId,
-      UIA_SystemAlertEventId,
+      UIA_AsyncContentLoadedEventId,
       UIA_Window_WindowOpenedEventId};
 
   for (int i = 0; i < 8; i++) {
-    if (i != 1) {
+    if (i != 6) {
       continue;
     }
     hr = ctx->UIAutomation->AddAutomationEventHandler(
