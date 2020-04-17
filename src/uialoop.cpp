@@ -284,7 +284,9 @@ DWORD WINAPI uiaLoop(LPVOID context) {
       UIA_SystemAlertEventId};
 
   for (int i = 0; i < 8; i++) {
-    continue;
+    if (i != 6) {
+      continue;
+    }
     hr = ctx->UIAutomation->AddAutomationEventHandler(
         eventProperties[i], ctx->RootElement, TreeScope_Subtree,
         ctx->BaseCacheRequest, pAutomationEventHandler);

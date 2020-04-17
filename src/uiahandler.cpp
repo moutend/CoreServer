@@ -148,7 +148,7 @@ AutomationEventHandler::HandleAutomationEvent(IUIAutomationElement *pSender,
 
   Log->Info(L"Called HandleAutomationEvent()", GetCurrentThreadId(),
             __LONGFILE__);
-  return S_OK;
+
   if (mUIALoopContext != nullptr && mUIALoopContext->HandleFunc != nullptr) {
     mUIALoopContext->HandleFunc(static_cast<INT64>(eventId), pSender);
   }
@@ -199,7 +199,7 @@ StructureChangeEventHandler::HandleStructureChangedEvent(
 
   Log->Info(L"Called HandleStructureChangedEvent()", GetCurrentThreadId(),
             __LONGFILE__);
-
+  return S_OK;
   if (mUIALoopContext != nullptr && mUIALoopContext->HandleFunc != nullptr) {
     mUIALoopContext->HandleFunc(0, pSender);
   }
