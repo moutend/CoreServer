@@ -318,6 +318,9 @@ CCoreServer::GetIUIAutomationElement(TreeWalkerDirection direction,
   return S_OK;
 }
 
+STDMETHODIMP
+CCoreServer::UpdateTreeWalker() { std::lock_guard<std::mutex> lock(mMutex); }
+
 // CCoreServerFactory
 STDMETHODIMP CCoreServerFactory::QueryInterface(REFIID riid, void **ppvObject) {
   *ppvObject = nullptr;

@@ -189,11 +189,11 @@ DWORD WINAPI uiaLoop(LPVOID context) {
 
   StructureChangeEventHandler *pStructureChangeEventHandler =
       new StructureChangeEventHandler(ctx);
-
-  hr = ctx->UIAutomation->AddStructureChangedEventHandler(
-      ctx->RootElement, TreeScope_Children, ctx->BaseCacheRequest,
-      pStructureChangeEventHandler);
-
+  /*
+    hr = ctx->UIAutomation->AddStructureChangedEventHandler(
+        ctx->RootElement, TreeScope_Children, ctx->BaseCacheRequest,
+        pStructureChangeEventHandler);
+  */
   if (FAILED(hr)) {
     Log->Fail(
         L"Failed to call IUIAutomation::AddStructureChangedEventHandler()",
@@ -259,11 +259,11 @@ DWORD WINAPI uiaLoop(LPVOID context) {
               __LONGFILE__);
     goto CLEANUP;
   }
-
-  hr = ctx->UIAutomation->AddPropertyChangedEventHandler(
-      ctx->RootElement, TreeScope_Subtree, ctx->BaseCacheRequest,
-      pPropertyChangeEventHandler, pProperties);
-
+  /*
+    hr = ctx->UIAutomation->AddPropertyChangedEventHandler(
+        ctx->RootElement, TreeScope_Subtree, ctx->BaseCacheRequest,
+        pPropertyChangeEventHandler, pProperties);
+  */
   if (FAILED(hr)) {
     Log->Fail(L"Failed to call IUIAutomation::AddPropertyChangedEventHandler",
               GetCurrentThreadId(), __LONGFILE__);
@@ -284,9 +284,7 @@ DWORD WINAPI uiaLoop(LPVOID context) {
       UIA_ToolTipOpenedEventId};
 
   for (int i = 0; i < 8; i++) {
-    if (i != 0) {
-      continue;
-    }
+    continue;
     hr = ctx->UIAutomation->AddAutomationEventHandler(
         eventProperties[i], ctx->RootElement, TreeScope_Element,
         ctx->BaseCacheRequest, pAutomationEventHandler);

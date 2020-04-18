@@ -50,7 +50,7 @@ FocusChangeEventHandler::HandleFocusChangedEvent(
 
   Log->Info(L"Called HandleFocusChangedEvent()", GetCurrentThreadId(),
             __LONGFILE__);
-  return S_OK;
+
   if (mUIALoopContext != nullptr && mUIALoopContext->HandleFunc != nullptr) {
     mUIALoopContext->HandleFunc(UIA_AutomationFocusChangedEventId, pSender);
   }
@@ -145,10 +145,10 @@ AutomationEventHandler::HandleAutomationEvent(IUIAutomationElement *pSender,
   if (pSender == nullptr) {
     return S_OK;
   }
-  return S_OK;
+
   Log->Info(L"Called HandleAutomationEvent()", GetCurrentThreadId(),
             __LONGFILE__);
-
+  return S_OK;
   if (mUIALoopContext != nullptr && mUIALoopContext->HandleFunc != nullptr) {
     mUIALoopContext->HandleFunc(static_cast<INT64>(eventId), pSender);
   }
@@ -199,7 +199,7 @@ StructureChangeEventHandler::HandleStructureChangedEvent(
 
   Log->Info(L"Called HandleStructureChangedEvent()", GetCurrentThreadId(),
             __LONGFILE__);
-
+  return S_OK;
   if (mUIALoopContext != nullptr && mUIALoopContext->HandleFunc != nullptr) {
     mUIALoopContext->HandleFunc(0, pSender);
   }

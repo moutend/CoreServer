@@ -37,6 +37,7 @@ public:
   GetIUIAutomationElement(TreeWalkerDirection direction,
                           IUIAutomationElement *pRootElement,
                           IUIAutomationElement **ppElement);
+  STDMETHODIMP UpdateTreeWalker();
 
   CCoreServer();
   ~CCoreServer();
