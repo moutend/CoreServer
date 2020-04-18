@@ -23,6 +23,7 @@ type ICoreServerVtbl struct {
 	SetMSAAEventHandler     uintptr
 	SetUIAEventHandler      uintptr
 	GetIUIAutomationElement uintptr
+	UpdateTreeWalker        uintptr
 }
 
 func (v *ICoreServer) VTable() *ICoreServerVtbl {
@@ -47,4 +48,8 @@ func (v *ICoreServer) SetUIAEventHandler(handleFunc UIAEventHandler) error {
 
 func (v *ICoreServer) GetIUIAutomationElement(direction types.TreeWalkerDirection, pRootElement uintptr) (pElement *IUIAutomationElement, err error) {
 	return csGetIUIAutomationElement(v, direction, pRootElement)
+}
+
+func (v *ICoreServer) UpdateTreeWalker() error {
+	return csUpdateTreeWalker(v)
 }
