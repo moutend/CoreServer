@@ -191,7 +191,7 @@ DWORD WINAPI uiaLoop(LPVOID context) {
       new StructureChangeEventHandler(ctx);
 
   hr = ctx->UIAutomation->AddStructureChangedEventHandler(
-      ctx->RootElement, TreeScope_Element, ctx->BaseCacheRequest,
+      ctx->RootElement, TreeScope_Children, ctx->BaseCacheRequest,
       pStructureChangeEventHandler);
 
   if (FAILED(hr)) {
