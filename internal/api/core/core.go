@@ -58,3 +58,18 @@ func putCursorParentElement(w http.ResponseWriter, r *http.Request) {
 	response := "{\"error\": \"Not implemented\"}"
 	http.Error(w, response, http.StatusInternalServerError)
 }
+
+func putUpdateTreeWalker(w http.ResponseWriter, r *http.Request) {
+	log.Println(r.Method, r.URL)
+
+	w.Header().Set("Content-Type", "application/json")
+
+	err := core.UpdateTreeWalker()
+
+	if err != nil {
+		log.Println("@@@err", err)
+	}
+
+	response := "{\"error\": \"Not implemented\"}"
+	http.Error(w, response, http.StatusInternalServerError)
+}

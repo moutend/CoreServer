@@ -54,3 +54,7 @@ func SetUIAEventHandler(fn com.UIAEventHandler) {
 func GetIUIAutomationElement(direction types.TreeWalkerDirection, pRootElement uintptr) (pElement *com.IUIAutomationElement, err error) {
 	return server.GetIUIAutomationElement(direction, pRootElement)
 }
+
+func UpdateTreeWalker() error {
+	return server.UpdateTreeWalker()
+}

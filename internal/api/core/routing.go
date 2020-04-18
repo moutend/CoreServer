@@ -9,5 +9,6 @@ func Setup(router chi.Router) {
 		r.Put("/first", putCursorFirstChildElement)
 		r.Put("/last", putCursorLastChildElement)
 		r.Put("/parent", putCursorParentElement)
+		r.Put("/update", putUpdateTreeWalker)
 	})
 }
