@@ -17,6 +17,8 @@ func putCursorNextElement(w http.ResponseWriter, r *http.Request) {
 		pElement, err := core.GetIUIAutomationElement(types.TW_NEXT, core.FocusElement)
 
 		log.Println("@@@next", err, pElement)
+	} else {
+		log.Println("@@@next is not available")
 	}
 
 	response := "{\"error\": \"Not implemented\"}"

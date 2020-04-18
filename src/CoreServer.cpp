@@ -322,6 +322,9 @@ STDMETHODIMP
 CCoreServer::UpdateTreeWalker() {
   std::lock_guard<std::mutex> lock(mMutex);
 
+  Log->Info(L"Called ICoreServer::UpdateTreeWalker()", GetCurrentThreadId(),
+            __LONGFILE__);
+
   SafeRelease(&(mUIALoopCtx->BaseTreeWalker));
 
   HRESULT hr{};
