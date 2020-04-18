@@ -362,7 +362,7 @@ func (v *IUIAutomationElement) CachedIsPassword() (bool, error) {
 	return uiaeCachedIsPassword(v)
 }
 
-func (v *IUIAutomationElement) CachedNativeWindowHandle() error {
+func (v *IUIAutomationElement) CachedNativeWindowHandle() (uintptr, error) {
 	return uiaeCachedNativeWindowHandle(v)
 }
 

@@ -63,7 +63,7 @@ func rootRunE(cmd *cobra.Command, args []string) error {
 			return 0
 		}
 
-		hwnd, _ := e.CurrentNativeWindowHandle()
+		hwnd, _ := e.CachedNativeWindowHandle()
 		name, _ := e.CurrentName()
 		className, _ := e.CurrentClassName()
 		framework, _ := e.CurrentFrameworkId()

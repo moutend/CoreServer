@@ -739,8 +739,21 @@ func uiaeCachedIsPassword(v *IUIAutomationElement) (bool, error) {
 	return result == 1, nil
 }
 
-func uiaeCachedNativeWindowHandle(v *IUIAutomationElement) error {
-	return ole.NewError(ole.E_NOTIMPL)
+func uiaeCachedNativeWindowHandle(v *IUIAutomationElement) (uintptr, error) {
+	var hwnd uintptr
+
+	hr, _, _ := syscall.Syscall(
+		v.VTable().CachedNativeWindowHandle,
+		2,
+		uintptr(unsafe.Pointer(v)),
+		uintptr(unsafe.Pointer(&hwnd)),
+		0)
+
+	if hr != 0 {
+		return 0, ole.NewError(hr)
+	}
+
+	return hwnd, nil
 }
 
 func uiaeCachedItemType(v *IUIAutomationElement) (types.BSTR, error) {

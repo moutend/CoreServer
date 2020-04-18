@@ -267,8 +267,8 @@ func uiaeCachedIsPassword(v *IUIAutomationElement) (bool, error) {
 	return false, ole.NewError(ole.E_NOTIMPL)
 }
 
-func uiaeCachedNativeWindowHandle(v *IUIAutomationElement) error {
-	return ole.NewError(ole.E_NOTIMPL)
+func uiaeCachedNativeWindowHandle(v *IUIAutomationElement) (uintptr, error) {
+	return 0, ole.NewError(ole.E_NOTIMPL)
 }
 
 func uiaeCachedItemType(v *IUIAutomationElement) (types.BSTR, error) {
