@@ -234,7 +234,7 @@ func (v *IUIAutomationElement) CurrentIsPassword() (bool, error) {
 	return uiaeCurrentIsPassword(v)
 }
 
-func (v *IUIAutomationElement) CurrentNativeWindowHandle() error {
+func (v *IUIAutomationElement) CurrentNativeWindowHandle() (uintptr, error) {
 	return uiaeCurrentNativeWindowHandle(v)
 }
 

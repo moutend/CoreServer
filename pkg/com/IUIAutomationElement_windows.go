@@ -312,8 +312,21 @@ func uiaeCurrentIsPassword(v *IUIAutomationElement) (bool, error) {
 	return result == 1, nil
 }
 
-func uiaeCurrentNativeWindowHandle(v *IUIAutomationElement) error {
-	return ole.NewError(ole.E_NOTIMPL)
+func uiaeCurrentNativeWindowHandle(v *IUIAutomationElement) (uintptr, error) {
+	var hwnd uintptr
+
+	hr, _, _ := syscall.Syscall(
+		v.VTable().CurrentNativeWindowHandle,
+		2,
+		uintptr(unsafe.Pointer(v)),
+		uintptr(unsafe.Pointer(&hwnd)),
+		0)
+
+	if hr != 0 {
+		return 0, ole.NewError(hr)
+	}
+
+	return hwnd, nil
 }
 
 func uiaeCurrentItemType(v *IUIAutomationElement) (types.BSTR, error) {

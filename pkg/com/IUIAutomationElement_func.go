@@ -139,8 +139,8 @@ func uiaeCurrentIsPassword(v *IUIAutomationElement) (bool, error) {
 	return false, ole.NewError(ole.E_NOTIMPL)
 }
 
-func uiaeCurrentNativeWindowHandle(v *IUIAutomationElement) error {
-	return ole.NewError(ole.E_NOTIMPL)
+func uiaeCurrentNativeWindowHandle(v *IUIAutomationElement) (uintptr, error) {
+	return 0, ole.NewError(ole.E_NOTIMPL)
 }
 
 func uiaeCurrentItemType(v *IUIAutomationElement) (types.BSTR, error) {
