@@ -319,7 +319,21 @@ CCoreServer::GetIUIAutomationElement(TreeWalkerDirection direction,
 }
 
 STDMETHODIMP
-CCoreServer::UpdateTreeWalker() { std::lock_guard<std::mutex> lock(mMutex); }
+CCoreServer::UpdateTreeWalker() {
+  std::lock_guard<std::mutex> lock(mMutex);
+
+  SafeRelease(&(mUIALoopCtx->BaseTreeWalker));
+
+  hr = mUIALoopCtx->UIAutomation->get_RawViewWalker(
+      &(mUIALoopCtx->BaseTreeWalker));
+
+  if (FAILED(hr)) {
+    Log->Fail(L"Failed to call IUIAutomation::get_RawViewWalker",
+              GetCurrentThreadId(), __LONGFILE__);
+  }
+
+  return S_OK;
+}
 
 // CCoreServerFactory
 STDMETHODIMP CCoreServerFactory::QueryInterface(REFIID riid, void **ppvObject) {
