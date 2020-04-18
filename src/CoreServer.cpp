@@ -324,6 +324,8 @@ CCoreServer::UpdateTreeWalker() {
 
   SafeRelease(&(mUIALoopCtx->BaseTreeWalker));
 
+  HRESULT hr{};
+
   hr = mUIALoopCtx->UIAutomation->get_RawViewWalker(
       &(mUIALoopCtx->BaseTreeWalker));
 
