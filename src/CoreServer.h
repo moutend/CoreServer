@@ -38,6 +38,7 @@ public:
                           IUIAutomationElement *pRootElement,
                           IUIAutomationElement **ppElement);
   STDMETHODIMP UpdateTreeWalker();
+  STDMETHODIMP ElementFromHandle(UIA_HWND hwnd, IUIAutomationElement **ppElement);
 
   CCoreServer();
   ~CCoreServer();

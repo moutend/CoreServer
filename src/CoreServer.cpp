@@ -340,6 +340,25 @@ CCoreServer::UpdateTreeWalker() {
   return S_OK;
 }
 
+STDMETHODIMP
+CCoreServer::ElementFromHandle(UIA_HWND hwnd, IUIAutomationElement **ppElement) {
+  std::lock_guard<std::mutex> lock(mMutex);
+
+  Log->Info(L"Called ICoreServer::ElementFromHandle()", GetCurrentThreadId(),
+            __LONGFILE__);
+
+  HRESULT hr{};
+
+  hr = mUIALoopCtx->UIAutomation->ElementFromHandle(hwnd, ppElement);
+
+  if (FAILED(hr)) {
+    Log->Fail(L"Failed to call IUIAutomation::ElementFromHandle",
+              GetCurrentThreadId(), __LONGFILE__);
+  }
+
+  return S_OK;
+}
+
 // CCoreServerFactory
 STDMETHODIMP CCoreServerFactory::QueryInterface(REFIID riid, void **ppvObject) {
   *ppvObject = nullptr;
