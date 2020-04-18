@@ -145,7 +145,7 @@ AutomationEventHandler::HandleAutomationEvent(IUIAutomationElement *pSender,
   if (pSender == nullptr) {
     return S_OK;
   }
-return S_OK;
+  return S_OK;
   Log->Info(L"Called HandleAutomationEvent()", GetCurrentThreadId(),
             __LONGFILE__);
 
