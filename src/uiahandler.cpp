@@ -54,10 +54,6 @@ FocusChangeEventHandler::HandleFocusChangedEvent(
   Log->Info(L"Called HandleFocusChangedEvent()", GetCurrentThreadId(),
             __LONGFILE__);
 
-  if (mUIALoopCtx != nullptr && mUIALoopCtx->HandleFunc != nullptr) {
-    mUIALoopCtx->HandleFunc(UIA_AutomationFocusChangedEventId, pSender);
-  }
-
   SAFEARRAY *runtimeId{};
 
   hr = pSender->GetRuntimeId(&runtimeId);
@@ -66,6 +62,23 @@ FocusChangeEventHandler::HandleFocusChangedEvent(
     Log->Warn(L"Failed to call IUIAutomationElement::GetRuntimeId()",
               GetCurrentThreadId(), __LONGFILE__);
     return hr;
+  }
+
+  BOOL areSame{};
+
+  hr = mUIALoopCtx->UIAutomation->CompareRuntimeIds(
+      runtimeId, mUIALoopCtx->FocusElementRuntimeId, &areSame);
+
+  if (FAILED(hr)) {
+    Log->Warn(L"Failed to call IUIAutomation::CompareRuntimeIds()",
+              GetCurrentThreadId(), __LONGFILE__);
+    return hr;
+  }
+  if (areSame) {
+    return S_OK;
+  }
+  if (mUIALoopCtx != nullptr && mUIALoopCtx->HandleFunc != nullptr) {
+    mUIALoopCtx->HandleFunc(UIA_AutomationFocusChangedEventId, pSender);
   }
 
   hr = SafeArrayCopy(runtimeId, &(mUIALoopCtx->FocusElementRuntimeId));
