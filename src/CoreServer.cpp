@@ -341,7 +341,8 @@ CCoreServer::UpdateTreeWalker() {
 }
 
 STDMETHODIMP
-CCoreServer::ElementFromHandle(UIA_HWND hwnd, IUIAutomationElement **ppElement) {
+CCoreServer::ElementFromHandle(UIA_HWND hwnd,
+                               IUIAutomationElement **ppElement) {
   std::lock_guard<std::mutex> lock(mMutex);
 
   Log->Info(L"Called ICoreServer::ElementFromHandle()", GetCurrentThreadId(),

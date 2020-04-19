@@ -1,6 +1,7 @@
 #include <UIAutomationClient.h>
 #include <UIAutomationCore.h>
 #include <cpplogger/cpplogger.h>
+#include <oleauto.h>
 
 #include <strsafe.h>
 
@@ -55,6 +56,28 @@ FocusChangeEventHandler::HandleFocusChangedEvent(
     mUIALoopContext->HandleFunc(UIA_AutomationFocusChangedEventId, pSender);
   }
 
+  SAFEARRAY *runtimeId{};
+
+  hr = pSender->GetRuntimeId(&runtimeId);
+
+  if (FAILED(hr)) {
+    Log->Warn(L"Failed to call IUIAutomationElement::GetRuntimeId()",
+              GetCurrentThreadId(), __LONGFILE__);
+    return hr;
+  }
+
+  hr = SafeArrayCopy(runtimeId, &(mUIALoopCtx->FocusElementRuntimeId));
+
+  if (FAILED(hr)) {
+    Log->Warn(L"Failed to call SafeArrayCopy()", GetCurrentThreadId(),
+              __LONGFILE__);
+    return hr;
+  }
+  if (!SetEvent(mUIALoopCtx->FocusEvent)) {
+    Log->Fail(L"Failed to send event", GetCurrentThreadId(), __LONGFILE__);
+    return E_FAIL;
+  }
+
   return S_OK;
 }
 
@@ -100,7 +123,7 @@ PropertyChangeEventHandler::HandlePropertyChangedEvent(
 
   Log->Info(L"Called HandlePropertyChangedEvent()", GetCurrentThreadId(),
             __LONGFILE__);
-  return S_OK;
+
   if (mUIALoopContext != nullptr && mUIALoopContext->HandleFunc != nullptr) {
     mUIALoopContext->HandleFunc(UIA_AutomationPropertyChangedEventId, pSender);
   }
@@ -148,7 +171,7 @@ AutomationEventHandler::HandleAutomationEvent(IUIAutomationElement *pSender,
 
   Log->Info(L"Called HandleAutomationEvent()", GetCurrentThreadId(),
             __LONGFILE__);
-  return S_OK;
+
   if (mUIALoopContext != nullptr && mUIALoopContext->HandleFunc != nullptr) {
     mUIALoopContext->HandleFunc(static_cast<INT64>(eventId), pSender);
   }
@@ -199,7 +222,7 @@ StructureChangeEventHandler::HandleStructureChangedEvent(
 
   Log->Info(L"Called HandleStructureChangedEvent()", GetCurrentThreadId(),
             __LONGFILE__);
-  return S_OK;
+
   if (mUIALoopContext != nullptr && mUIALoopContext->HandleFunc != nullptr) {
     mUIALoopContext->HandleFunc(0, pSender);
   }

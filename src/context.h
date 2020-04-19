@@ -11,6 +11,8 @@ struct LogLoopContext {
 
 struct UIALoopContext {
   HANDLE QuitEvent = nullptr;
+  HANDLE FocusEvent = nullptr;
+  SAFEARRAY *FocusElementRuntimeId = nullptr;
   IUIEventHandler HandleFunc = nullptr;
   IUIAutomationElement *RootElement = nullptr;
   IUIAutomation5 *UIAutomation = nullptr;
