@@ -12,7 +12,7 @@
 extern Logger::Logger *Log;
 
 FocusChangeEventHandler::FocusChangeEventHandler(UIALoopContext *ctx)
-    : mUIALoopCtx(ctx) {}
+    : mUIALoopCtx(ctx), mLeft(0), mTop(0), mRight(0), mBottom(0) {}
 
 ULONG FocusChangeEventHandler::AddRef() {
   ULONG ret = InterlockedIncrement(&mRefCount);
@@ -54,6 +54,30 @@ FocusChangeEventHandler::HandleFocusChangedEvent(
   Log->Info(L"Called HandleFocusChangedEvent()", GetCurrentThreadId(),
             __LONGFILE__);
 
+  RECT rectangle{};
+
+  hr = pSender->get_CurrentBoundingRectangle(&boundingRectangle);
+
+  if (FAILED(hr)) {
+    return hr;
+  }
+
+  LONG l = mLeft;
+  LONG t = mTop;
+  LONG r = mRight;
+  LONG b = mBottom;
+
+  mLeft = rectangle.left;
+  mTop = rectangle.top;
+  mRight = rectangle.right;
+  mBottom = rectangle.bottom;
+
+  bool isSameBoundingRectangle = l == rectangle.left && t == rectangle.top &&
+                                 r == rectangle.right && b == rectangle.bottom;
+
+  if (isSameBoundingRectangle) {
+    return S_OK;
+  }
   if (mUIALoopCtx != nullptr && mUIALoopCtx->HandleFunc != nullptr) {
     mUIALoopCtx->HandleFunc(UIA_AutomationFocusChangedEventId, pSender);
   }

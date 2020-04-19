@@ -21,6 +21,10 @@ public:
 private:
   LONG mRefCount;
   UIALoopContext *mUIALoopCtx;
+  LONG mLeft;
+  LONG mTop;
+  LONG mRight;
+  LONG mBottom;
 };
 
 class PropertyChangeEventHandler
