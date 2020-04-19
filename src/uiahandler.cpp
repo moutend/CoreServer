@@ -68,14 +68,14 @@ FocusChangeEventHandler::HandleFocusChangedEvent(
     return hr;
   }
 
-  hr = SafeArrayCopy(runtimeId, &(mUIALoopCtx->FocusElementRuntimeId));
+  hr = SafeArrayCopy(runtimeId, &(mUIALoopContext->FocusElementRuntimeId));
 
   if (FAILED(hr)) {
     Log->Warn(L"Failed to call SafeArrayCopy()", GetCurrentThreadId(),
               __LONGFILE__);
     return hr;
   }
-  if (!SetEvent(mUIALoopCtx->FocusEvent)) {
+  if (!SetEvent(mUIALoopContext->FocusEvent)) {
     Log->Fail(L"Failed to send event", GetCurrentThreadId(), __LONGFILE__);
     return E_FAIL;
   }
