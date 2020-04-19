@@ -56,7 +56,7 @@ FocusChangeEventHandler::HandleFocusChangedEvent(
 
   RECT rectangle{};
 
-  hr = pSender->get_CurrentBoundingRectangle(&boundingRectangle);
+  hr = pSender->get_CurrentBoundingRectangle(&rectangle);
 
   if (FAILED(hr)) {
     return hr;
