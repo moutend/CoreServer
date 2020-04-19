@@ -20,7 +20,7 @@ static IUIAutomationElement *pFocusElement{};
 static PROPERTYID itemIndexPropertyId{};
 static PROPERTYID itemCountPropertyId{};
 
-HRESULT updateFocusElement(IUIAutomation *pUIAutomation) {
+HRESULT updateForegroundElement(IUIAutomation *pUIAutomation) {
   HWND hw{};
   HRESULT hr{};
 
@@ -49,6 +49,9 @@ HRESULT updateFocusElement(IUIAutomation *pUIAutomation) {
 HRESULT findFocusElement(IUIAutomation *pUIAutomation, SAFEARRAY *r1) {
   HRESULT hr{};
 
+  if (r1 == nullptr) {
+    return E_FAIL;
+  }
   if (pFound == nullptr) {
     hr =
         pForegroundElement->FindAll(TreeScope_Subtree, pTrueCondition, &pFound);
@@ -66,7 +69,7 @@ HRESULT findFocusElement(IUIAutomation *pUIAutomation, SAFEARRAY *r1) {
   }
 
   SAFEARRAY *r2{};
-  bool areSame{};
+  BOOL areSame{};
   IUIAutomationElement *pElement{};
 
   for (int i = 0; i < length; i++) {
@@ -231,7 +234,7 @@ DWORD WINAPI uiaLoop(LPVOID context) {
         break;
       }
 
-      hr = findFocusElement(ctx->UIAutomation, ctx->RuntimeId);
+      hr = findFocusElement(ctx->UIAutomation, ctx->focusElementRuntimeId);
 
       if (FAILED(hr)) {
         Log->Warn(L"Failed to find focus element.", GetCurrentThreadId(),
