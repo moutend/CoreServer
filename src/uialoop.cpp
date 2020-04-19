@@ -69,7 +69,7 @@ HRESULT findFocusElement(IUIAutomation *pUIAutomation, SAFEARRAY *r1) {
   bool areSame{};
   IUIAutomationElement *pElement{};
 
-  for (int i = 0; i < foundLength; i++) {
+  for (int i = 0; i < length; i++) {
     hr = pFound->GetElement(i, &pElement);
 
     if (FAILED(hr)) {
@@ -79,10 +79,10 @@ HRESULT findFocusElement(IUIAutomation *pUIAutomation, SAFEARRAY *r1) {
     hr = pElement->GetRuntimeId(&r2);
 
     if (FAILED(hr)) {
-      continue
+      continue;
     }
 
-    hr = pUIAutomation->CompareRuntimeId(r1, r2, &areSame);
+    hr = pUIAutomation->CompareRuntimeIds(r1, r2, &areSame);
 
     if (FAILED(hr)) {
       continue;
@@ -144,7 +144,7 @@ CLEANUP:
 DWORD WINAPI uiaLoop(LPVOID context) {
   Log->Info(L"Start UI Automation loop", GetCurrentThreadId(), __LONGFILE__);
 
-  HRESULT hr {}
+  HRESULT hr{};
   bool isActive{true};
 
   hr = CoInitializeEx(nullptr, COINIT_MULTITHREADED);
