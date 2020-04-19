@@ -48,8 +48,6 @@ func rootRunE(cmd *cobra.Command, args []string) error {
 	defer core.Teardown()
 
 	core.SetUIAEventHandler(func(eventId types.UIAEvent, pInterface uintptr) int64 {
-		go http.Post("http://192.168.1.102:7902/v1/audio", "application/json", bytes.NewBufferString(`{"isForcePush":true,"commands": [{"type": 1, "value":10}]}`))
-
 		e := (*com.IUIAutomationElement)(unsafe.Pointer(pInterface))
 
 		rect, err := e.CurrentBoundingRectangle()
@@ -62,6 +60,8 @@ func rootRunE(cmd *cobra.Command, args []string) error {
 			log.Println("@@@skipped")
 			return 0
 		}
+
+		go http.Post("http://192.168.1.102:7902/v1/audio", "application/json", bytes.NewBufferString(`{"isForcePush":true,"commands": [{"type": 1, "value":10}]}`))
 
 		hwnd, _ := e.CachedNativeWindowHandle()
 		name, _ := e.CurrentName()
