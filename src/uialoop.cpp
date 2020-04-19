@@ -234,7 +234,7 @@ DWORD WINAPI uiaLoop(LPVOID context) {
         break;
       }
 
-      hr = findFocusElement(ctx->UIAutomation, ctx->focusElementRuntimeId);
+      hr = findFocusElement(ctx->UIAutomation, ctx->FocusElementRuntimeId);
 
       if (FAILED(hr)) {
         Log->Warn(L"Failed to find focus element.", GetCurrentThreadId(),

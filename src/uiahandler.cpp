@@ -45,6 +45,8 @@ HRESULT FocusChangeEventHandler::QueryInterface(REFIID riid,
 HRESULT
 FocusChangeEventHandler::HandleFocusChangedEvent(
     IUIAutomationElement *pSender) {
+  HRESULT hr{};
+
   if (pSender == nullptr) {
     return S_OK;
   }
