@@ -20,7 +20,7 @@ static IUIAutomationElement *pFocusElement{};
 static PROPERTYID itemIndexPropertyId{};
 static PROPERTYID itemCountPropertyId{};
 
-HRESULT updateFocusElement(IUIAutomation *pAutomation) {
+HRESULT updateFocusElement(IUIAutomation *pUIAutomation) {
   HWND hw{};
   HRESULT hr{};
 
