@@ -151,6 +151,15 @@ STDMETHODIMP CCoreServer::Start() {
     return E_FAIL;
   }
 
+  mUIALoopCtx->FocusEvent =
+      CreateEventEx(nullptr, nullptr, 0, EVENT_MODIFY_STATE | SYNCHRONIZE);
+
+  if (mUIALoopCtx->FocusEvent == nullptr) {
+    Log->Fail(L"Failed to create event", GetCurrentThreadId(), __LONGFILE__);
+
+    return E_FAIL;
+  }
+
   Log->Info(L"Create uia loop thread", GetCurrentThreadId(), __LONGFILE__);
 
   mUIALoopThread = CreateThread(nullptr, 0, uiaLoop,

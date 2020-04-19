@@ -12,7 +12,7 @@
 extern Logger::Logger *Log;
 
 FocusChangeEventHandler::FocusChangeEventHandler(UIALoopContext *ctx)
-    : mUIALoopContext(ctx) {}
+    : mUIALoopCtx(ctx) {}
 
 ULONG FocusChangeEventHandler::AddRef() {
   ULONG ret = InterlockedIncrement(&mRefCount);
@@ -54,8 +54,8 @@ FocusChangeEventHandler::HandleFocusChangedEvent(
   Log->Info(L"Called HandleFocusChangedEvent()", GetCurrentThreadId(),
             __LONGFILE__);
 
-  if (mUIALoopContext != nullptr && mUIALoopContext->HandleFunc != nullptr) {
-    mUIALoopContext->HandleFunc(UIA_AutomationFocusChangedEventId, pSender);
+  if (mUIALoopCtx != nullptr && mUIALoopCtx->HandleFunc != nullptr) {
+    mUIALoopCtx->HandleFunc(UIA_AutomationFocusChangedEventId, pSender);
   }
 
   SAFEARRAY *runtimeId{};
@@ -68,14 +68,14 @@ FocusChangeEventHandler::HandleFocusChangedEvent(
     return hr;
   }
 
-  hr = SafeArrayCopy(runtimeId, &(mUIALoopContext->FocusElementRuntimeId));
+  hr = SafeArrayCopy(runtimeId, &(mUIALoopCtx->FocusElementRuntimeId));
 
   if (FAILED(hr)) {
     Log->Warn(L"Failed to call SafeArrayCopy()", GetCurrentThreadId(),
               __LONGFILE__);
     return hr;
   }
-  if (!SetEvent(mUIALoopContext->FocusEvent)) {
+  if (!SetEvent(mUIALoopCtx->FocusEvent)) {
     Log->Fail(L"Failed to send event", GetCurrentThreadId(), __LONGFILE__);
     return E_FAIL;
   }
