@@ -61,7 +61,7 @@ func rootRunE(cmd *cobra.Command, args []string) error {
 			return 0
 		}
 
-		go http.Post("http://192.168.1.102:7902/v1/audio", "application/json", bytes.NewBufferString(`{"isForcePush":true,"commands": [{"type": 1, "value":10}]}`))
+		go http.Post("http://127.0.0.1:7902/v1/audio", "application/json", bytes.NewBufferString(`{"isForcePush":true,"commands": [{"type": 1, "value":10}]}`))
 
 		hwnd, _ := e.CachedNativeWindowHandle()
 		name, _ := e.CurrentName()
