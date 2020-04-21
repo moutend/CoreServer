@@ -28,18 +28,10 @@ void eventCallback(HWINEVENTHOOK hHook, DWORD eventId, HWND hWindow,
     objectId = OBJID_CLIENT;
   }
 
+  Log->Info(L"IAccessible event received", GetCurrentThreadId(), __LONGFILE__);
+
   HRESULT hr{};
   IUIAutomationElement *pSender{};
-  IAccessible *pAcc{};
-  VARIANT vChild{};
-
-  hr = AccessibleObjectFromEvent(hWindow, objectId, childId, &pAcc, &vChild);
-
-  if (FAILED(hr)) {
-    return;
-  }
-
-  Log->Info(L"IAccessible event received", GetCurrentThreadId(), __LONGFILE__);
 
   if (ctx->UIAutomation == nullptr) {
     Log->Info(L"IUIAutomation is not available", GetCurrentThreadId(),
@@ -47,7 +39,7 @@ void eventCallback(HWINEVENTHOOK hHook, DWORD eventId, HWND hWindow,
     goto CLEANUP;
   }
 
-  hr = ctx->UIAutomation->ElementFromIAccessible(pAcc, childId, &pSender);
+  hr = ctx->UIAutomation->ElementFromHandle(hWindow, &pSender);
 
   if (FAILED(hr)) {
     Log->Info(L"Failed to get IUIAutomationElement from IAccessible",
@@ -82,7 +74,6 @@ void eventCallback(HWINEVENTHOOK hHook, DWORD eventId, HWND hWindow,
 CLEANUP:
 
   SafeRelease(&pSender);
-  SafeRelease(&pAcc);
 }
 
 DWORD WINAPI windowsEventThread(LPVOID context) {
