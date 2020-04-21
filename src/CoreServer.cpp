@@ -163,17 +163,16 @@ STDMETHODIMP CCoreServer::Start() {
   Log->Info(L"Create UI automation thread", GetCurrentThreadId(), __LONGFILE__);
 
   mUIAThread = CreateThread(nullptr, 0, uiaThread,
-                                static_cast<void *>(mAutomationCtx), 0, nullptr);
+                            static_cast<void *>(mAutomationCtx), 0, nullptr);
 
-  if (mUIAThread== nullptr) {
+  if (mUIAThread == nullptr) {
     Log->Fail(L"Failed to create thread", GetCurrentThreadId(), __LONGFILE__);
     return E_FAIL;
   }
 
-  Log->Info(L"Create windows event thread", GetCurrentThreadId(),
-            __LONGFILE__);
+  Log->Info(L"Create Windows event thread", GetCurrentThreadId(), __LONGFILE__);
 
-  mWindowsEventLoopThread =
+  mWindowsEventThread =
       CreateThread(nullptr, 0, windowsEventThread,
                    static_cast<void *>(mAutomationCtx), 0, nullptr);
 
@@ -194,7 +193,7 @@ STDMETHODIMP CCoreServer::Stop() {
 
   Log->Info(L"Called ICoreServer::Stop()", GetCurrentThreadId(), __LONGFILE__);
 
-  if (mUIAThread== nullptr) {
+  if (mUIAThread == nullptr) {
     goto END_UIA_CLEANUP;
   }
   if (!SetEvent(mAutomationCtx->QuitEvent)) {
@@ -206,7 +205,7 @@ STDMETHODIMP CCoreServer::Stop() {
   SafeCloseHandle(&mUIAThread);
   SafeCloseHandle(&(mAutomationCtx->QuitEvent));
 
-  Log->Info(L"Delete UIA thread", GetCurrentThreadId(), __LONGFILE__);
+  Log->Info(L"Delete UI automation thread", GetCurrentThreadId(), __LONGFILE__);
 
 END_UIA_CLEANUP:
 
@@ -216,13 +215,12 @@ END_UIA_CLEANUP:
 
   mAutomationCtx->IsActive = false;
   WaitForSingleObject(mWindowsEventThread, INFINITE);
-  SafeCloseHandle(&mWindowsEventLoopThread);
+  SafeCloseHandle(&mWindowsEventThread);
 
   delete mAutomationCtx;
   mAutomationCtx = nullptr;
 
-  Log->Info(L"Delete windows event thread", GetCurrentThreadId(),
-            __LONGFILE__);
+  Log->Info(L"Delete Windows event thread", GetCurrentThreadId(), __LONGFILE__);
 
 END_WINDOWS_EVENT_CLEANUP:
 
@@ -280,22 +278,23 @@ CCoreServer::GetIUIAutomationElement(TreeWalkerDirection direction,
   switch (direction) {
   case TW_NEXT:
     hr = mAutomationCtx->BaseTreeWalker->GetNextSiblingElement(pRootElement,
-                                                            ppElement);
+                                                               ppElement);
     break;
   case TW_PREVIOUS:
     hr = mAutomationCtx->BaseTreeWalker->GetPreviousSiblingElement(pRootElement,
-                                                                ppElement);
+                                                                   ppElement);
     break;
   case TW_FIRST_CHILD:
     hr = mAutomationCtx->BaseTreeWalker->GetFirstChildElement(pRootElement,
-                                                           ppElement);
+                                                              ppElement);
     break;
   case TW_LAST_CHILD:
     hr = mAutomationCtx->BaseTreeWalker->GetLastChildElement(pRootElement,
-                                                          ppElement);
+                                                             ppElement);
     break;
   case TW_PARENT:
-    hr = mAutomationCtx->BaseTreeWalker->GetParentElement(pRootElement, ppElement);
+    hr = mAutomationCtx->BaseTreeWalker->GetParentElement(pRootElement,
+                                                          ppElement);
     break;
   default:
     return S_OK;

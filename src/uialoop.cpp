@@ -158,7 +158,7 @@ DWORD WINAPI uiaThread(LPVOID context) {
     return hr;
   }
 
-  AutomationContext *ctx = static_cast<AutomationContext*>(context);
+  AutomationContext *ctx = static_cast<AutomationContext *>(context);
 
   if (ctx == nullptr) {
     Log->Fail(L"Failed to obtain context", GetCurrentThreadId(), __LONGFILE__);
@@ -257,8 +257,7 @@ CLEANUP:
 
   CoUninitialize();
 
-  Log->Info(L"End UI automation thread", GetCurrentThreadId(),
-            __LONGFILE__);
+  Log->Info(L"End UI automation thread", GetCurrentThreadId(), __LONGFILE__);
 
   return S_OK;
 }

@@ -20,7 +20,7 @@ public:
 
 private:
   LONG mRefCount;
-  AutomationContext *mAutomationCtx ;
+  AutomationContext *mAutomationCtx;
   LONG mLeft;
   LONG mTop;
   LONG mRight;

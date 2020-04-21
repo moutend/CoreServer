@@ -111,7 +111,7 @@ FocusChangeEventHandler::HandleFocusChangedEvent(
 }
 
 PropertyChangeEventHandler::PropertyChangeEventHandler(AutomationContext *ctx)
-    : mAutomationContext(ctx) {}
+    : mAutomationCtx(ctx) {}
 
 ULONG PropertyChangeEventHandler::AddRef() {
   ULONG ret = InterlockedIncrement(&mRefCount);
@@ -153,15 +153,15 @@ PropertyChangeEventHandler::HandlePropertyChangedEvent(
   Log->Info(L"Called HandlePropertyChangedEvent()", GetCurrentThreadId(),
             __LONGFILE__);
 
-  if (mAutomationContext != nullptr && mAutomationContext->HandleFunc != nullptr) {
-    mAutomationContext->HandleFunc(UIA_AutomationPropertyChangedEventId, pSender);
+  if (mAutomationCtx != nullptr && mAutomationCtx->HandleFunc != nullptr) {
+    mAutomationCtx->HandleFunc(UIA_AutomationPropertyChangedEventId, pSender);
   }
 
   return S_OK;
 }
 
 AutomationEventHandler::AutomationEventHandler(AutomationContext *ctx)
-    : mAutomationContext(ctx) {}
+    : mAutomationCtx(ctx) {}
 
 ULONG AutomationEventHandler::AddRef() {
   ULONG ret = InterlockedIncrement(&mRefCount);
@@ -201,15 +201,15 @@ AutomationEventHandler::HandleAutomationEvent(IUIAutomationElement *pSender,
   Log->Info(L"Called HandleAutomationEvent()", GetCurrentThreadId(),
             __LONGFILE__);
 
-  if (mAutomationContext != nullptr && mAutomationContext->HandleFunc != nullptr) {
-    mAutomationContext->HandleFunc(static_cast<INT64>(eventId), pSender);
+  if (mAutomationCtx != nullptr && mAutomationCtx->HandleFunc != nullptr) {
+    mAutomationCtx->HandleFunc(static_cast<INT64>(eventId), pSender);
   }
 
   return S_OK;
 }
 
 StructureChangeEventHandler::StructureChangeEventHandler(AutomationContext *ctx)
-    : mAutomationContext(ctx) {}
+    : mAutomationCtx(ctx) {}
 
 ULONG StructureChangeEventHandler::AddRef() {
   ULONG ret = InterlockedIncrement(&mRefCount);
@@ -252,8 +252,8 @@ StructureChangeEventHandler::HandleStructureChangedEvent(
   Log->Info(L"Called HandleStructureChangedEvent()", GetCurrentThreadId(),
             __LONGFILE__);
 
-  if (mAutomationContext != nullptr && mAutomationContext->HandleFunc != nullptr) {
-    mAutomationContext->HandleFunc(0, pSender);
+  if (mAutomationCtx != nullptr && mAutomationCtx->HandleFunc != nullptr) {
+    mAutomationCtx->HandleFunc(0, pSender);
   }
 
   return S_OK;

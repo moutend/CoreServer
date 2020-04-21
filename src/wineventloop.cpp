@@ -86,8 +86,7 @@ CLEANUP:
 }
 
 DWORD WINAPI windowsEventThread(LPVOID context) {
-  Log->Info(L"Start Windows event loop thread", GetCurrentThreadId(),
-            __LONGFILE__);
+  Log->Info(L"Start Windows event thread", GetCurrentThreadId(), __LONGFILE__);
 
   HRESULT hr = CoInitializeEx(nullptr, COINIT_MULTITHREADED);
 
@@ -146,8 +145,7 @@ DWORD WINAPI windowsEventThread(LPVOID context) {
 
   CoUninitialize();
 
-  Log->Info(L"Finish Windows event loop thread", GetCurrentThreadId(),
-            __LONGFILE__);
+  Log->Info(L"End Windows event thread", GetCurrentThreadId(), __LONGFILE__);
 
   return S_OK;
 }

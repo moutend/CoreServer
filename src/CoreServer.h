@@ -52,7 +52,7 @@ private:
   std::mutex mMutex;
 
   LogLoopContext *mLogLoopCtx = nullptr;
-  AutomationContext *mAutomationCtx= nullptr;
+  AutomationContext *mAutomationCtx = nullptr;
 
   HANDLE mLogLoopThread = nullptr;
   HANDLE mUIAThread = nullptr;
