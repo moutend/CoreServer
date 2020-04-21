@@ -2,4 +2,4 @@
 
 #include <windows.h>
 
-DWORD WINAPI uiaLoop(LPVOID context);
+DWORD WINAPI uiaThread(LPVOID context);

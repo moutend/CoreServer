@@ -11,8 +11,8 @@
 
 extern Logger::Logger *Log;
 
-FocusChangeEventHandler::FocusChangeEventHandler(UIALoopContext *ctx)
-    : mUIALoopCtx(ctx), mLeft(0), mTop(0), mRight(0), mBottom(0) {}
+FocusChangeEventHandler::FocusChangeEventHandler(AutomationContext *ctx)
+    : mAutomationCtx(ctx), mLeft(0), mTop(0), mRight(0), mBottom(0) {}
 
 ULONG FocusChangeEventHandler::AddRef() {
   ULONG ret = InterlockedIncrement(&mRefCount);
@@ -78,8 +78,8 @@ FocusChangeEventHandler::HandleFocusChangedEvent(
   if (isSameBoundingRectangle) {
     return S_OK;
   }
-  if (mUIALoopCtx != nullptr && mUIALoopCtx->HandleFunc != nullptr) {
-    mUIALoopCtx->HandleFunc(UIA_AutomationFocusChangedEventId, pSender);
+  if (mAutomationCtx != nullptr && mAutomationCtx->HandleFunc != nullptr) {
+    mAutomationCtx->HandleFunc(UIA_AutomationFocusChangedEventId, pSender);
   }
 
   SAFEARRAY *runtimeId{};
@@ -95,14 +95,14 @@ FocusChangeEventHandler::HandleFocusChangedEvent(
     return S_OK;
   }
 
-  hr = SafeArrayCopy(runtimeId, &(mUIALoopCtx->FocusElementRuntimeId));
+  hr = SafeArrayCopy(runtimeId, &(mAutomationCtx->FocusElementRuntimeId));
 
   if (FAILED(hr)) {
     Log->Warn(L"Failed to call SafeArrayCopy()", GetCurrentThreadId(),
               __LONGFILE__);
     return hr;
   }
-  if (!SetEvent(mUIALoopCtx->FocusEvent)) {
+  if (!SetEvent(mAutomationCtx->FocusEvent)) {
     Log->Fail(L"Failed to send event", GetCurrentThreadId(), __LONGFILE__);
     return E_FAIL;
   }
@@ -110,8 +110,8 @@ FocusChangeEventHandler::HandleFocusChangedEvent(
   return S_OK;
 }
 
-PropertyChangeEventHandler::PropertyChangeEventHandler(UIALoopContext *ctx)
-    : mUIALoopContext(ctx) {}
+PropertyChangeEventHandler::PropertyChangeEventHandler(AutomationContext *ctx)
+    : mAutomationContext(ctx) {}
 
 ULONG PropertyChangeEventHandler::AddRef() {
   ULONG ret = InterlockedIncrement(&mRefCount);
@@ -153,15 +153,15 @@ PropertyChangeEventHandler::HandlePropertyChangedEvent(
   Log->Info(L"Called HandlePropertyChangedEvent()", GetCurrentThreadId(),
             __LONGFILE__);
 
-  if (mUIALoopContext != nullptr && mUIALoopContext->HandleFunc != nullptr) {
-    mUIALoopContext->HandleFunc(UIA_AutomationPropertyChangedEventId, pSender);
+  if (mAutomationContext != nullptr && mAutomationContext->HandleFunc != nullptr) {
+    mAutomationContext->HandleFunc(UIA_AutomationPropertyChangedEventId, pSender);
   }
 
   return S_OK;
 }
 
-AutomationEventHandler::AutomationEventHandler(UIALoopContext *ctx)
-    : mUIALoopContext(ctx) {}
+AutomationEventHandler::AutomationEventHandler(AutomationContext *ctx)
+    : mAutomationContext(ctx) {}
 
 ULONG AutomationEventHandler::AddRef() {
   ULONG ret = InterlockedIncrement(&mRefCount);
@@ -201,15 +201,15 @@ AutomationEventHandler::HandleAutomationEvent(IUIAutomationElement *pSender,
   Log->Info(L"Called HandleAutomationEvent()", GetCurrentThreadId(),
             __LONGFILE__);
 
-  if (mUIALoopContext != nullptr && mUIALoopContext->HandleFunc != nullptr) {
-    mUIALoopContext->HandleFunc(static_cast<INT64>(eventId), pSender);
+  if (mAutomationContext != nullptr && mAutomationContext->HandleFunc != nullptr) {
+    mAutomationContext->HandleFunc(static_cast<INT64>(eventId), pSender);
   }
 
   return S_OK;
 }
 
-StructureChangeEventHandler::StructureChangeEventHandler(UIALoopContext *ctx)
-    : mUIALoopContext(ctx) {}
+StructureChangeEventHandler::StructureChangeEventHandler(AutomationContext *ctx)
+    : mAutomationContext(ctx) {}
 
 ULONG StructureChangeEventHandler::AddRef() {
   ULONG ret = InterlockedIncrement(&mRefCount);
@@ -252,8 +252,8 @@ StructureChangeEventHandler::HandleStructureChangedEvent(
   Log->Info(L"Called HandleStructureChangedEvent()", GetCurrentThreadId(),
             __LONGFILE__);
 
-  if (mUIALoopContext != nullptr && mUIALoopContext->HandleFunc != nullptr) {
-    mUIALoopContext->HandleFunc(0, pSender);
+  if (mAutomationContext != nullptr && mAutomationContext->HandleFunc != nullptr) {
+    mAutomationContext->HandleFunc(0, pSender);
   }
 
   return S_OK;

@@ -52,12 +52,11 @@ private:
   std::mutex mMutex;
 
   LogLoopContext *mLogLoopCtx = nullptr;
-  UIALoopContext *mUIALoopCtx = nullptr;
-  WinEventLoopContext *mWinEventLoopCtx = nullptr;
+  AutomationContext *mAutomationCtx= nullptr;
 
   HANDLE mLogLoopThread = nullptr;
-  HANDLE mUIALoopThread = nullptr;
-  HANDLE mWinEventLoopThread = nullptr;
+  HANDLE mUIAThread = nullptr;
+  HANDLE mWindowsEventThread = nullptr;
 };
 
 class CCoreServerFactory : public IClassFactory {

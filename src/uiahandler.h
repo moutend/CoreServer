@@ -16,11 +16,11 @@ public:
   // IUIAutomationFocusChangedEventHandler methods
   STDMETHODIMP HandleFocusChangedEvent(IUIAutomationElement *pSender);
 
-  FocusChangeEventHandler(UIALoopContext *ctx);
+  FocusChangeEventHandler(AutomationContext *ctx);
 
 private:
   LONG mRefCount;
-  UIALoopContext *mUIALoopCtx;
+  AutomationContext *mAutomationCtx ;
   LONG mLeft;
   LONG mTop;
   LONG mRight;
@@ -40,11 +40,11 @@ public:
                                           PROPERTYID propertyId,
                                           VARIANT newValue);
 
-  PropertyChangeEventHandler(UIALoopContext *ctx);
+  PropertyChangeEventHandler(AutomationContext *ctx);
 
 private:
   LONG mRefCount;
-  UIALoopContext *mUIALoopContext;
+  AutomationContext *mAutomationCtx;
 };
 
 class AutomationEventHandler : public IUIAutomationEventHandler {
@@ -58,11 +58,11 @@ public:
   STDMETHODIMP HandleAutomationEvent(IUIAutomationElement *sender,
                                      EVENTID eventId);
 
-  AutomationEventHandler(UIALoopContext *ctx);
+  AutomationEventHandler(AutomationContext *ctx);
 
 private:
   LONG mRefCount;
-  UIALoopContext *mUIALoopContext;
+  AutomationContext *mAutomationCtx;
 };
 
 class StructureChangeEventHandler
@@ -78,9 +78,9 @@ public:
                                            enum StructureChangeType changeType,
                                            SAFEARRAY *runtimeId);
 
-  StructureChangeEventHandler(UIALoopContext *ctx);
+  StructureChangeEventHandler(AutomationContext *ctx);
 
 private:
   LONG mRefCount;
-  UIALoopContext *mUIALoopContext;
+  AutomationContext *mAutomationCtx;
 };

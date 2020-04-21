@@ -2,4 +2,4 @@
 
 #include <windows.h>
 
-DWORD WINAPI winEventLoop(LPVOID context);
+DWORD WINAPI windowsEventThread(LPVOID context);

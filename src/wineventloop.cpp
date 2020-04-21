@@ -1,3 +1,5 @@
+#include <UIAutomationClient.h>
+#include <UIAutomationCore.h>
 #include <cpplogger/cpplogger.h>
 #include <windows.h>
 
@@ -11,7 +13,7 @@
 
 extern Logger::Logger *Log;
 
-static WinEventLoopContext *winEventLoopCtx{};
+static AutomationContext *ctx{};
 
 void eventCallback(HWINEVENTHOOK hHook, DWORD eventId, HWND hWindow,
                    LONG objectId, LONG childId, DWORD threadId,
@@ -26,31 +28,64 @@ void eventCallback(HWINEVENTHOOK hHook, DWORD eventId, HWND hWindow,
     objectId = OBJID_CLIENT;
   }
 
-  IAccessible *pAcc{nullptr};
-  VARIANT vChild{};
-
   HRESULT hr{};
+  IUIAutomationElement *pSender{};
+  IAccessible *pAcc{};
+  VARIANT vChild{};
 
   hr = AccessibleObjectFromEvent(hWindow, objectId, childId, &pAcc, &vChild);
 
   if (FAILED(hr)) {
     return;
   }
-  if (vChild.vt == VT_I4) {
-    // todo
-  }
-
-  if (winEventLoopCtx->HandleFunc != nullptr) {
-    winEventLoopCtx->HandleFunc(static_cast<INT64>(eventId), pAcc);
-  }
 
   Log->Info(L"IAccessible event received", GetCurrentThreadId(), __LONGFILE__);
 
+  if (ctx->UIAutomation == nullptr) {
+    Log->Info(L"IUIAutomation is not available", GetCurrentThreadId(),
+              __LONGFILE__);
+    goto CLEANUP:
+  }
+
+  hr = ctx->UIAutomation->ElementFromIAccessible(pAcc, childId, &pSender);
+
+  if (FAILED(hr)) {
+    Log->Info(L"Failed to get IUIAutomationElement from IAccessible",
+              GetCurrentThreadId(), __LONGFILE__);
+    goto CLEANUP;
+  }
+  if (ctx->HandleFunc != nullptr) {
+    ctx->HandleFunc(UIA_AutomationFocusChangedEventId, pSender);
+  }
+
+  SAFEARRAY *runtimeId{};
+
+  hr = pSender->GetRuntimeId(&runtimeId);
+
+  if (FAILED(hr)) {
+    Log->Warn(L"Failed to call IUIAutomationElement::GetRuntimeId()",
+              GetCurrentThreadId(), __LONGFILE__);
+    goto CLEANUP;
+  }
+  if (runtimeId == nullptr) {
+    goto CLEANUP;
+  }
+
+  hr = SafeArrayCopy(runtimeId, &(ctx->FocusElementRuntimeId));
+
+  if (FAILED(hr)) {
+    Log->Warn(L"Failed to call SafeArrayCopy()", GetCurrentThreadId(),
+              __LONGFILE__);
+    goto CLEANUP;
+  }
+
+CLEANUP:
+
+  SafeRelease(&pSender);
   SafeRelease(&pAcc);
 }
 
-DWORD WINAPI winEventLoop(LPVOID context) {
-  return 0;
+DWORD WINAPI windowsEventThread(LPVOID context) {
   Log->Info(L"Start Windows event loop thread", GetCurrentThreadId(),
             __LONGFILE__);
 
@@ -62,40 +97,18 @@ DWORD WINAPI winEventLoop(LPVOID context) {
     return hr;
   }
 
-  winEventLoopCtx = static_cast<WinEventLoopContext *>(context);
+  ctx = static_cast<AutomationContext *>(context);
 
-  if (winEventLoopCtx == nullptr) {
+  if (ctx == nullptr) {
     Log->Fail(L"Failed to obtain context", GetCurrentThreadId(), __LONGFILE__);
     return E_FAIL;
   }
 
-  HWINEVENTHOOK hookIds[24];
-  const DWORD events[24] = {EVENT_SYSTEM_DESKTOPSWITCH,
-                            EVENT_SYSTEM_FOREGROUND,
-                            EVENT_SYSTEM_ALERT,
-                            EVENT_SYSTEM_MENUSTART,
-                            EVENT_SYSTEM_MENUEND,
-                            EVENT_SYSTEM_MENUPOPUPSTART,
-                            EVENT_SYSTEM_MENUPOPUPEND,
-                            EVENT_SYSTEM_SCROLLINGSTART,
-                            EVENT_SYSTEM_SWITCHEND,
-                            EVENT_OBJECT_FOCUS,
-                            EVENT_OBJECT_SHOW,
-                            EVENT_OBJECT_HIDE,
-                            EVENT_OBJECT_DESTROY,
-                            EVENT_OBJECT_DESCRIPTIONCHANGE,
-                            EVENT_OBJECT_LOCATIONCHANGE,
-                            EVENT_OBJECT_NAMECHANGE,
-                            EVENT_OBJECT_REORDER,
-                            EVENT_OBJECT_SELECTION,
-                            EVENT_OBJECT_SELECTIONADD,
-                            EVENT_OBJECT_SELECTIONREMOVE,
-                            EVENT_OBJECT_SELECTIONWITHIN,
-                            EVENT_OBJECT_STATECHANGE,
-                            EVENT_OBJECT_VALUECHANGE,
-                            EVENT_OBJECT_LIVEREGIONCHANGED};
+  HWINEVENTHOOK hookIds[3]{};
+  const DWORD events[3] = {EVENT_SYSTEM_DESKTOPSWITCH, EVENT_OBJECT_FOCUS,
+                           EVENT_SYSTEM_FOREGROUND};
 
-  for (int i = 0; i < 24; i++) {
+  for (int i = 0; i < 3; i++) {
     hookIds[i] = SetWinEventHook(events[i], events[i], nullptr, eventCallback,
                                  0, 0, WINEVENT_OUTOFCONTEXT);
 
@@ -107,9 +120,6 @@ DWORD WINAPI winEventLoop(LPVOID context) {
 
   Log->Info(L"Register callbacks", GetCurrentThreadId(), __LONGFILE__);
 
-  // HANDLE waitArray[1] = {winEventLoopCtx->QuitEvent};
-  // DWORD waitResult = WaitForMultipleObjects(1, waitArray, FALSE, INFINITE);
-
   UINT_PTR timerId = SetTimer(nullptr, 0, 3000, nullptr);
   MSG msg;
 
@@ -117,7 +127,7 @@ DWORD WINAPI winEventLoop(LPVOID context) {
     TranslateMessage(&msg);
     DispatchMessage(&msg);
 
-    if (!winEventLoopCtx->IsActive) {
+    if (!ctx->IsActive) {
       Log->Info(L"Win events no longer used", GetCurrentThreadId(),
                 __LONGFILE__);
       break;
@@ -126,13 +136,7 @@ DWORD WINAPI winEventLoop(LPVOID context) {
 
   KillTimer(nullptr, timerId);
 
-  /*
-    switch (waitResult) {
-    case WAIT_OBJECT_0 + 0: // ctx->QuitEvent
-      break;
-    }
-    */
-  for (int i = 0; i < 24; i++) {
+  for (int i = 0; i < 3; i++) {
     if (hookIds[i] == 0) {
       continue;
     }

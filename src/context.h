@@ -9,19 +9,14 @@ struct LogLoopContext {
   HANDLE QuitEvent = nullptr;
 };
 
-struct UIALoopContext {
+struct AutomationContext {
+bool IsActive = false;
   HANDLE QuitEvent = nullptr;
   HANDLE FocusEvent = nullptr;
+  IUIAutomation5 *UIAutomation = nullptr;
   SAFEARRAY *FocusElementRuntimeId = nullptr;
   IUIEventHandler HandleFunc = nullptr;
   IUIAutomationElement *RootElement = nullptr;
-  IUIAutomation5 *UIAutomation = nullptr;
   IUIAutomationTreeWalker *BaseTreeWalker = nullptr;
   IUIAutomationCacheRequest *BaseCacheRequest = nullptr;
-};
-
-struct WinEventLoopContext {
-  HANDLE QuitEvent = nullptr;
-  IAEventHandler HandleFunc = nullptr;
-  bool IsActive = true;
 };

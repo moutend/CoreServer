@@ -140,54 +140,44 @@ STDMETHODIMP CCoreServer::Start() {
     return E_FAIL;
   }
 
-  mUIALoopCtx = new UIALoopContext();
+  mAutomationCtx = new AutomationContext();
 
-  mUIALoopCtx->QuitEvent =
+  mAutomationCtx->QuitEvent =
       CreateEventEx(nullptr, nullptr, 0, EVENT_MODIFY_STATE | SYNCHRONIZE);
 
-  if (mUIALoopCtx->QuitEvent == nullptr) {
+  if (mAutomationCtx->QuitEvent == nullptr) {
     Log->Fail(L"Failed to create event", GetCurrentThreadId(), __LONGFILE__);
 
     return E_FAIL;
   }
 
-  mUIALoopCtx->FocusEvent =
+  mAutomationCtx->FocusEvent =
       CreateEventEx(nullptr, nullptr, 0, EVENT_MODIFY_STATE | SYNCHRONIZE);
 
-  if (mUIALoopCtx->FocusEvent == nullptr) {
+  if (mAutomationCtx->FocusEvent == nullptr) {
     Log->Fail(L"Failed to create event", GetCurrentThreadId(), __LONGFILE__);
 
     return E_FAIL;
   }
 
-  Log->Info(L"Create uia loop thread", GetCurrentThreadId(), __LONGFILE__);
+  Log->Info(L"Create UI automation thread", GetCurrentThreadId(), __LONGFILE__);
 
-  mUIALoopThread = CreateThread(nullptr, 0, uiaLoop,
-                                static_cast<void *>(mUIALoopCtx), 0, nullptr);
+  mUIAThread = CreateThread(nullptr, 0, uiaThread,
+                                static_cast<void *>(mAutomationCtx), 0, nullptr);
 
-  if (mUIALoopThread == nullptr) {
+  if (mUIAThread== nullptr) {
     Log->Fail(L"Failed to create thread", GetCurrentThreadId(), __LONGFILE__);
     return E_FAIL;
   }
 
-  mWinEventLoopCtx = new WinEventLoopContext();
-
-  mWinEventLoopCtx->QuitEvent =
-      CreateEventEx(nullptr, nullptr, 0, EVENT_MODIFY_STATE | SYNCHRONIZE);
-
-  if (mWinEventLoopCtx->QuitEvent == nullptr) {
-    Log->Fail(L"Failed to create event", GetCurrentThreadId(), __LONGFILE__);
-    return E_FAIL;
-  }
-
-  Log->Info(L"Create windows event loop thread", GetCurrentThreadId(),
+  Log->Info(L"Create windows event thread", GetCurrentThreadId(),
             __LONGFILE__);
 
-  mWinEventLoopThread =
-      CreateThread(nullptr, 0, winEventLoop,
-                   static_cast<void *>(mWinEventLoopCtx), 0, nullptr);
+  mWindowsEventLoopThread =
+      CreateThread(nullptr, 0, windowsEventThread,
+                   static_cast<void *>(mAutomationCtx), 0, nullptr);
 
-  if (mWinEventLoopThread == nullptr) {
+  if (mWindowsEventThread == nullptr) {
     Log->Fail(L"Failed to create thread", GetCurrentThreadId(), __LONGFILE__);
     return E_FAIL;
   }
@@ -204,48 +194,37 @@ STDMETHODIMP CCoreServer::Stop() {
 
   Log->Info(L"Called ICoreServer::Stop()", GetCurrentThreadId(), __LONGFILE__);
 
-  if (mUIALoopThread == nullptr) {
-    goto END_UIALOOP_CLEANUP;
+  if (mUIAThread== nullptr) {
+    goto END_UIA_CLEANUP;
   }
-  if (!SetEvent(mUIALoopCtx->QuitEvent)) {
+  if (!SetEvent(mAutomationCtx->QuitEvent)) {
     Log->Fail(L"Failed to send event", GetCurrentThreadId(), __LONGFILE__);
     return E_FAIL;
   }
 
-  WaitForSingleObject(mUIALoopThread, INFINITE);
-  SafeCloseHandle(&mUIALoopThread);
-  SafeCloseHandle(&(mUIALoopCtx->QuitEvent));
+  WaitForSingleObject(mUIAThread, INFINITE);
+  SafeCloseHandle(&mUIAThread);
+  SafeCloseHandle(&(mAutomationCtx->QuitEvent));
 
-  delete mUIALoopCtx;
-  mUIALoopCtx = nullptr;
+  Log->Info(L"Delete UIA thread", GetCurrentThreadId(), __LONGFILE__);
 
-  Log->Info(L"Delete uia loop thread", GetCurrentThreadId(), __LONGFILE__);
+END_UIA_CLEANUP:
 
-END_UIALOOP_CLEANUP:
-
-  if (mWinEventLoopThread == nullptr) {
-    goto END_WINEVENTLOOP_CLEANUP;
+  if (mWindowsEventThread == nullptr) {
+    goto END_WINDOWS_EVENT_CLEANUP;
   }
 
-  mWinEventLoopCtx->IsActive = false;
-  /*
-  if (!SetEvent(mWinEventLoopCtx->QuitEvent)) {
-    Log->Fail(L"Failed to send event", GetCurrentThreadId(), __LONGFILE__);
-    return E_FAIL;
-  }
-  */
+  mAutomationCtx->IsActive = false;
+  WaitForSingleObject(mWindowsEventThread, INFINITE);
+  SafeCloseHandle(&mWindowsEventLoopThread);
 
-  WaitForSingleObject(mWinEventLoopThread, INFINITE);
-  SafeCloseHandle(&mWinEventLoopThread);
-  SafeCloseHandle(&(mWinEventLoopCtx->QuitEvent));
+  delete mAutomationCtx;
+  mAutomationCtx = nullptr;
 
-  delete mWinEventLoopCtx;
-  mWinEventLoopCtx = nullptr;
-
-  Log->Info(L"Delete windows event loop thread", GetCurrentThreadId(),
+  Log->Info(L"Delete windows event thread", GetCurrentThreadId(),
             __LONGFILE__);
 
-END_WINEVENTLOOP_CLEANUP:
+END_WINDOWS_EVENT_CLEANUP:
 
   if (mLogLoopThread == nullptr) {
     goto END_LOGLOOP_CLEANUP;
@@ -272,15 +251,13 @@ END_LOGLOOP_CLEANUP:
 STDMETHODIMP CCoreServer::SetIUIEventHandler(IUIEventHandler handleFunc) {
   std::lock_guard<std::mutex> lock(mMutex);
 
-  mUIALoopCtx->HandleFunc = handleFunc;
+  mAutomationCtx->HandleFunc = handleFunc;
 
   return S_OK;
 }
 
 STDMETHODIMP CCoreServer::SetIAEventHandler(IAEventHandler handleFunc) {
   std::lock_guard<std::mutex> lock(mMutex);
-
-  mWinEventLoopCtx->HandleFunc = handleFunc;
 
   return S_OK;
 }
@@ -291,7 +268,7 @@ CCoreServer::GetIUIAutomationElement(TreeWalkerDirection direction,
                                      IUIAutomationElement **ppElement) {
   std::lock_guard<std::mutex> lock(mMutex);
 
-  if (ppElement == nullptr || mUIALoopCtx->BaseTreeWalker == nullptr) {
+  if (ppElement == nullptr || mAutomationCtx->BaseTreeWalker == nullptr) {
     return E_FAIL;
   }
 
@@ -302,23 +279,23 @@ CCoreServer::GetIUIAutomationElement(TreeWalkerDirection direction,
 
   switch (direction) {
   case TW_NEXT:
-    hr = mUIALoopCtx->BaseTreeWalker->GetNextSiblingElement(pRootElement,
+    hr = mAutomationCtx->BaseTreeWalker->GetNextSiblingElement(pRootElement,
                                                             ppElement);
     break;
   case TW_PREVIOUS:
-    hr = mUIALoopCtx->BaseTreeWalker->GetPreviousSiblingElement(pRootElement,
+    hr = mAutomationCtx->BaseTreeWalker->GetPreviousSiblingElement(pRootElement,
                                                                 ppElement);
     break;
   case TW_FIRST_CHILD:
-    hr = mUIALoopCtx->BaseTreeWalker->GetFirstChildElement(pRootElement,
+    hr = mAutomationCtx->BaseTreeWalker->GetFirstChildElement(pRootElement,
                                                            ppElement);
     break;
   case TW_LAST_CHILD:
-    hr = mUIALoopCtx->BaseTreeWalker->GetLastChildElement(pRootElement,
+    hr = mAutomationCtx->BaseTreeWalker->GetLastChildElement(pRootElement,
                                                           ppElement);
     break;
   case TW_PARENT:
-    hr = mUIALoopCtx->BaseTreeWalker->GetParentElement(pRootElement, ppElement);
+    hr = mAutomationCtx->BaseTreeWalker->GetParentElement(pRootElement, ppElement);
     break;
   default:
     return S_OK;
@@ -334,12 +311,12 @@ CCoreServer::UpdateTreeWalker() {
   Log->Info(L"Called ICoreServer::UpdateTreeWalker()", GetCurrentThreadId(),
             __LONGFILE__);
 
-  SafeRelease(&(mUIALoopCtx->BaseTreeWalker));
+  SafeRelease(&(mAutomationCtx->BaseTreeWalker));
 
   HRESULT hr{};
 
-  hr = mUIALoopCtx->UIAutomation->get_RawViewWalker(
-      &(mUIALoopCtx->BaseTreeWalker));
+  hr = mAutomationCtx->UIAutomation->get_RawViewWalker(
+      &(mAutomationCtx->BaseTreeWalker));
 
   if (FAILED(hr)) {
     Log->Fail(L"Failed to call IUIAutomation::get_RawViewWalker",
@@ -359,7 +336,7 @@ CCoreServer::ElementFromHandle(UIA_HWND hwnd,
 
   HRESULT hr{};
 
-  hr = mUIALoopCtx->UIAutomation->ElementFromHandle(hwnd, ppElement);
+  hr = mAutomationCtx->UIAutomation->ElementFromHandle(hwnd, ppElement);
 
   if (FAILED(hr)) {
     Log->Fail(L"Failed to call IUIAutomation::ElementFromHandle",

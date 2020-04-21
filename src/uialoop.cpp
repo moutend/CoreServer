@@ -144,8 +144,8 @@ CLEANUP:
   return S_OK;
 }
 
-DWORD WINAPI uiaLoop(LPVOID context) {
-  Log->Info(L"Start UI Automation loop", GetCurrentThreadId(), __LONGFILE__);
+DWORD WINAPI uiaThread(LPVOID context) {
+  Log->Info(L"Start UI automation thread", GetCurrentThreadId(), __LONGFILE__);
 
   HRESULT hr{};
   bool isActive{true};
@@ -158,7 +158,7 @@ DWORD WINAPI uiaLoop(LPVOID context) {
     return hr;
   }
 
-  UIALoopContext *ctx = static_cast<UIALoopContext *>(context);
+  AutomationContext *ctx = static_cast<AutomationContext*>(context);
 
   if (ctx == nullptr) {
     Log->Fail(L"Failed to obtain context", GetCurrentThreadId(), __LONGFILE__);
@@ -257,7 +257,7 @@ CLEANUP:
 
   CoUninitialize();
 
-  Log->Info(L"End UI Automation loop thread", GetCurrentThreadId(),
+  Log->Info(L"End UI automation thread", GetCurrentThreadId(),
             __LONGFILE__);
 
   return S_OK;
