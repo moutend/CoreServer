@@ -10,7 +10,7 @@ struct LogLoopContext {
 };
 
 struct AutomationContext {
-  bool IsActive = false;
+  bool IsActive = true;
   HANDLE QuitEvent = nullptr;
   HANDLE FocusEvent = nullptr;
   IUIAutomation5 *UIAutomation = nullptr;
