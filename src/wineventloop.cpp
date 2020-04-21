@@ -44,7 +44,7 @@ void eventCallback(HWINEVENTHOOK hHook, DWORD eventId, HWND hWindow,
   if (ctx->UIAutomation == nullptr) {
     Log->Info(L"IUIAutomation is not available", GetCurrentThreadId(),
               __LONGFILE__);
-    goto CLEANUP:
+    goto CLEANUP;
   }
 
   hr = ctx->UIAutomation->ElementFromIAccessible(pAcc, childId, &pSender);
