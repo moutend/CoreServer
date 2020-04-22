@@ -31,8 +31,8 @@ public:
   // ICoreServer methods
   STDMETHODIMP Start();
   STDMETHODIMP Stop();
-  STDMETHODIMP SetIAEventHandler(IAEventHandler handleFunc);
-  STDMETHODIMP SetIUIEventHandler(IUIEventHandler handleFunc);
+  STDMETHODIMP SetMSAAEventHandler(IAEventHandler handleFunc);
+  STDMETHODIMP SetUIAEventHandler(IUIEventHandler handleFunc);
   STDMETHODIMP
   GetIUIAutomationElement(TreeWalkerDirection direction,
                           IUIAutomationElement *pRootElement,
