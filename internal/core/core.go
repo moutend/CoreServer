@@ -47,6 +47,9 @@ func Teardown() error {
 	return nil
 }
 
+func SetMSAAEventHandler(fn com.MSAAEventHandler) {
+	server.SetMSAAEventHandler(fn)
+}
 func SetUIAEventHandler(fn com.UIAEventHandler) {
 	server.SetUIAEventHandler(fn)
 }
