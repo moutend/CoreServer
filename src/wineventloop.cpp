@@ -58,7 +58,7 @@ void eventCallback(HWINEVENTHOOK hHook, DWORD eventId, HWND hWindow,
     goto CLEANUP;
   }
 
-  LONG l = prevtLeft;
+  LONG l = prevLeft;
   LONG t = prevTop;
   LONG r = prevRight;
   LONG b = prevBottom;
