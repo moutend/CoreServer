@@ -3,6 +3,8 @@
 #include <cpplogger/cpplogger.h>
 #include <windows.h>
 
+#include <strsafe.h>
+
 #include <Commctrl.h>
 #include <oleacc.h>
 
@@ -40,6 +42,22 @@ void eventCallback(HWINEVENTHOOK hHook, DWORD eventId, HWND hWindow,
     Log->Info(L"Failed to get IAccessible", GetCurrentThreadId(), __LONGFILE__);
     goto CLEANUP;
   }
+
+  BSTR name{};
+
+  hr = pAcc->get_accName(childId, &name);
+
+  if (FAILED(hr)) {
+    goto CLEANUP;
+  }
+
+  wchar_t *buffer = new wchar_t[256]{};
+  StringCbPrintfW(buffer, 512, L"AccName=%s", name);
+  Log->Info(buffer, GetCurrentThreadId(), __LONGFILE__);
+
+  delete[] buffer;
+  buffer = nullptr;
+
   if (ctx->IAEventHandleFunc != nullptr) {
     ctx->IAEventHandleFunc(eventId, childId, pAcc);
   }
