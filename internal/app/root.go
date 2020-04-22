@@ -49,6 +49,7 @@ func rootRunE(cmd *cobra.Command, args []string) error {
 	defer core.Teardown()
 
 	core.SetMSAAEventHandler(func(eventId types.MSAAEvent, childId int64, pInterface uintptr) int64 {
+		go http.Post("http://127.0.0.1:7902/v1/audio", "application/json", bytes.NewBufferString(`{"isForcePush":true,"commands": [{"type": 1, "value":10}]}`))
 		e := (*com.IAccessible)(unsafe.Pointer(pInterface))
 		child := ole.NewVariant(ole.VT_I4, childId)
 
@@ -59,7 +60,6 @@ func rootRunE(cmd *cobra.Command, args []string) error {
 			return 0
 		}
 		log.Printf("@@@Event:%q,Name:%q\n", eventId, name)
-		go http.Post("http://127.0.0.1:7902/v1/audio", "application/json", bytes.NewBufferString(`{"isForcePush":true,"commands": [{"type": 1, "value":10}]}`))
 
 		return 0
 	})
