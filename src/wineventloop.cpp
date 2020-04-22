@@ -41,7 +41,7 @@ void eventCallback(HWINEVENTHOOK hHook, DWORD eventId, HWND hWindow,
     goto CLEANUP;
   }
   if (ctx->IAEventHandleFunc != nullptr) {
-    ctx->IAEventHandleFunc(eventId, pAcc);
+    ctx->IAEventHandleFunc(eventId, childId, pAcc);
   }
 
 CLEANUP:
