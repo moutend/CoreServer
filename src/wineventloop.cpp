@@ -68,6 +68,7 @@ CLEANUP:
 }
 
 DWORD WINAPI windowsEventThread(LPVOID context) {
+  return 0;
   Log->Info(L"Start Windows event thread", GetCurrentThreadId(), __LONGFILE__);
 
   HRESULT hr = CoInitializeEx(nullptr, COINIT_MULTITHREADED);

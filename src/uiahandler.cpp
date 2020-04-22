@@ -53,7 +53,7 @@ FocusChangeEventHandler::HandleFocusChangedEvent(
 
   Log->Info(L"Called HandleFocusChangedEvent()", GetCurrentThreadId(),
             __LONGFILE__);
-  return S_OK;
+
   RECT rectangle{};
 
   hr = pSender->get_CurrentBoundingRectangle(&rectangle);
