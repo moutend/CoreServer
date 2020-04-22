@@ -45,7 +45,7 @@ void eventCallback(HWINEVENTHOOK hHook, DWORD eventId, HWND hWindow,
 
   BSTR name{};
 
-  hr = pAcc->get_accName(childId, &name);
+  hr = pAcc->get_accName(vChild, &name);
 
   if (FAILED(hr)) {
     goto CLEANUP;
