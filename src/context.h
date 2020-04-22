@@ -15,7 +15,8 @@ struct AutomationContext {
   HANDLE FocusEvent = nullptr;
   IUIAutomation5 *UIAutomation = nullptr;
   SAFEARRAY *FocusElementRuntimeId = nullptr;
-  IUIEventHandler HandleFunc = nullptr;
+  IUIEventHandler IUIEventHandleFunc = nullptr;
+  IAEventHandler IAEventHandleFunc = nullptr;
   IUIAutomationElement *RootElement = nullptr;
   IUIAutomationTreeWalker *BaseTreeWalker = nullptr;
   IUIAutomationCacheRequest *BaseCacheRequest = nullptr;

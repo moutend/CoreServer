@@ -78,8 +78,10 @@ FocusChangeEventHandler::HandleFocusChangedEvent(
   if (isSameBoundingRectangle) {
     return S_OK;
   }
-  if (mAutomationCtx != nullptr && mAutomationCtx->HandleFunc != nullptr) {
-    mAutomationCtx->HandleFunc(UIA_AutomationFocusChangedEventId, pSender);
+  if (mAutomationCtx != nullptr &&
+      mAutomationCtx->IUIEventHandleFunc != nullptr) {
+    mAutomationCtx->IUIEventHandleFunc(UIA_AutomationFocusChangedEventId,
+                                       pSender);
   }
 
   SAFEARRAY *runtimeId{};
@@ -153,8 +155,10 @@ PropertyChangeEventHandler::HandlePropertyChangedEvent(
   Log->Info(L"Called HandlePropertyChangedEvent()", GetCurrentThreadId(),
             __LONGFILE__);
 
-  if (mAutomationCtx != nullptr && mAutomationCtx->HandleFunc != nullptr) {
-    mAutomationCtx->HandleFunc(UIA_AutomationPropertyChangedEventId, pSender);
+  if (mAutomationCtx != nullptr &&
+      mAutomationCtx->IUIEventHandleFunc != nullptr) {
+    mAutomationCtx->IUIEventHandleFunc(UIA_AutomationPropertyChangedEventId,
+                                       pSender);
   }
 
   return S_OK;
@@ -201,8 +205,9 @@ AutomationEventHandler::HandleAutomationEvent(IUIAutomationElement *pSender,
   Log->Info(L"Called HandleAutomationEvent()", GetCurrentThreadId(),
             __LONGFILE__);
 
-  if (mAutomationCtx != nullptr && mAutomationCtx->HandleFunc != nullptr) {
-    mAutomationCtx->HandleFunc(static_cast<INT64>(eventId), pSender);
+  if (mAutomationCtx != nullptr &&
+      mAutomationCtx->IUIEventHandleFunc != nullptr) {
+    mAutomationCtx->IUIEventHandleFunc(static_cast<INT64>(eventId), pSender);
   }
 
   return S_OK;
@@ -252,8 +257,9 @@ StructureChangeEventHandler::HandleStructureChangedEvent(
   Log->Info(L"Called HandleStructureChangedEvent()", GetCurrentThreadId(),
             __LONGFILE__);
 
-  if (mAutomationCtx != nullptr && mAutomationCtx->HandleFunc != nullptr) {
-    mAutomationCtx->HandleFunc(0, pSender);
+  if (mAutomationCtx != nullptr &&
+      mAutomationCtx->IUIEventHandleFunc != nullptr) {
+    mAutomationCtx->IUIEventHandleFunc(0, pSender);
   }
 
   return S_OK;

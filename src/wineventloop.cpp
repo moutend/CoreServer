@@ -31,49 +31,22 @@ void eventCallback(HWINEVENTHOOK hHook, DWORD eventId, HWND hWindow,
   Log->Info(L"IAccessible event received", GetCurrentThreadId(), __LONGFILE__);
 
   HRESULT hr{};
-  IUIAutomationElement *pSender{};
+  IAccessible *pAcc{};
+  VARIANT vChild{};
 
-  if (ctx->UIAutomation == nullptr) {
-    Log->Info(L"IUIAutomation is not available", GetCurrentThreadId(),
-              __LONGFILE__);
-    goto CLEANUP;
-  }
-
-  hr = ctx->UIAutomation->ElementFromHandle(hWindow, &pSender);
+  hr = AccessibleObjectFromEvent(hWindow, objectId, childId, &pAcc, &vChild);
 
   if (FAILED(hr)) {
-    Log->Info(L"Failed to get IUIAutomationElement from IAccessible",
-              GetCurrentThreadId(), __LONGFILE__);
+    Log->Info(L"Failed to get IAccessible", GetCurrentThreadId(), __LONGFILE__);
     goto CLEANUP;
   }
-  if (ctx->HandleFunc != nullptr) {
-    ctx->HandleFunc(UIA_AutomationFocusChangedEventId, pSender);
-  }
-
-  SAFEARRAY *runtimeId{};
-
-  hr = pSender->GetRuntimeId(&runtimeId);
-
-  if (FAILED(hr)) {
-    Log->Warn(L"Failed to call IUIAutomationElement::GetRuntimeId()",
-              GetCurrentThreadId(), __LONGFILE__);
-    goto CLEANUP;
-  }
-  if (runtimeId == nullptr) {
-    goto CLEANUP;
-  }
-
-  hr = SafeArrayCopy(runtimeId, &(ctx->FocusElementRuntimeId));
-
-  if (FAILED(hr)) {
-    Log->Warn(L"Failed to call SafeArrayCopy()", GetCurrentThreadId(),
-              __LONGFILE__);
-    goto CLEANUP;
+  if (ctx->IAEventHandleFunc != nullptr) {
+    ctx->IAEventHandleFunc(eventId, pAcc);
   }
 
 CLEANUP:
 
-  SafeRelease(&pSender);
+  SafeRelease(&pAcc);
 }
 
 DWORD WINAPI windowsEventThread(LPVOID context) {

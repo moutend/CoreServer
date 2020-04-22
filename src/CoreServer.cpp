@@ -249,13 +249,15 @@ END_LOGLOOP_CLEANUP:
 STDMETHODIMP CCoreServer::SetIUIEventHandler(IUIEventHandler handleFunc) {
   std::lock_guard<std::mutex> lock(mMutex);
 
-  mAutomationCtx->HandleFunc = handleFunc;
+  mAutomationCtx->IUIEventHandleFunc = handleFunc;
 
   return S_OK;
 }
 
 STDMETHODIMP CCoreServer::SetIAEventHandler(IAEventHandler handleFunc) {
   std::lock_guard<std::mutex> lock(mMutex);
+
+  mAutomationCtx->IAEventHandleFunc = handleFunc;
 
   return S_OK;
 }
