@@ -63,7 +63,6 @@ func rootRunE(cmd *cobra.Command, args []string) error {
 
 		go http.Post("http://127.0.0.1:7902/v1/audio", "application/json", bytes.NewBufferString(`{"isForcePush":true,"commands": [{"type": 1, "value":10}]}`))
 
-		hwnd, _ := e.CachedNativeWindowHandle()
 		name, _ := e.CurrentName()
 		className, _ := e.CurrentClassName()
 		framework, _ := e.CurrentFrameworkId()
@@ -71,7 +70,7 @@ func rootRunE(cmd *cobra.Command, args []string) error {
 		ariaRole, _ := e.CurrentAriaRole()
 		ariaProperties, _ := e.CurrentAriaProperties()
 
-		log.Printf("@@@Event:%q,Name:%q,ClassName:%q,Framework:%q,ItemType:%q,AriaRole:%q,AriaProperties:%q,HWND:%v\n", eventId, name, className, framework, itemType, ariaRole, ariaProperties, hwnd)
+		log.Printf("@@@Event:%q,Name:%q,RECT:%+v,ClassName:%q,Framework:%q,ItemType:%q,AriaRole:%q,AriaProperties:%q\n", eventId, name, rect, className, framework, itemType, ariaRole, ariaProperties)
 
 		return 0
 	})
@@ -99,7 +98,7 @@ func rootRunE(cmd *cobra.Command, args []string) error {
 	}
 
 	fileName := fmt.Sprintf("CoreServer-%s.txt", hex.EncodeToString(p))
-	outputPath := filepath.Join(u.HomeDir, "AppData", "Roaming", "ScreenReaderX", "SystemLog", fileName)
+	outputPath := filepath.Join(u.HomeDir, "AppData", "Roaming", "ScreenReaderX", "Logs", "SystemLog", fileName)
 	os.MkdirAll(filepath.Dir(outputPath), 0755)
 
 	output := util.NewBackgroundWriter(outputPath)
