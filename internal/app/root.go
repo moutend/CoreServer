@@ -73,7 +73,7 @@ func rootRunE(cmd *cobra.Command, args []string) error {
 			log.Println("@@@err", err)
 			return 0
 		}
-		if rect.IsZero() {
+		if false && rect.IsZero() {
 			log.Println("@@@skipped")
 			return 0
 		}
