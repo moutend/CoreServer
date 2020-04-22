@@ -14,6 +14,10 @@
 extern Logger::Logger *Log;
 
 static AutomationContext *ctx{};
+static LONG prevLeft{};
+static LONG prevTop{};
+static LONG prevRight{};
+static LONG prevBottom{};
 
 void eventCallback(HWINEVENTHOOK hHook, DWORD eventId, HWND hWindow,
                    LONG objectId, LONG childId, DWORD threadId,
@@ -31,6 +35,7 @@ void eventCallback(HWINEVENTHOOK hHook, DWORD eventId, HWND hWindow,
   Log->Info(L"IAccessible event received", GetCurrentThreadId(), __LONGFILE__);
 
   HRESULT hr{};
+  RECT rectangle{};
   IUIAutomationElement *pSender{};
 
   if (ctx->UIAutomation == nullptr) {
@@ -44,6 +49,29 @@ void eventCallback(HWINEVENTHOOK hHook, DWORD eventId, HWND hWindow,
   if (FAILED(hr)) {
     Log->Info(L"Failed to get IUIAutomationElement from IAccessible",
               GetCurrentThreadId(), __LONGFILE__);
+    goto CLEANUP;
+  }
+
+  hr = pSender->get_CurrentBoundingRectangle(&rectangle);
+
+  if (FAILED(hr)) {
+    goto CLEANUP;
+  }
+
+  LONG l = prevtLeft;
+  LONG t = prevTop;
+  LONG r = prevRight;
+  LONG b = prevBottom;
+
+  prevLeft = rectangle.left;
+  prevTop = rectangle.top;
+  prevRight = rectangle.right;
+  prevBottom = rectangle.bottom;
+
+  bool isSameBoundingRectangle = l == rectangle.left && t == rectangle.top &&
+                                 r == rectangle.right && b == rectangle.bottom;
+
+  if (isSameBoundingRectangle) {
     goto CLEANUP;
   }
   if (ctx->HandleFunc != nullptr) {
