@@ -81,7 +81,7 @@ func rootRunE(cmd *cobra.Command, args []string) error {
 		name, _ := e.CurrentName()
 
 		go http.Post("http://127.0.0.1:7902/v1/audio", "application/json", bytes.NewBufferString(
-			fmt.Printf(`{"isForcePush":true,"commands": [{"type": 1, "value":10},{"type":3,"value":"%s"}]}`, name)))
+			fmt.Sprintf(`{"isForcePush":true,"commands": [{"type": 1, "value":10},{"type":3,"value":"%s"}]}`, name)))
 
 		className, _ := e.CurrentClassName()
 		framework, _ := e.CurrentFrameworkId()
