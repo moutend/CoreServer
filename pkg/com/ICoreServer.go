@@ -8,7 +8,7 @@ import (
 	"github.com/go-ole/go-ole"
 )
 
-type MSAAEventHandler func(eventId types.MSAAEvent, pInterface uintptr) int64
+type MSAAEventHandler func(eventId types.MSAAEvent, childId int64, pInterface uintptr) int64
 
 type UIAEventHandler func(eventId types.UIAEvent, pInterface uintptr) int64
 
