@@ -91,7 +91,7 @@ func rootRunE(cmd *cobra.Command, args []string) error {
 		// ariaProperties, _ := e.CurrentAriaProperties()
 		controlType, _ := e.CurrentControlType()
 
-		log.Printf("@@@Event:%q,Name:%q,Control:%q,RECT:%+v\n", eventId, name, rect, controlType)
+		log.Printf("@@@Event:%q,Name:%q,Control:%q,RECT:%+v\n", eventId, name, controlType, rect)
 
 		return 0
 	})
