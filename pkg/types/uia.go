@@ -52,7 +52,7 @@ const (
 // For more details, see the official document on MSDN.
 //
 // https://docs.microsoft.com/en-us/windows/win32/winauto/uiauto-controltype-ids
-type UIAControlType int64
+type UIAControlType int32
 
 const (
 	UIA_ButtonControlTypeId       UIAControlType = 50000
