@@ -83,7 +83,7 @@ func rootRunE(cmd *cobra.Command, args []string) error {
 		localizedControlType, _ := e.CurrentLocalizedControlType()
 
 		go http.Post("http://127.0.0.1:7902/v1/audio", "application/json", bytes.NewBufferString(
-			fmt.Sprintf(`{"isForcePush":true,"commands": [{"type": 1, "value":10},{"type":3,"value":"%s"}]}`, name)))
+			fmt.Sprintf(`{"isForcePush":true,"commands":[{"type":1,"value":10},{"type":3,"value":"%s"},{"type":2,"value":1.5},{"type":3,"value":"%s"}]}`, name, localizedControlType)))
 
 		// className, _ := e.CurrentClassName()
 		// framework, _ := e.CurrentFrameworkId()
