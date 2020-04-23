@@ -96,8 +96,21 @@ func uiaeCurrentProcessId(v *IUIAutomationElement) error {
 	return ole.NewError(ole.E_NOTIMPL)
 }
 
-func uiaeCurrentControlType(v *IUIAutomationElement) error {
-	return ole.NewError(ole.E_NOTIMPL)
+func uiaeCurrentControlType(v *IUIAutomationElement) (types.UIAControlType, error) {
+	var controlType types.UIAControlType
+
+	hr, _, _ := syscall.Syscall(
+		v.VTable().CurrentLocalizedControlType,
+		2,
+		uintptr(unsafe.Pointer(v)),
+		uintptr(unsafe.Pointer(&controlType)),
+		0)
+
+	if hr != 0 {
+		return controlType, ole.NewError(hr)
+	}
+
+	return controlType, nil
 }
 
 func uiaeCurrentLocalizedControlType(v *IUIAutomationElement) (types.BSTR, error) {

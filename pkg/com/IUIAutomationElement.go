@@ -174,7 +174,7 @@ func (v *IUIAutomationElement) CurrentProcessId() error {
 	return uiaeCurrentProcessId(v)
 }
 
-func (v *IUIAutomationElement) CurrentControlType() error {
+func (v *IUIAutomationElement) CurrentControlType() (types.UIAControlType, error) {
 	return uiaeCurrentControlType(v)
 }
 
