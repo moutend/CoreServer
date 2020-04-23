@@ -49,6 +49,7 @@ func rootRunE(cmd *cobra.Command, args []string) error {
 	defer core.Teardown()
 
 	core.SetMSAAEventHandler(func(eventId types.MSAAEvent, childId int64, pInterface uintptr) int64 {
+		return 0
 		go http.Post("http://127.0.0.1:7902/v1/audio", "application/json", bytes.NewBufferString(`{"isForcePush":true,"commands": [{"type": 1, "value":10}]}`))
 		e := (*com.IAccessible)(unsafe.Pointer(pInterface))
 		child := ole.NewVariant(ole.VT_I4, childId)
@@ -83,13 +84,14 @@ func rootRunE(cmd *cobra.Command, args []string) error {
 		go http.Post("http://127.0.0.1:7902/v1/audio", "application/json", bytes.NewBufferString(
 			fmt.Sprintf(`{"isForcePush":true,"commands": [{"type": 1, "value":10},{"type":3,"value":"%s"}]}`, name)))
 
-		className, _ := e.CurrentClassName()
-		framework, _ := e.CurrentFrameworkId()
-		itemType, _ := e.CurrentItemType()
-		ariaRole, _ := e.CurrentAriaRole()
-		ariaProperties, _ := e.CurrentAriaProperties()
+		// className, _ := e.CurrentClassName()
+		// framework, _ := e.CurrentFrameworkId()
+		// itemType, _ := e.CurrentItemType()
+		// ariaRole, _ := e.CurrentAriaRole()
+		// ariaProperties, _ := e.CurrentAriaProperties()
+		controlType, _ := e.CurrentControlType()
 
-		log.Printf("@@@Event:%q,Name:%q,RECT:%+v,ClassName:%q,Framework:%q,ItemType:%q,AriaRole:%q,AriaProperties:%q\n", eventId, name, rect, className, framework, itemType, ariaRole, ariaProperties)
+		log.Printf("@@@Event:%q,Name:%q,Control:%q,RECT:%+v\n", eventId, name, rect, controlType)
 
 		return 0
 	})
