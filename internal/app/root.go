@@ -80,6 +80,7 @@ func rootRunE(cmd *cobra.Command, args []string) error {
 		}
 
 		name, _ := e.CurrentName()
+		localizedControlType, _ := e.CurrentLocalizedControlType()
 
 		go http.Post("http://127.0.0.1:7902/v1/audio", "application/json", bytes.NewBufferString(
 			fmt.Sprintf(`{"isForcePush":true,"commands": [{"type": 1, "value":10},{"type":3,"value":"%s"}]}`, name)))
@@ -91,7 +92,7 @@ func rootRunE(cmd *cobra.Command, args []string) error {
 		// ariaProperties, _ := e.CurrentAriaProperties()
 		controlType, _ := e.CurrentControlType()
 
-		log.Printf("@@@Event:%q,Name:%q,Control:%q,RECT:%+v\n", eventId, name, controlType, rect)
+		log.Printf("@@@Event:%q,Name:%q,Control:%q,ControlName:%q,RECT:%+v\n", eventId, name, controlType, localizedControlType, rect)
 
 		return 0
 	})
