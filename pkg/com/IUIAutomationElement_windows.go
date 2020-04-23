@@ -100,7 +100,7 @@ func uiaeCurrentControlType(v *IUIAutomationElement) (types.UIAControlType, erro
 	var controlType types.UIAControlType
 
 	hr, _, _ := syscall.Syscall(
-		v.VTable().CurrentLocalizedControlType,
+		v.VTable().CurrentControlType,
 		2,
 		uintptr(unsafe.Pointer(v)),
 		uintptr(unsafe.Pointer(&controlType)),
