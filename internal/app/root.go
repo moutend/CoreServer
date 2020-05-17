@@ -66,6 +66,7 @@ func rootRunE(cmd *cobra.Command, args []string) error {
 	})
 
 	core.SetUIAEventHandler(func(eventId types.UIAEvent, pInterface uintptr) int64 {
+		return
 		e := (*com.IUIAutomationElement)(unsafe.Pointer(pInterface))
 
 		rect, err := e.CurrentBoundingRectangle()
